@@ -4,7 +4,7 @@ Version: 0.0.0.9000
 Authors@R: 
     person("Erik", "Kusch", , "erik.kusch@cicero.oslo.no", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-4984-7646"))
-Description: Collection of functions relevant to work at CICERO.
+Description: Collection of functions relevant to work at CICERO. 
 License: use_mit_license()
     license
 Encoding: UTF-8

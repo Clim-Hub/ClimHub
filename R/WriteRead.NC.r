@@ -1,0 +1,46 @@
+### NETCDF WRITING AND READING SUPPORTING METADATA ========================================
+#' Read or write NetCDF files and their metadata
+#'
+#' Read or write netcdf files and their metadata attributes.
+#'
+#' @param NC SpatRaster
+#' @param FName Filename including directory
+#' @param Variable Character. Variable name to be saved as varname in NC output.
+#' @param Attrs Named vector of metadata attributes
+#' @param Write Logical. Whether to write metadata
+#' @param Compression Integer between 1 to 9. Applied to final .nc file that the function writes to hard drive. Same as compression argument in terra::writeCDF().
+#'
+#' @importFrom terra writeCDF
+#' @importFrom ncdf4 nc_open
+#' @importFrom ncdf4 ncatt_put
+#' @importFrom ncdf4 nc_close
+#' @importFrom ncdf4 ncatt_get
+#' @importFrom terra metags
+#' @importFrom terra longnames
+#'
+#' @return A SpatRaster with metadata
+#'
+WriteRead.NC <- function(NC, FName, Attrs, Write = FALSE, Compression = 9) {
+  ## Writing metadata
+  if (Write) {
+    NC <- writeCDF(x = NC, filename = FName, varname = Variable, longname = longnames(NC), compression = Compression)
+    nc <- nc_open(FName, write = TRUE)
+    for (name in names(Attrs)) {
+      ncatt_put(nc, 0, name, Attrs[[name]])
+    }
+    nc_close(nc)
+  }
+  ## Reading metadata
+  nc <- nc_open(FName)
+  # Retrieve custom metadata
+  Meta <- lapply(names(Attrs), FUN = function(name) {
+    ncatt_get(nc, 0, name)$value
+  })
+  # Close the NetCDF file
+  nc_close(nc)
+  Meta_vec <- unlist(Meta)
+  names(Meta_vec) <- names(Attrs)
+  terra::metags(NC) <- Meta_vec
+  ## return object
+  return(NC)
+}

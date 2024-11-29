@@ -1,0 +1,25 @@
+{
+    "dataproduct": {
+        "name": "Klima i Norge 2100", // Name of the data set
+        "url": "https://thredds.met.no/thredds/catalog/KSS/catalog.html", // URL where the data set is hosted
+        "license": "CC-BY", // License of use (e.g., CC-BY-4.0)
+        "citation": "Klima i Norge 2100 (ISSN: 2387-3027) data provided by the The Norwegian Meteorological Institute", // Recommended citation format
+        "access_method": "Direct Download", // Access method (e.g., API, FTP, direct download)
+        "spatial extent": "", // spatial extent
+        "spatial resolution": "1", // spatial resolution
+        "spatial unit": "km", // unit of spatial resolution
+        "temporal exetent": "1971-2100", // temporal extent
+        "temporal resolution": "day", // temporal resolution
+        "variables": [
+            {
+                "name": "", // Name of the variable
+                "description": "", // Explanation of what the variable represents
+                "function": "", // Role or purpose of the variable in the dataset
+                "unit": "", // Unit of measurement (e.g., °C, mm, kg/m²)
+                "issues": "" // Known issues, caveats, or limitations for this variable
+            }
+        ]
+    }
+},
+58.097871,
+71.92103

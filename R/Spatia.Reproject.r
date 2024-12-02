@@ -1,0 +1,49 @@
+### REPROJECTING SPATIAL DATA =========================================================
+#' Reprojecting spatial data.
+#'
+#' Reprojecting one spatial data product to match another.
+#'
+#' @param ProjFrom Either a SpatRaster or SF object which is to be reprojected.
+#' @param ProjTo Either a SpatRaster or SF object to whose projection the other opbject is to be reprojected.
+#'
+#' @importFrom terra crs
+#' @importFrom terra project
+#' @importFrom sf st_transform
+#' @importFrom sf st_crs
+#'
+#' @return A SpatRaster or SF object reprojected to the same CRS as in ProjTo.
+#'
+#' @examples
+#' @export
+Spatial.Reproject <- function(ProjFrom, ProjTo) {
+    ## classes of arguments
+    class_name <- lapply(list(ProjFrom, ProjTo), class)
+    class_def <- lapply(class_name, getClass)
+    package_name <- lapply(class_def, FUN = function(x) {
+        x@package
+    })
+
+    ## SpatRaster to SpatRaster
+    if (package_name[[1]] == "terra" & package_name[[2]] == "terra") {
+        Reprojected <- terra::project(ProjFrom, terra::crs(ProjTo))
+    }
+
+    ## SpatRaster to SF
+    if (package_name[[1]] == "terra" & package_name[[2]] == "sf") {
+        Reprojected <- terra::project(ProjFrom, paste0("epsg:", crs_info <- sf::st_crs(ProjTo)$epsg))
+    }
+
+
+    ## SF to SpatRaster
+    if (package_name[[1]] == "sf" & package_name[[2]] == "terra") {
+        Reprojected <- sf::st_transform(ProjFrom, terra::crs(ProjTo))
+    }
+
+    ## SF to SF
+    if (package_name[[1]] == "sf" & package_name[[2]] == "sf") {
+        Reprojected <- sf::st_transform(ProjFrom, sf::st_crs(ProjTo))
+    }
+
+    ## return
+    return(Reprojected)
+}

@@ -4,20 +4,30 @@
 \alias{WriteRead.NC}
 \title{Read or write NetCDF files and their metadata}
 \usage{
-WriteRead.NC(NC, FName, Attrs, Write = FALSE, Compression = 9)
+WriteRead.NC(
+  NC,
+  FName,
+  Variable,
+  Unit = "NA",
+  Attrs,
+  Write = FALSE,
+  Compression = 9
+)
 }
 \arguments{
 \item{NC}{SpatRaster}
 
 \item{FName}{Filename including directory}
 
+\item{Variable}{Character. Variable name to be saved as varname in NC output.}
+
+\item{Unit}{Character. Unit in which Variable is recorded.}
+
 \item{Attrs}{Named vector of metadata attributes}
 
 \item{Write}{Logical. Whether to write metadata}
 
 \item{Compression}{Integer between 1 to 9. Applied to final .nc file that the function writes to hard drive. Same as compression argument in terra::writeCDF().}
-
-\item{Variable}{Character. Variable name to be saved as varname in NC output.}
 }
 \value{
 A SpatRaster with metadata

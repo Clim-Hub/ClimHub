@@ -102,10 +102,13 @@
 #' @importFrom utils download.file
 #' @importFrom pbapply pblapply
 #' @importFrom stringr str_pad
+#' @importFrom doSNOW registerDoSNOW
 #' @importFrom parallel detectCores
 #' @importFrom parallel makeCluster
 #' @importFrom parallel stopCluster
-#' @importFrom parallel clusterExport
+#' @importFrom foreach %dopar%
+#' @importFrom foreach foreach
+#' @importFrom progress progress_bar
 #'
 #' @return A SpatRaster object containing the downloaded data, and a file in the specified directory. The SpatRaster contains metadata/attributes as a named vector that can be retrieved with terra::metags(...):
 #'  - *Citation* - A string which to use for in-line citation of the data product obtained}.
@@ -217,19 +220,26 @@ Download.NORA3 <- function(Variable = "TS (Surface temperature)", # which variab
     )
 
     ## Catching Most Frequent Issues ============
-    message("Checking Request Validity")
+    message("###### Checking Request Validity")
     ## FileName Specification
     FileName <- paste0(file_path_sans_ext(FileName), ".nc")
 
     ## check variable names
+    # Unit <-
+
     ## check dates & times
 
     ## variable in which file
     FilePrefix <- NORA3_df$datafile[Variable == NORA3_df$variable]
 
     ## Metadata
-    Meta_vec <- paste("NORA3 (DOI???) data provided by the The Norwegian Meteorological institute obtained on", Sys.Date())
-    names(Meta_vec) <- "Citation"
+    Citation <- paste("NORA3 (DOI: 10.5194/wes-6-1501-2021) data provided by the The Norwegian Meteorological institute obtained on", Sys.Date())
+    names(Citation) <- "Citation"
+    callargs <- mget(names(formals()), sys.frame(sys.nframe()))
+    callargs[sapply(callargs, is.null)] <- "NULL"
+    callargs[sapply(callargs, class) == "name"] <- ""
+    names(callargs) <- paste("Call", names(callargs), sep = "-")
+    Meta_vec <- c(Citation, unlist(callargs))
 
     ## File Check
     FCheck <- WriteRead.FileCheck(FName = FileName, Dir = Dir, loadFun = terra::rast, load = TRUE, verbose = TRUE)
@@ -238,9 +248,9 @@ Download.NORA3 <- function(Variable = "TS (Surface temperature)", # which variab
         return(FCheck)
     }
 
-    ## temporary files names
-    Start <- as.POSIXct(paste0(DateStart, ":00:00"), tz = "CET")
-    Stop <- as.POSIXct(paste0(DateStop, ":00:00"), tz = "CET")
+    ## temporary files names, we do this in UTC to avoid daylight savings shenanigans
+    Start <- as.POSIXct(paste0(DateStart, ":00:00"), tz = "UTC")
+    Stop <- as.POSIXct(paste0(DateStop, ":00:00"), tz = "UTC")
     Datetimes <- seq(
         from = Start,
         to = Stop,
@@ -250,18 +260,34 @@ Download.NORA3 <- function(Variable = "TS (Surface temperature)", # which variab
     FNames <- paste0("TEMP_", "fc", Datetimes, "_", stringr::str_pad(Leadtime, 3, "left", 0), FilePrefix, ".nc")
 
     ## parallelisation
-    if (!is.null(Cores)) {
+    pb <- progress_bar$new(
+        format = "Downloading (:current/:total) | [:bar] Elapsed: :elapsed | Remaining: :eta",
+        total = length(FNames), # 100
+        width = getOption("width"),
+        clear = FALSE
+    )
+    progressIter <- 1:length(FNames) # token reported in progress bar
+    if (!is.null(Cores) | Cores > 1) {
         cl <- makeCluster(Cores)
-        parallel::clusterExport(cl, c("Dir"))
+        doSNOW::registerDoSNOW(cl)
+        progress <- function(n) {
+            pb$tick(tokens = list(layer = progressIter[n]))
+        }
         on.exit(stopCluster(cl))
+        ForeachObjects <- c("Dir", "FNames")
     } else {
         cl <- NULL
     }
 
     ## Downloads ================================
     message("###### Data Download")
-    print(paste("Staging", length(FNames), "download(s)."))
-    Files_ls <- pblapply(FNames, cl = cl, FUN = function(FName) {
+    Downls <- foreach(
+        DownIter = 1:length(FNames),
+        .packages = c(),
+        .export = ForeachObjects,
+        .options.snow = list(progress = progress)
+    ) %dopar% { # parallel loop
+        FName <- FNames[DownIter]
         Year <- substr(FName, 8, 11)
         Month <- substr(FName, 12, 13)
         Day <- substr(FName, 14, 15)
@@ -278,16 +304,43 @@ Download.NORA3 <- function(Variable = "TS (Surface temperature)", # which variab
                 quiet = TRUE
             )
         }
-    })
+        Sys.sleep(0.5)
+        NULL
+    } # end of parallel kriging loop
 
     ## Loading Data =================================
-    MetNo_rast <- terra::rast(file.path(Dir, FNames))
+    message("###### Loading Downloaded Data from Disk")
+    pb <- progress_bar$new(
+        format = "Downloading (:current/:total) | [:bar] Elapsed: :elapsed | Remaining: :eta",
+        total = length(FNames), # 100
+        width = getOption("width"),
+        clear = FALSE
+    )
+    progressIter <- 1:length(FNames) # token reported in progress bar
+
+    MetNo_rast <- as.list(rep(NA, length(FNames)))
+    for (LoadIter in 1:length(FNames)) {
+        MetNo_rast[[LoadIter]] <- terra::rast(file.path(Dir, FNames[LoadIter]))
+        pb$tick(tokens = list(layer = progressIter[LoadIter]))
+    }
+    MetNo_rast <- do.call(c, MetNo_rast)
 
     ## Variable Extraction =================================
-    MetNo_rast <- MetNo_rast[[grep(Variable, names(MetNo_rast))]]
+    message("###### Extracting Requested Variable")
+    if (FilePrefix == "_sfx") {
+        VarLyr <- which(
+            startsWith(
+                prefix = stringr::str_trim(stringr::str_extract(Variable, "^[^(]*"), side = "right"),
+                x = names(MetNo_rast)
+            )
+        )
+    } else {
+        VarLyr <- grep(Variable, names(MetNo_rast))
+    }
+    MetNo_rast <- MetNo_rast[[VarLyr]]
 
     ## Exports =================================
-    message("Data Export & Return")
+    message("###### Data Export & Return")
 
     ### Assign additional information
     terra::metags(MetNo_rast) <- Meta_vec
@@ -295,7 +348,7 @@ Download.NORA3 <- function(Variable = "TS (Surface temperature)", # which variab
     ### write file
     MetNo_rast <- WriteRead.NC(
         NC = MetNo_rast, FName = file.path(Dir, FileName),
-        Variable = Variable,
+        Variable = Variable, Unit = unique(terra::units(MetNo_rast)),
         Attrs = terra::metags(MetNo_rast), Write = TRUE, Compression = Compression
     )
 

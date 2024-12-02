@@ -6,6 +6,7 @@
 #' @param NC SpatRaster
 #' @param FName Filename including directory
 #' @param Variable Character. Variable name to be saved as varname in NC output.
+#' @param Unit Character. Unit in which Variable is recorded.
 #' @param Attrs Named vector of metadata attributes
 #' @param Write Logical. Whether to write metadata
 #' @param Compression Integer between 1 to 9. Applied to final .nc file that the function writes to hard drive. Same as compression argument in terra::writeCDF().
@@ -20,10 +21,10 @@
 #'
 #' @return A SpatRaster with metadata
 #'
-WriteRead.NC <- function(NC, FName, Attrs, Write = FALSE, Compression = 9) {
+WriteRead.NC <- function(NC, FName, Variable, Unit = "NA", Attrs, Write = FALSE, Compression = 9) {
   ## Writing metadata
   if (Write) {
-    NC <- writeCDF(x = NC, filename = FName, varname = Variable, longname = longnames(NC), compression = Compression)
+    NC <- writeCDF(x = NC, filename = FName, varname = Variable, unit = Unit, longname = longnames(NC), compression = Compression)
     nc <- nc_open(FName, write = TRUE)
     for (name in names(Attrs)) {
       ncatt_put(nc, 0, name, Attrs[[name]])

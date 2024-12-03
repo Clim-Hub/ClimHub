@@ -100,12 +100,11 @@
 #' @importFrom terra metags
 #' @importFrom terra writeRaster
 #' @importFrom utils download.file
-#' @importFrom pbapply pblapply
 #' @importFrom stringr str_pad
 #' @importFrom doSNOW registerDoSNOW
 #' @importFrom parallel detectCores
 #' @importFrom parallel makeCluster
-#' @importFrom parallel stopCluster
+#' @importFrom snow stopCluster
 #' @importFrom foreach %dopar%
 #' @importFrom foreach foreach
 #' @importFrom progress progress_bar
@@ -260,30 +259,34 @@ Download.NORA3 <- function(Variable = "TS (Surface temperature)", # which variab
     FNames <- paste0("TEMP_", "fc", Datetimes, "_", stringr::str_pad(Leadtime, 3, "left", 0), FilePrefix, ".nc")
 
     ## parallelisation
-    pb <- progress_bar$new(
+    pb <- progress::progress_bar$new(
         format = "Downloading (:current/:total) | [:bar] Elapsed: :elapsed | Remaining: :eta",
         total = length(FNames), # 100
         width = getOption("width"),
         clear = FALSE
     )
     progressIter <- 1:length(FNames) # token reported in progress bar
-    if (!is.null(Cores) | Cores > 1) {
-        cl <- makeCluster(Cores)
-        doSNOW::registerDoSNOW(cl)
-        progress <- function(n) {
-            pb$tick(tokens = list(layer = progressIter[n]))
+    if (!is.null(Cores)) {
+        if (Cores > 1) {
+            cl <- makeCluster(Cores)
+            on.exit(snow::stopCluster(cl))
+            doSNOW::registerDoSNOW(cl)
+            progress <- function(n) {
+                pb$tick(tokens = list(layer = progressIter[n]))
+            }
+            ForeachObjects <- c("Dir", "FNames")
+        } else {
+            cl <- NULL
         }
-        on.exit(stopCluster(cl))
-        ForeachObjects <- c("Dir", "FNames")
     } else {
         cl <- NULL
     }
 
     ## Downloads ================================
     message("###### Data Download")
-    Downls <- foreach(
+    Downls <- foreach::foreach(
         DownIter = 1:length(FNames),
-        .packages = c(),
+        # .packages = c(),
         .export = ForeachObjects,
         .options.snow = list(progress = progress)
     ) %dopar% { # parallel loop
@@ -310,7 +313,7 @@ Download.NORA3 <- function(Variable = "TS (Surface temperature)", # which variab
 
     ## Loading Data =================================
     message("###### Loading Downloaded Data from Disk")
-    pb <- progress_bar$new(
+    pb <- progress::progress_bar$new(
         format = "Downloading (:current/:total) | [:bar] Elapsed: :elapsed | Remaining: :eta",
         total = length(FNames), # 100
         width = getOption("width"),
@@ -330,7 +333,7 @@ Download.NORA3 <- function(Variable = "TS (Surface temperature)", # which variab
     if (FilePrefix == "_sfx") {
         VarLyr <- which(
             startsWith(
-                prefix = stringr::str_trim(stringr::str_extract(Variable, "^[^(]*"), side = "right"),
+                prefix = paste0(stringr::str_trim(stringr::str_extract(Variable, "^[^(]*"), side = "right"), "_grib"),
                 x = names(MetNo_rast)
             )
         )
@@ -348,7 +351,8 @@ Download.NORA3 <- function(Variable = "TS (Surface temperature)", # which variab
     ### write file
     MetNo_rast <- WriteRead.NC(
         NC = MetNo_rast, FName = file.path(Dir, FileName),
-        Variable = Variable, Unit = unique(terra::units(MetNo_rast)),
+        Variable = Variable,
+        Unit = ifelse(length(unique(terra::units(MetNo_rast))) > 1, unique(terra::units(MetNo_rast))[2], unique(terra::units(MetNo_rast))), # clunky, but won't need this when integrating proper metadata solution
         Attrs = terra::metags(MetNo_rast), Write = TRUE, Compression = Compression
     )
 

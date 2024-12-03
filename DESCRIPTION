@@ -1,6 +1,6 @@
 Package: ClimHub
 Title: Climate Data Toolbox developed at CICERO Centre for International Climate Research
-Version: 0.0.0.9000
+Version: 0.0.0.91
 Authors@R: 
     person("Erik", "Kusch", , "erik.kusch@cicero.oslo.no", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-4984-7646"))
@@ -10,8 +10,13 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Imports: 
+    doSNOW (>= 1.0.20),
+    foreach (>= 1.5.2),
     ncdf4 (>= 1.23),
+    parallel (>= 4.4.0),
     pbapply (>= 1.7.2),
+    progress (>= 1.2.3),
+    snow (>= 0.4.4),
     terra (>= 1.7.78),
     tools (>= 4.4.0),
     utils (>= 4.4.0)

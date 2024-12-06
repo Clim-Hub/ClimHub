@@ -33,7 +33,6 @@
 #'  - "LE (Averaged_Total_Latent_Heat_Flux)",
 #'  - "GFLUX (Averaged_Ground_Heat_Flux)",
 #'  - "air_temperature_0m"
-#'  - "surface_geopotential"
 #'  - "liquid_water_content_of_surface_snow"
 #'  - "downward_northward_momentum_flux_in_air"
 #'  - "downward_eastward_momentum_flux_in_air"
@@ -62,7 +61,6 @@
 #'  - "high_type_cloud_area_fraction"
 #'  - "medium_type_cloud_area_fraction"
 #'  - "low_type_cloud_area_fraction"
-#'  - "atmosphere_boundary_layer_thickness"
 #'  - "hail_diagnostic"
 #'  - "rainfall_amount"
 #'  - "snowfall_amount"
@@ -74,15 +72,12 @@
 #'  - "geopotential_pl"
 #'  - "relative_humidity_pl"
 #'  - "upward_air_velocity_pl"
-#'  - "air_pressure_at_sea_level"
 #'  - "lwe_thickness_of_atmosphere_mass_content_of_water_vapor"
-#'  - "surface_air_pressure"
 #'  - "lifting_condensation_level"
 #'  - "atmosphere_level_of_free_convection"
 #'  - "atmosphere_level_of_neutral_buoyancy"
 #'  - "wind_direction"
 #'  - "wind_speed"
-#'  - "precipitation_amount_acc"
 #'  - "snowfall_amount_acc"
 #'  - "x_wind_z"
 #'  - "y_wind_z"
@@ -100,6 +95,7 @@
 #' @importFrom terra metags
 #' @importFrom terra writeRaster
 #' @importFrom utils download.file
+#' @importFrom pbapply pblapply
 #' @importFrom stringr str_pad
 #' @importFrom doSNOW registerDoSNOW
 #' @importFrom parallel detectCores
@@ -120,11 +116,25 @@
 
 #' }
 #' @export
-Download.NORA3 <- function(Variable = "TS (Surface temperature)", # which variable
-                           DateStart = "1961-08-01 00", DateStop = "2022-12-31 18", # time-window
-                           Leadtime = 3, Cores = NULL,
-                           Dir = getwd(), FileName, Compression = 9, # file storing
-                           RemoveTemporary = TRUE) {
+Download.NORA3 <- function(
+    Variable = "TS (Surface temperature)", # which variable
+    DateStart = "1961-08-01 00", DateStop = "2022-12-31 18", # time-window
+    Leadtime = 3, Cores = NULL,
+    Dir = getwd(), FileName, Compression = 9, # file storing
+    RemoveTemporary = TRUE) {
+    ## FileName Specification
+    FileName <- paste0(file_path_sans_ext(FileName), ".nc")
+
+    ## Metadata
+    Citation <- paste("NORA3 (DOI: 10.5194/wes-6-1501-2021) data provided by the The Norwegian Meteorological institute obtained on", Sys.Date())
+    names(Citation) <- "Citation"
+    callargs <- mget(names(formals()), sys.frame(sys.nframe()))
+    callargs[sapply(callargs, is.null)] <- "NULL"
+    callargs[sapply(callargs, class) == "name"] <- ""
+    names(callargs) <- paste("Call", names(callargs), sep = "_")
+    Meta_vec <- c(Citation, unlist(callargs))
+
+
     ## Data files ========= # replace with metadata ASAP!
     NORA3_df <- data.frame(
         variable = c(
@@ -206,7 +216,6 @@ Download.NORA3 <- function(Variable = "TS (Surface temperature)", # which variab
             "atmosphere_level_of_neutral_buoyancy",
             "wind_direction",
             "wind_speed",
-            "precipitation_amount_acc",
             "snowfall_amount_acc",
             "x_wind_z",
             "y_wind_z"
@@ -214,14 +223,13 @@ Download.NORA3 <- function(Variable = "TS (Surface temperature)", # which variab
         datafile = c(
             rep("", 17),
             rep("_sfx", 11),
-            rep("_fp", 54)
+            rep("_fp", 53)
         )
     )
+    NORA3_df <- NORA3_df[-which(duplicated(NORA3_df$variable)), ]
 
     ## Catching Most Frequent Issues ============
     message("###### Checking Request Validity")
-    ## FileName Specification
-    FileName <- paste0(file_path_sans_ext(FileName), ".nc")
 
     ## check variable names
     # Unit <-
@@ -230,15 +238,6 @@ Download.NORA3 <- function(Variable = "TS (Surface temperature)", # which variab
 
     ## variable in which file
     FilePrefix <- NORA3_df$datafile[Variable == NORA3_df$variable]
-
-    ## Metadata
-    Citation <- paste("NORA3 (DOI: 10.5194/wes-6-1501-2021) data provided by the The Norwegian Meteorological institute obtained on", Sys.Date())
-    names(Citation) <- "Citation"
-    callargs <- mget(names(formals()), sys.frame(sys.nframe()))
-    callargs[sapply(callargs, is.null)] <- "NULL"
-    callargs[sapply(callargs, class) == "name"] <- ""
-    names(callargs) <- paste("Call", names(callargs), sep = "-")
-    Meta_vec <- c(Citation, unlist(callargs))
 
     ## File Check
     FCheck <- WriteRead.FileCheck(FName = FileName, Dir = Dir, loadFun = terra::rast, load = TRUE, verbose = TRUE)
@@ -259,7 +258,7 @@ Download.NORA3 <- function(Variable = "TS (Surface temperature)", # which variab
     FNames <- paste0("TEMP_", "fc", Datetimes, "_", stringr::str_pad(Leadtime, 3, "left", 0), FilePrefix, ".nc")
 
     ## parallelisation
-    pb <- progress::progress_bar$new(
+    pb <- progress_bar$new(
         format = "Downloading (:current/:total) | [:bar] Elapsed: :elapsed | Remaining: :eta",
         total = length(FNames), # 100
         width = getOption("width"),
@@ -284,7 +283,7 @@ Download.NORA3 <- function(Variable = "TS (Surface temperature)", # which variab
 
     ## Downloads ================================
     message("###### Data Download")
-    Downls <- foreach::foreach(
+    Downls <- foreach(
         DownIter = 1:length(FNames),
         # .packages = c(),
         .export = ForeachObjects,
@@ -313,7 +312,7 @@ Download.NORA3 <- function(Variable = "TS (Surface temperature)", # which variab
 
     ## Loading Data =================================
     message("###### Loading Downloaded Data from Disk")
-    pb <- progress::progress_bar$new(
+    pb <- progress_bar$new(
         format = "Downloading (:current/:total) | [:bar] Elapsed: :elapsed | Remaining: :eta",
         total = length(FNames), # 100
         width = getOption("width"),

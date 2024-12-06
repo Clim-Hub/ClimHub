@@ -1,0 +1,4628 @@
+{
+  "name": "NORA3",
+  "url": "https://thredds.met.no/thredds/projects/nora3.html",
+  "license": "CC-BY-4.0",
+  "citation": "Solbrekke, I. M., Sorteberg, A., and Haakenstad, H.: The 3 km Norwegian reanalysis (NORA3) - a validation of offshore wind resources in the North Sea and the Norwegian Sea, Wind Energ. Sci., 6, 1501-1519, https://doi.org/10.5194/wes-6-1501-2021, 2021.",
+  "doi": "10.5194/wes-6-1501-2021",
+  "access_mode": "Direct Download",
+  "access_function": "Download.NORA3",
+  "time": {
+    "extent": [
+      "1961-08-01 00:00:00",
+      "2024-09-30 18:00:00"
+    ],
+    "resolution": 6,
+    "unit": "hour"
+  },
+  "space": {
+    "extent": [
+      -30.1945,
+      85.9166,
+      44.017,
+      84.0572
+    ],
+    "resolution": 0.0535,
+    "unit": ""
+  },
+  "variables": [
+    {
+      "name": "SIC (Sea_ice_fraction)",
+      "varname": "SIC_grib1_vLevel102=0",
+      "datafile": "sfx",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "SST (Sea Surface Temperature (SST))",
+      "varname": "SST_grib1_vLevel102=0",
+      "datafile": "sfx",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "TS (Surface temperature)",
+      "varname": "TS_grib1_vLevel1052=0",
+      "datafile": "sfx",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "T2M (2m_Temperature)",
+      "varname": "T2M_grib1_vLevel1053=2",
+      "datafile": "sfx",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Q2M (2m_Specific_Humidity)",
+      "varname": "Q2M_grib1_vLevel1053=2",
+      "datafile": "sfx",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "HU2M (2m_Relative_Humidity)",
+      "varname": "HU2M_grib1_vLevel1053=2",
+      "datafile": "sfx",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "ZON10M (10m_Zonal_wind)",
+      "varname": "ZON10M_grib1_vLevel1058=10",
+      "datafile": "sfx",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "MER10M (10m_Meridian_Wind)",
+      "varname": "MER10M_grib1_vLevel1058=10",
+      "datafile": "sfx",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "H (Averaged_Sensible_Heat_Flux)",
+      "varname": "H_grib1_vLevel1052=0",
+      "datafile": "sfx",
+      "unit": "W/m2",
+      "issues": ""
+    },
+    {
+      "name": "LE (Averaged_Total_Latent_Heat_Flux)",
+      "varname": "LE_grib1_vLevel1052=0",
+      "datafile": "sfx",
+      "unit": "W/m2",
+      "issues": ""
+    },
+    {
+      "name": "GFLUX (Averaged_Ground_Heat_Flux)",
+      "varname": "GFLUX_grib1_vLevel1051=810",
+      "datafile": "sfx",
+      "unit": "W/m2",
+      "issues": ""
+    },
+    {
+      "name": "Land Area Fraction (Height = 0)",
+      "varname": "land_area_fraction_height0=0",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.009869232667160128)",
+      "varname": "specific_humidity_ml_hybrid=0.009869232667160128",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.02960874853503578)",
+      "varname": "specific_humidity_ml_hybrid=0.02960874853503578",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.04935756499814952)",
+      "varname": "specific_humidity_ml_hybrid=0.04935756499814952",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.06913441110697735)",
+      "varname": "specific_humidity_ml_hybrid=0.06913441110697735",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.08896442890087615)",
+      "varname": "specific_humidity_ml_hybrid=0.08896442890087615",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.1088762621868419)",
+      "varname": "specific_humidity_ml_hybrid=0.1088762621868419",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.1289012230440787)",
+      "varname": "specific_humidity_ml_hybrid=0.1289012230440787",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.1490728287630623)",
+      "varname": "specific_humidity_ml_hybrid=0.1490728287630623",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.1694265295096549)",
+      "varname": "specific_humidity_ml_hybrid=0.1694265295096549",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.1899994479784503)",
+      "varname": "specific_humidity_ml_hybrid=0.1899994479784503",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.2108654522384585)",
+      "varname": "specific_humidity_ml_hybrid=0.2108654522384585",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.2321068315732238)",
+      "varname": "specific_humidity_ml_hybrid=0.2321068315732238",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.2537288434579582)",
+      "varname": "specific_humidity_ml_hybrid=0.2537288434579582",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.2756874949626795)",
+      "varname": "specific_humidity_ml_hybrid=0.2756874949626795",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.297938870634528)",
+      "varname": "specific_humidity_ml_hybrid=0.297938870634528",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.32043892180952)",
+      "varname": "specific_humidity_ml_hybrid=0.32043892180952",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.3431436299389449)",
+      "varname": "specific_humidity_ml_hybrid=0.3431436299389449",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.3660090398029607)",
+      "varname": "specific_humidity_ml_hybrid=0.3660090398029607",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.3889912139798811)",
+      "varname": "specific_humidity_ml_hybrid=0.3889912139798811",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.4120461278469981)",
+      "varname": "specific_humidity_ml_hybrid=0.4120461278469981",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.4351297398411195)",
+      "varname": "specific_humidity_ml_hybrid=0.4351297398411195",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.4581981247417903)",
+      "varname": "specific_humidity_ml_hybrid=0.4581981247417903",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.4812072843241156)",
+      "varname": "specific_humidity_ml_hybrid=0.4812072843241156",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.5041132452359707)",
+      "varname": "specific_humidity_ml_hybrid=0.5041132452359707",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.5268720234490429)",
+      "varname": "specific_humidity_ml_hybrid=0.5268720234490429",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.549439583242366)",
+      "varname": "specific_humidity_ml_hybrid=0.549439583242366",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.5717719816996849)",
+      "varname": "specific_humidity_ml_hybrid=0.5717719816996849",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.5938252395184105)",
+      "varname": "specific_humidity_ml_hybrid=0.5938252395184105",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.6155553553626768)",
+      "varname": "specific_humidity_ml_hybrid=0.6155553553626768",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.6369183129717796)",
+      "varname": "specific_humidity_ml_hybrid=0.6369183129717796",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.6578701459599694)",
+      "varname": "specific_humidity_ml_hybrid=0.6578701459599694",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.6783668745214075)",
+      "varname": "specific_humidity_ml_hybrid=0.6783668745214075",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.6983645103529533)",
+      "varname": "specific_humidity_ml_hybrid=0.6983645103529533",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.7178190652511751)",
+      "varname": "specific_humidity_ml_hybrid=0.7178190652511751",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.7366865465172184)",
+      "varname": "specific_humidity_ml_hybrid=0.7366865465172184",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.7549229940152186)",
+      "varname": "specific_humidity_ml_hybrid=0.7549229940152186",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.7724843832483534)",
+      "varname": "specific_humidity_ml_hybrid=0.7724843832483534",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.7893267466890762)",
+      "varname": "specific_humidity_ml_hybrid=0.7893267466890762",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.8054061187048944)",
+      "varname": "specific_humidity_ml_hybrid=0.8054061187048944",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.8206784729395211)",
+      "varname": "specific_humidity_ml_hybrid=0.8206784729395211",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.8350998426945511)",
+      "varname": "specific_humidity_ml_hybrid=0.8350998426945511",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.8486546870699171)",
+      "varname": "specific_humidity_ml_hybrid=0.8486546870699171",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.8613802230634602)",
+      "varname": "specific_humidity_ml_hybrid=0.8613802230634602",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.8733218404930844)",
+      "varname": "specific_humidity_ml_hybrid=0.8733218404930844",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.8845088302333238)",
+      "varname": "specific_humidity_ml_hybrid=0.8845088302333238",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.8949708028463796)",
+      "varname": "specific_humidity_ml_hybrid=0.8949708028463796",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.9047376705110146)",
+      "varname": "specific_humidity_ml_hybrid=0.9047376705110146",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.9138396605308809)",
+      "varname": "specific_humidity_ml_hybrid=0.9138396605308809",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.922307349745209)",
+      "varname": "specific_humidity_ml_hybrid=0.922307349745209",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.9301717038187545)",
+      "varname": "specific_humidity_ml_hybrid=0.9301717038187545",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.9374640936416783)",
+      "varname": "specific_humidity_ml_hybrid=0.9374640936416783",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.9442162716868128)",
+      "varname": "specific_humidity_ml_hybrid=0.9442162716868128",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.9504605272561569)",
+      "varname": "specific_humidity_ml_hybrid=0.9504605272561569",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.9562296606545504)",
+      "varname": "specific_humidity_ml_hybrid=0.9562296606545504",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.9615570505351276)",
+      "varname": "specific_humidity_ml_hybrid=0.9615570505351276",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.9664766982191144)",
+      "varname": "specific_humidity_ml_hybrid=0.9664766982191144",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.9710233400910983)",
+      "varname": "specific_humidity_ml_hybrid=0.9710233400910983",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.9752326002251563)",
+      "varname": "specific_humidity_ml_hybrid=0.9752326002251563",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.9791410059008868)",
+      "varname": "specific_humidity_ml_hybrid=0.9791410059008868",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.9827862849301419)",
+      "varname": "specific_humidity_ml_hybrid=0.9827862849301419",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.9862076195360495)",
+      "varname": "specific_humidity_ml_hybrid=0.9862076195360495",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.9894459545612335)",
+      "varname": "specific_humidity_ml_hybrid=0.9894459545612335",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.9925448596477509)",
+      "varname": "specific_humidity_ml_hybrid=0.9925448596477509",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.9955521821975708)",
+      "varname": "specific_humidity_ml_hybrid=0.9955521821975708",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity (Model Level = 0.998519629240036)",
+      "varname": "specific_humidity_ml_hybrid=0.998519629240036",
+      "datafile": "",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.009869232667160128)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.009869232667160128",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.02960874853503578)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.02960874853503578",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.04935756499814952)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.04935756499814952",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.06913441110697735)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.06913441110697735",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.08896442890087615)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.08896442890087615",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.1088762621868419)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.1088762621868419",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.1289012230440787)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.1289012230440787",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.1490728287630623)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.1490728287630623",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.1694265295096549)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.1694265295096549",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.1899994479784503)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.1899994479784503",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.2108654522384585)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.2108654522384585",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.2321068315732238)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.2321068315732238",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.2537288434579582)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.2537288434579582",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.2756874949626795)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.2756874949626795",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.297938870634528)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.297938870634528",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.32043892180952)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.32043892180952",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.3431436299389449)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.3431436299389449",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.3660090398029607)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.3660090398029607",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.3889912139798811)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.3889912139798811",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.4120461278469981)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.4120461278469981",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.4351297398411195)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.4351297398411195",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.4581981247417903)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.4581981247417903",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.4812072843241156)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.4812072843241156",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.5041132452359707)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.5041132452359707",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.5268720234490429)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.5268720234490429",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.549439583242366)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.549439583242366",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.5717719816996849)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.5717719816996849",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.5938252395184105)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.5938252395184105",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.6155553553626768)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.6155553553626768",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.6369183129717796)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.6369183129717796",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.6578701459599694)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.6578701459599694",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.6783668745214075)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.6783668745214075",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.6983645103529533)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.6983645103529533",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.7178190652511751)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.7178190652511751",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.7366865465172184)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.7366865465172184",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.7549229940152186)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.7549229940152186",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.7724843832483534)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.7724843832483534",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.7893267466890762)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.7893267466890762",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.8054061187048944)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.8054061187048944",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.8206784729395211)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.8206784729395211",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.8350998426945511)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.8350998426945511",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.8486546870699171)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.8486546870699171",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.8613802230634602)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.8613802230634602",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.8733218404930844)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.8733218404930844",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.8845088302333238)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.8845088302333238",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.8949708028463796)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.8949708028463796",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.9047376705110146)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.9047376705110146",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.9138396605308809)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.9138396605308809",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.922307349745209)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.922307349745209",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.9301717038187545)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.9301717038187545",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.9374640936416783)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.9374640936416783",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.9442162716868128)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.9442162716868128",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.9504605272561569)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.9504605272561569",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.9562296606545504)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.9562296606545504",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.9615570505351276)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.9615570505351276",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.9664766982191144)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.9664766982191144",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.9710233400910983)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.9710233400910983",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.9752326002251563)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.9752326002251563",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.9791410059008868)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.9791410059008868",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.9827862849301419)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.9827862849301419",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.9862076195360495)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.9862076195360495",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.9894459545612335)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.9894459545612335",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.9925448596477509)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.9925448596477509",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.9955521821975708)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.9955521821975708",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Turbulent Kinetic Energy (Model Level = 0.998519629240036)",
+      "varname": "turbulent_kinetic_energy_ml_hybrid=0.998519629240036",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.009869232667160128)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.009869232667160128",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.02960874853503578)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.02960874853503578",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.04935756499814952)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.04935756499814952",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.06913441110697735)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.06913441110697735",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.08896442890087615)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.08896442890087615",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.1088762621868419)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.1088762621868419",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.1289012230440787)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.1289012230440787",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.1490728287630623)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.1490728287630623",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.1694265295096549)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.1694265295096549",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.1899994479784503)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.1899994479784503",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.2108654522384585)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.2108654522384585",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.2321068315732238)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.2321068315732238",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.2537288434579582)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.2537288434579582",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.2756874949626795)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.2756874949626795",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.297938870634528)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.297938870634528",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.32043892180952)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.32043892180952",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.3431436299389449)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.3431436299389449",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.3660090398029607)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.3660090398029607",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.3889912139798811)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.3889912139798811",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.4120461278469981)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.4120461278469981",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.4351297398411195)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.4351297398411195",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.4581981247417903)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.4581981247417903",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.4812072843241156)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.4812072843241156",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.5041132452359707)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.5041132452359707",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.5268720234490429)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.5268720234490429",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.549439583242366)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.549439583242366",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.5717719816996849)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.5717719816996849",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.5938252395184105)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.5938252395184105",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.6155553553626768)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.6155553553626768",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.6369183129717796)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.6369183129717796",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.6578701459599694)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.6578701459599694",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.6783668745214075)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.6783668745214075",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.6983645103529533)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.6983645103529533",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.7178190652511751)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.7178190652511751",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.7366865465172184)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.7366865465172184",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.7549229940152186)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.7549229940152186",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.7724843832483534)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.7724843832483534",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.7893267466890762)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.7893267466890762",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.8054061187048944)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.8054061187048944",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.8206784729395211)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.8206784729395211",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.8350998426945511)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.8350998426945511",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.8486546870699171)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.8486546870699171",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.8613802230634602)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.8613802230634602",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.8733218404930844)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.8733218404930844",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.8845088302333238)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.8845088302333238",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.8949708028463796)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.8949708028463796",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.9047376705110146)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.9047376705110146",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.9138396605308809)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.9138396605308809",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.922307349745209)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.922307349745209",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.9301717038187545)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.9301717038187545",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.9374640936416783)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.9374640936416783",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.9442162716868128)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.9442162716868128",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.9504605272561569)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.9504605272561569",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.9562296606545504)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.9562296606545504",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.9615570505351276)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.9615570505351276",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.9664766982191144)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.9664766982191144",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.9710233400910983)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.9710233400910983",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.9752326002251563)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.9752326002251563",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.9791410059008868)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.9791410059008868",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.9827862849301419)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.9827862849301419",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.9862076195360495)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.9862076195360495",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.9894459545612335)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.9894459545612335",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.9925448596477509)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.9925448596477509",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.9955521821975708)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.9955521821975708",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Model Level = 0.998519629240036)",
+      "varname": "cloud_area_fraction_ml_hybrid=0.998519629240036",
+      "datafile": "",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Top-of-Atmosphere Net Downward Shortwave Flux",
+      "varname": "toa_net_downward_shortwave_flux_top_of_atmosphere=0",
+      "datafile": "",
+      "unit": "W/m^2",
+      "issues": ""
+    },
+    {
+      "name": "Surface Downwelling Shortwave Flux In Air (Height = 0)",
+      "varname": "surface_downwelling_shortwave_flux_in_air_height0=0",
+      "datafile": "",
+      "unit": "W/m^2",
+      "issues": ""
+    },
+    {
+      "name": "Top-of-Atmosphere Outgoing Longwave Flux",
+      "varname": "toa_outgoing_longwave_flux_top_of_atmosphere=0",
+      "datafile": "",
+      "unit": "W/m^2",
+      "issues": ""
+    },
+    {
+      "name": "Surface Downwelling Longwave Flux In Air (Height = 0)",
+      "varname": "surface_downwelling_longwave_flux_in_air_height0=0",
+      "datafile": "",
+      "unit": "W/m^2",
+      "issues": ""
+    },
+    {
+      "name": "Atmosphere Boundary Layer Thickness (Height = 0)",
+      "varname": "atmosphere_boundary_layer_thickness_height0=0",
+      "datafile": "",
+      "unit": "m",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.009869232667160128)",
+      "varname": "pressure_departure_hybrid=0.009869232667160128",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.02960874853503578)",
+      "varname": "pressure_departure_hybrid=0.02960874853503578",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.04935756499814952)",
+      "varname": "pressure_departure_hybrid=0.04935756499814952",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.06913441110697735)",
+      "varname": "pressure_departure_hybrid=0.06913441110697735",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.08896442890087615)",
+      "varname": "pressure_departure_hybrid=0.08896442890087615",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.1088762621868419)",
+      "varname": "pressure_departure_hybrid=0.1088762621868419",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.1289012230440787)",
+      "varname": "pressure_departure_hybrid=0.1289012230440787",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.1490728287630623)",
+      "varname": "pressure_departure_hybrid=0.1490728287630623",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.1694265295096549)",
+      "varname": "pressure_departure_hybrid=0.1694265295096549",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.1899994479784503)",
+      "varname": "pressure_departure_hybrid=0.1899994479784503",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.2108654522384585)",
+      "varname": "pressure_departure_hybrid=0.2108654522384585",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.2321068315732238)",
+      "varname": "pressure_departure_hybrid=0.2321068315732238",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.2537288434579582)",
+      "varname": "pressure_departure_hybrid=0.2537288434579582",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.2756874949626795)",
+      "varname": "pressure_departure_hybrid=0.2756874949626795",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.297938870634528)",
+      "varname": "pressure_departure_hybrid=0.297938870634528",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.32043892180952)",
+      "varname": "pressure_departure_hybrid=0.32043892180952",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.3431436299389449)",
+      "varname": "pressure_departure_hybrid=0.3431436299389449",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.3660090398029607)",
+      "varname": "pressure_departure_hybrid=0.3660090398029607",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.3889912139798811)",
+      "varname": "pressure_departure_hybrid=0.3889912139798811",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.4120461278469981)",
+      "varname": "pressure_departure_hybrid=0.4120461278469981",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.4351297398411195)",
+      "varname": "pressure_departure_hybrid=0.4351297398411195",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.4581981247417903)",
+      "varname": "pressure_departure_hybrid=0.4581981247417903",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.4812072843241156)",
+      "varname": "pressure_departure_hybrid=0.4812072843241156",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.5041132452359707)",
+      "varname": "pressure_departure_hybrid=0.5041132452359707",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.5268720234490429)",
+      "varname": "pressure_departure_hybrid=0.5268720234490429",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.549439583242366)",
+      "varname": "pressure_departure_hybrid=0.549439583242366",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.5717719816996849)",
+      "varname": "pressure_departure_hybrid=0.5717719816996849",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.5938252395184105)",
+      "varname": "pressure_departure_hybrid=0.5938252395184105",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.6155553553626768)",
+      "varname": "pressure_departure_hybrid=0.6155553553626768",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.6369183129717796)",
+      "varname": "pressure_departure_hybrid=0.6369183129717796",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.6578701459599694)",
+      "varname": "pressure_departure_hybrid=0.6578701459599694",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.6783668745214075)",
+      "varname": "pressure_departure_hybrid=0.6783668745214075",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.6983645103529533)",
+      "varname": "pressure_departure_hybrid=0.6983645103529533",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.7178190652511751)",
+      "varname": "pressure_departure_hybrid=0.7178190652511751",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.7366865465172184)",
+      "varname": "pressure_departure_hybrid=0.7366865465172184",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.7549229940152186)",
+      "varname": "pressure_departure_hybrid=0.7549229940152186",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.7724843832483534)",
+      "varname": "pressure_departure_hybrid=0.7724843832483534",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.7893267466890762)",
+      "varname": "pressure_departure_hybrid=0.7893267466890762",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.8054061187048944)",
+      "varname": "pressure_departure_hybrid=0.8054061187048944",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.8206784729395211)",
+      "varname": "pressure_departure_hybrid=0.8206784729395211",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.8350998426945511)",
+      "varname": "pressure_departure_hybrid=0.8350998426945511",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.8486546870699171)",
+      "varname": "pressure_departure_hybrid=0.8486546870699171",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.8613802230634602)",
+      "varname": "pressure_departure_hybrid=0.8613802230634602",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.8733218404930844)",
+      "varname": "pressure_departure_hybrid=0.8733218404930844",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.8845088302333238)",
+      "varname": "pressure_departure_hybrid=0.8845088302333238",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.8949708028463796)",
+      "varname": "pressure_departure_hybrid=0.8949708028463796",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.9047376705110146)",
+      "varname": "pressure_departure_hybrid=0.9047376705110146",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.9138396605308809)",
+      "varname": "pressure_departure_hybrid=0.9138396605308809",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.922307349745209)",
+      "varname": "pressure_departure_hybrid=0.922307349745209",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.9301717038187545)",
+      "varname": "pressure_departure_hybrid=0.9301717038187545",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.9374640936416783)",
+      "varname": "pressure_departure_hybrid=0.9374640936416783",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.9442162716868128)",
+      "varname": "pressure_departure_hybrid=0.9442162716868128",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.9504605272561569)",
+      "varname": "pressure_departure_hybrid=0.9504605272561569",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.9562296606545504)",
+      "varname": "pressure_departure_hybrid=0.9562296606545504",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.9615570505351276)",
+      "varname": "pressure_departure_hybrid=0.9615570505351276",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.9664766982191144)",
+      "varname": "pressure_departure_hybrid=0.9664766982191144",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.9710233400910983)",
+      "varname": "pressure_departure_hybrid=0.9710233400910983",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.9752326002251563)",
+      "varname": "pressure_departure_hybrid=0.9752326002251563",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.9791410059008868)",
+      "varname": "pressure_departure_hybrid=0.9791410059008868",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.9827862849301419)",
+      "varname": "pressure_departure_hybrid=0.9827862849301419",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.9862076195360495)",
+      "varname": "pressure_departure_hybrid=0.9862076195360495",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.9894459545612335)",
+      "varname": "pressure_departure_hybrid=0.9894459545612335",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.9925448596477509)",
+      "varname": "pressure_departure_hybrid=0.9925448596477509",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.9955521821975708)",
+      "varname": "pressure_departure_hybrid=0.9955521821975708",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Pressure Departure (Model Level = 0.998519629240036)",
+      "varname": "pressure_departure_hybrid=0.998519629240036",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Surface Air Pressure (Height = 0)",
+      "varname": "surface_air_pressure_height0=0",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.009869232667160128)",
+      "varname": "air_temperature_ml_hybrid=0.009869232667160128",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.02960874853503578)",
+      "varname": "air_temperature_ml_hybrid=0.02960874853503578",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.04935756499814952)",
+      "varname": "air_temperature_ml_hybrid=0.04935756499814952",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.06913441110697735)",
+      "varname": "air_temperature_ml_hybrid=0.06913441110697735",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.08896442890087615)",
+      "varname": "air_temperature_ml_hybrid=0.08896442890087615",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.1088762621868419)",
+      "varname": "air_temperature_ml_hybrid=0.1088762621868419",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.1289012230440787)",
+      "varname": "air_temperature_ml_hybrid=0.1289012230440787",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.1490728287630623)",
+      "varname": "air_temperature_ml_hybrid=0.1490728287630623",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.1694265295096549)",
+      "varname": "air_temperature_ml_hybrid=0.1694265295096549",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.1899994479784503)",
+      "varname": "air_temperature_ml_hybrid=0.1899994479784503",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.2108654522384585)",
+      "varname": "air_temperature_ml_hybrid=0.2108654522384585",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.2321068315732238)",
+      "varname": "air_temperature_ml_hybrid=0.2321068315732238",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.2537288434579582)",
+      "varname": "air_temperature_ml_hybrid=0.2537288434579582",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.2756874949626795)",
+      "varname": "air_temperature_ml_hybrid=0.2756874949626795",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.297938870634528)",
+      "varname": "air_temperature_ml_hybrid=0.297938870634528",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.32043892180952)",
+      "varname": "air_temperature_ml_hybrid=0.32043892180952",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.3431436299389449)",
+      "varname": "air_temperature_ml_hybrid=0.3431436299389449",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.3660090398029607)",
+      "varname": "air_temperature_ml_hybrid=0.3660090398029607",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.3889912139798811)",
+      "varname": "air_temperature_ml_hybrid=0.3889912139798811",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.4120461278469981)",
+      "varname": "air_temperature_ml_hybrid=0.4120461278469981",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.4351297398411195)",
+      "varname": "air_temperature_ml_hybrid=0.4351297398411195",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.4581981247417903)",
+      "varname": "air_temperature_ml_hybrid=0.4581981247417903",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.4812072843241156)",
+      "varname": "air_temperature_ml_hybrid=0.4812072843241156",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.5041132452359707)",
+      "varname": "air_temperature_ml_hybrid=0.5041132452359707",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.5268720234490429)",
+      "varname": "air_temperature_ml_hybrid=0.5268720234490429",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.549439583242366)",
+      "varname": "air_temperature_ml_hybrid=0.549439583242366",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.5717719816996849)",
+      "varname": "air_temperature_ml_hybrid=0.5717719816996849",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.5938252395184105)",
+      "varname": "air_temperature_ml_hybrid=0.5938252395184105",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.6155553553626768)",
+      "varname": "air_temperature_ml_hybrid=0.6155553553626768",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.6369183129717796)",
+      "varname": "air_temperature_ml_hybrid=0.6369183129717796",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.6578701459599694)",
+      "varname": "air_temperature_ml_hybrid=0.6578701459599694",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.6783668745214075)",
+      "varname": "air_temperature_ml_hybrid=0.6783668745214075",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.6983645103529533)",
+      "varname": "air_temperature_ml_hybrid=0.6983645103529533",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.7178190652511751)",
+      "varname": "air_temperature_ml_hybrid=0.7178190652511751",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.7366865465172184)",
+      "varname": "air_temperature_ml_hybrid=0.7366865465172184",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.7549229940152186)",
+      "varname": "air_temperature_ml_hybrid=0.7549229940152186",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.7724843832483534)",
+      "varname": "air_temperature_ml_hybrid=0.7724843832483534",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.7893267466890762)",
+      "varname": "air_temperature_ml_hybrid=0.7893267466890762",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.8054061187048944)",
+      "varname": "air_temperature_ml_hybrid=0.8054061187048944",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.8206784729395211)",
+      "varname": "air_temperature_ml_hybrid=0.8206784729395211",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.8350998426945511)",
+      "varname": "air_temperature_ml_hybrid=0.8350998426945511",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.8486546870699171)",
+      "varname": "air_temperature_ml_hybrid=0.8486546870699171",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.8613802230634602)",
+      "varname": "air_temperature_ml_hybrid=0.8613802230634602",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.8733218404930844)",
+      "varname": "air_temperature_ml_hybrid=0.8733218404930844",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.8845088302333238)",
+      "varname": "air_temperature_ml_hybrid=0.8845088302333238",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.8949708028463796)",
+      "varname": "air_temperature_ml_hybrid=0.8949708028463796",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.9047376705110146)",
+      "varname": "air_temperature_ml_hybrid=0.9047376705110146",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.9138396605308809)",
+      "varname": "air_temperature_ml_hybrid=0.9138396605308809",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.922307349745209)",
+      "varname": "air_temperature_ml_hybrid=0.922307349745209",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.9301717038187545)",
+      "varname": "air_temperature_ml_hybrid=0.9301717038187545",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.9374640936416783)",
+      "varname": "air_temperature_ml_hybrid=0.9374640936416783",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.9442162716868128)",
+      "varname": "air_temperature_ml_hybrid=0.9442162716868128",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.9504605272561569)",
+      "varname": "air_temperature_ml_hybrid=0.9504605272561569",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.9562296606545504)",
+      "varname": "air_temperature_ml_hybrid=0.9562296606545504",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.9615570505351276)",
+      "varname": "air_temperature_ml_hybrid=0.9615570505351276",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.9664766982191144)",
+      "varname": "air_temperature_ml_hybrid=0.9664766982191144",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.9710233400910983)",
+      "varname": "air_temperature_ml_hybrid=0.9710233400910983",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.9752326002251563)",
+      "varname": "air_temperature_ml_hybrid=0.9752326002251563",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.9791410059008868)",
+      "varname": "air_temperature_ml_hybrid=0.9791410059008868",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.9827862849301419)",
+      "varname": "air_temperature_ml_hybrid=0.9827862849301419",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.9862076195360495)",
+      "varname": "air_temperature_ml_hybrid=0.9862076195360495",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.9894459545612335)",
+      "varname": "air_temperature_ml_hybrid=0.9894459545612335",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.9925448596477509)",
+      "varname": "air_temperature_ml_hybrid=0.9925448596477509",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.9955521821975708)",
+      "varname": "air_temperature_ml_hybrid=0.9955521821975708",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Model Level = 0.998519629240036)",
+      "varname": "air_temperature_ml_hybrid=0.998519629240036",
+      "datafile": "",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Surface Geopotential (Height = 0)",
+      "varname": "surface_geopotential_height0=0",
+      "datafile": "",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.009869232667160128)",
+      "varname": "x_wind_ml_hybrid=0.009869232667160128",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.02960874853503578)",
+      "varname": "x_wind_ml_hybrid=0.02960874853503578",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.04935756499814952)",
+      "varname": "x_wind_ml_hybrid=0.04935756499814952",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.06913441110697735)",
+      "varname": "x_wind_ml_hybrid=0.06913441110697735",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.08896442890087615)",
+      "varname": "x_wind_ml_hybrid=0.08896442890087615",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.1088762621868419)",
+      "varname": "x_wind_ml_hybrid=0.1088762621868419",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.1289012230440787)",
+      "varname": "x_wind_ml_hybrid=0.1289012230440787",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.1490728287630623)",
+      "varname": "x_wind_ml_hybrid=0.1490728287630623",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.1694265295096549)",
+      "varname": "x_wind_ml_hybrid=0.1694265295096549",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.1899994479784503)",
+      "varname": "x_wind_ml_hybrid=0.1899994479784503",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.2108654522384585)",
+      "varname": "x_wind_ml_hybrid=0.2108654522384585",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.2321068315732238)",
+      "varname": "x_wind_ml_hybrid=0.2321068315732238",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.2537288434579582)",
+      "varname": "x_wind_ml_hybrid=0.2537288434579582",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.2756874949626795)",
+      "varname": "x_wind_ml_hybrid=0.2756874949626795",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.297938870634528)",
+      "varname": "x_wind_ml_hybrid=0.297938870634528",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.32043892180952)",
+      "varname": "x_wind_ml_hybrid=0.32043892180952",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.3431436299389449)",
+      "varname": "x_wind_ml_hybrid=0.3431436299389449",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.3660090398029607)",
+      "varname": "x_wind_ml_hybrid=0.3660090398029607",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.3889912139798811)",
+      "varname": "x_wind_ml_hybrid=0.3889912139798811",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.4120461278469981)",
+      "varname": "x_wind_ml_hybrid=0.4120461278469981",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.4351297398411195)",
+      "varname": "x_wind_ml_hybrid=0.4351297398411195",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.4581981247417903)",
+      "varname": "x_wind_ml_hybrid=0.4581981247417903",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.4812072843241156)",
+      "varname": "x_wind_ml_hybrid=0.4812072843241156",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.5041132452359707)",
+      "varname": "x_wind_ml_hybrid=0.5041132452359707",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.5268720234490429)",
+      "varname": "x_wind_ml_hybrid=0.5268720234490429",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.549439583242366)",
+      "varname": "x_wind_ml_hybrid=0.549439583242366",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.5717719816996849)",
+      "varname": "x_wind_ml_hybrid=0.5717719816996849",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.5938252395184105)",
+      "varname": "x_wind_ml_hybrid=0.5938252395184105",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.6155553553626768)",
+      "varname": "x_wind_ml_hybrid=0.6155553553626768",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.6369183129717796)",
+      "varname": "x_wind_ml_hybrid=0.6369183129717796",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.6578701459599694)",
+      "varname": "x_wind_ml_hybrid=0.6578701459599694",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.6783668745214075)",
+      "varname": "x_wind_ml_hybrid=0.6783668745214075",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.6983645103529533)",
+      "varname": "x_wind_ml_hybrid=0.6983645103529533",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.7178190652511751)",
+      "varname": "x_wind_ml_hybrid=0.7178190652511751",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.7366865465172184)",
+      "varname": "x_wind_ml_hybrid=0.7366865465172184",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.7549229940152186)",
+      "varname": "x_wind_ml_hybrid=0.7549229940152186",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.7724843832483534)",
+      "varname": "x_wind_ml_hybrid=0.7724843832483534",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.7893267466890762)",
+      "varname": "x_wind_ml_hybrid=0.7893267466890762",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.8054061187048944)",
+      "varname": "x_wind_ml_hybrid=0.8054061187048944",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.8206784729395211)",
+      "varname": "x_wind_ml_hybrid=0.8206784729395211",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.8350998426945511)",
+      "varname": "x_wind_ml_hybrid=0.8350998426945511",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.8486546870699171)",
+      "varname": "x_wind_ml_hybrid=0.8486546870699171",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.8613802230634602)",
+      "varname": "x_wind_ml_hybrid=0.8613802230634602",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.8733218404930844)",
+      "varname": "x_wind_ml_hybrid=0.8733218404930844",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.8845088302333238)",
+      "varname": "x_wind_ml_hybrid=0.8845088302333238",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.8949708028463796)",
+      "varname": "x_wind_ml_hybrid=0.8949708028463796",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.9047376705110146)",
+      "varname": "x_wind_ml_hybrid=0.9047376705110146",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.9138396605308809)",
+      "varname": "x_wind_ml_hybrid=0.9138396605308809",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.922307349745209)",
+      "varname": "x_wind_ml_hybrid=0.922307349745209",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.9301717038187545)",
+      "varname": "x_wind_ml_hybrid=0.9301717038187545",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.9374640936416783)",
+      "varname": "x_wind_ml_hybrid=0.9374640936416783",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.9442162716868128)",
+      "varname": "x_wind_ml_hybrid=0.9442162716868128",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.9504605272561569)",
+      "varname": "x_wind_ml_hybrid=0.9504605272561569",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.9562296606545504)",
+      "varname": "x_wind_ml_hybrid=0.9562296606545504",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.9615570505351276)",
+      "varname": "x_wind_ml_hybrid=0.9615570505351276",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.9664766982191144)",
+      "varname": "x_wind_ml_hybrid=0.9664766982191144",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.9710233400910983)",
+      "varname": "x_wind_ml_hybrid=0.9710233400910983",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.9752326002251563)",
+      "varname": "x_wind_ml_hybrid=0.9752326002251563",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.9791410059008868)",
+      "varname": "x_wind_ml_hybrid=0.9791410059008868",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.9827862849301419)",
+      "varname": "x_wind_ml_hybrid=0.9827862849301419",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.9862076195360495)",
+      "varname": "x_wind_ml_hybrid=0.9862076195360495",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.9894459545612335)",
+      "varname": "x_wind_ml_hybrid=0.9894459545612335",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.9925448596477509)",
+      "varname": "x_wind_ml_hybrid=0.9925448596477509",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.9955521821975708)",
+      "varname": "x_wind_ml_hybrid=0.9955521821975708",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Model Level = 0.998519629240036)",
+      "varname": "x_wind_ml_hybrid=0.998519629240036",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.009869232667160128)",
+      "varname": "y_wind_ml_hybrid=0.009869232667160128",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.02960874853503578)",
+      "varname": "y_wind_ml_hybrid=0.02960874853503578",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.04935756499814952)",
+      "varname": "y_wind_ml_hybrid=0.04935756499814952",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.06913441110697735)",
+      "varname": "y_wind_ml_hybrid=0.06913441110697735",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.08896442890087615)",
+      "varname": "y_wind_ml_hybrid=0.08896442890087615",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.1088762621868419)",
+      "varname": "y_wind_ml_hybrid=0.1088762621868419",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.1289012230440787)",
+      "varname": "y_wind_ml_hybrid=0.1289012230440787",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.1490728287630623)",
+      "varname": "y_wind_ml_hybrid=0.1490728287630623",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.1694265295096549)",
+      "varname": "y_wind_ml_hybrid=0.1694265295096549",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.1899994479784503)",
+      "varname": "y_wind_ml_hybrid=0.1899994479784503",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.2108654522384585)",
+      "varname": "y_wind_ml_hybrid=0.2108654522384585",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.2321068315732238)",
+      "varname": "y_wind_ml_hybrid=0.2321068315732238",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.2537288434579582)",
+      "varname": "y_wind_ml_hybrid=0.2537288434579582",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.2756874949626795)",
+      "varname": "y_wind_ml_hybrid=0.2756874949626795",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.297938870634528)",
+      "varname": "y_wind_ml_hybrid=0.297938870634528",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.32043892180952)",
+      "varname": "y_wind_ml_hybrid=0.32043892180952",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.3431436299389449)",
+      "varname": "y_wind_ml_hybrid=0.3431436299389449",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.3660090398029607)",
+      "varname": "y_wind_ml_hybrid=0.3660090398029607",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.3889912139798811)",
+      "varname": "y_wind_ml_hybrid=0.3889912139798811",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.4120461278469981)",
+      "varname": "y_wind_ml_hybrid=0.4120461278469981",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.4351297398411195)",
+      "varname": "y_wind_ml_hybrid=0.4351297398411195",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.4581981247417903)",
+      "varname": "y_wind_ml_hybrid=0.4581981247417903",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.4812072843241156)",
+      "varname": "y_wind_ml_hybrid=0.4812072843241156",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.5041132452359707)",
+      "varname": "y_wind_ml_hybrid=0.5041132452359707",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.5268720234490429)",
+      "varname": "y_wind_ml_hybrid=0.5268720234490429",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.549439583242366)",
+      "varname": "y_wind_ml_hybrid=0.549439583242366",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.5717719816996849)",
+      "varname": "y_wind_ml_hybrid=0.5717719816996849",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.5938252395184105)",
+      "varname": "y_wind_ml_hybrid=0.5938252395184105",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.6155553553626768)",
+      "varname": "y_wind_ml_hybrid=0.6155553553626768",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.6369183129717796)",
+      "varname": "y_wind_ml_hybrid=0.6369183129717796",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.6578701459599694)",
+      "varname": "y_wind_ml_hybrid=0.6578701459599694",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.6783668745214075)",
+      "varname": "y_wind_ml_hybrid=0.6783668745214075",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.6983645103529533)",
+      "varname": "y_wind_ml_hybrid=0.6983645103529533",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.7178190652511751)",
+      "varname": "y_wind_ml_hybrid=0.7178190652511751",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.7366865465172184)",
+      "varname": "y_wind_ml_hybrid=0.7366865465172184",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.7549229940152186)",
+      "varname": "y_wind_ml_hybrid=0.7549229940152186",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.7724843832483534)",
+      "varname": "y_wind_ml_hybrid=0.7724843832483534",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.7893267466890762)",
+      "varname": "y_wind_ml_hybrid=0.7893267466890762",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.8054061187048944)",
+      "varname": "y_wind_ml_hybrid=0.8054061187048944",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.8206784729395211)",
+      "varname": "y_wind_ml_hybrid=0.8206784729395211",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.8350998426945511)",
+      "varname": "y_wind_ml_hybrid=0.8350998426945511",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.8486546870699171)",
+      "varname": "y_wind_ml_hybrid=0.8486546870699171",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.8613802230634602)",
+      "varname": "y_wind_ml_hybrid=0.8613802230634602",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.8733218404930844)",
+      "varname": "y_wind_ml_hybrid=0.8733218404930844",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.8845088302333238)",
+      "varname": "y_wind_ml_hybrid=0.8845088302333238",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.8949708028463796)",
+      "varname": "y_wind_ml_hybrid=0.8949708028463796",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.9047376705110146)",
+      "varname": "y_wind_ml_hybrid=0.9047376705110146",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.9138396605308809)",
+      "varname": "y_wind_ml_hybrid=0.9138396605308809",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.922307349745209)",
+      "varname": "y_wind_ml_hybrid=0.922307349745209",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.9301717038187545)",
+      "varname": "y_wind_ml_hybrid=0.9301717038187545",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.9374640936416783)",
+      "varname": "y_wind_ml_hybrid=0.9374640936416783",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.9442162716868128)",
+      "varname": "y_wind_ml_hybrid=0.9442162716868128",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.9504605272561569)",
+      "varname": "y_wind_ml_hybrid=0.9504605272561569",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.9562296606545504)",
+      "varname": "y_wind_ml_hybrid=0.9562296606545504",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.9615570505351276)",
+      "varname": "y_wind_ml_hybrid=0.9615570505351276",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.9664766982191144)",
+      "varname": "y_wind_ml_hybrid=0.9664766982191144",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.9710233400910983)",
+      "varname": "y_wind_ml_hybrid=0.9710233400910983",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.9752326002251563)",
+      "varname": "y_wind_ml_hybrid=0.9752326002251563",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.9791410059008868)",
+      "varname": "y_wind_ml_hybrid=0.9791410059008868",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.9827862849301419)",
+      "varname": "y_wind_ml_hybrid=0.9827862849301419",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.9862076195360495)",
+      "varname": "y_wind_ml_hybrid=0.9862076195360495",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.9894459545612335)",
+      "varname": "y_wind_ml_hybrid=0.9894459545612335",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.9925448596477509)",
+      "varname": "y_wind_ml_hybrid=0.9925448596477509",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.9955521821975708)",
+      "varname": "y_wind_ml_hybrid=0.9955521821975708",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Model Level = 0.998519629240036)",
+      "varname": "y_wind_ml_hybrid=0.998519629240036",
+      "datafile": "",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Air Pressure At Sea Level Height Above Msl",
+      "varname": "air_pressure_at_sea_level_height_above_msl=0",
+      "datafile": "",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Precipitation Amount Acc (Height = 0)",
+      "varname": "precipitation_amount_acc_height0=0",
+      "datafile": "",
+      "unit": "kg/m^2",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature 0m (Height = 0)",
+      "varname": "air_temperature_0m_height0=0",
+      "datafile": "fp",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Surface Geopotential (Height = 0)",
+      "varname": "surface_geopotential_height0=0",
+      "datafile": "fp",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Liquid Water Content Of Surface Snow (Height = 0)",
+      "varname": "liquid_water_content_of_surface_snow_height0=0",
+      "datafile": "fp",
+      "unit": "kg/m^2",
+      "issues": ""
+    },
+    {
+      "name": "Downward Northward Momentum Flux In Air (Height = 0)",
+      "varname": "downward_northward_momentum_flux_in_air_height0=0",
+      "datafile": "fp",
+      "unit": "N/m^2",
+      "issues": ""
+    },
+    {
+      "name": "Downward Eastward Momentum Flux In Air (Height = 0)",
+      "varname": "downward_eastward_momentum_flux_in_air_height0=0",
+      "datafile": "fp",
+      "unit": "N/m^2",
+      "issues": ""
+    },
+    {
+      "name": "Integral Of Top-of-Atmosphere Net Downward Shortwave Flux Wrt Time",
+      "varname": "integral_of_toa_net_downward_shortwave_flux_wrt_time_top_of_atmosphere=0",
+      "datafile": "fp",
+      "unit": "W s/m^2",
+      "issues": ""
+    },
+    {
+      "name": "Integral Of Surface Net Downward Shortwave Flux Wrt Time (Height = 0)",
+      "varname": "integral_of_surface_net_downward_shortwave_flux_wrt_time_height0=0",
+      "datafile": "fp",
+      "unit": "W s/m^2",
+      "issues": ""
+    },
+    {
+      "name": "Integral Of Top-of-Atmosphere Outgoing Longwave Flux Wrt Time",
+      "varname": "integral_of_toa_outgoing_longwave_flux_wrt_time_top_of_atmosphere=0",
+      "datafile": "fp",
+      "unit": "W s/m^2",
+      "issues": ""
+    },
+    {
+      "name": "Integral Of Surface Net Downward Longwave Flux Wrt Time (Height = 0)",
+      "varname": "integral_of_surface_net_downward_longwave_flux_wrt_time_height0=0",
+      "datafile": "fp",
+      "unit": "W s/m^2",
+      "issues": ""
+    },
+    {
+      "name": "Integral Of Surface Downward Latent Heat Evaporation Flux Wrt Time (Height = 0)",
+      "varname": "integral_of_surface_downward_latent_heat_evaporation_flux_wrt_time_height0=0",
+      "datafile": "fp",
+      "unit": "W s/m^2",
+      "issues": ""
+    },
+    {
+      "name": "Integral Of Surface Downward Latent Heat Sublimation Flux Wrt Time (Height = 0)",
+      "varname": "integral_of_surface_downward_latent_heat_sublimation_flux_wrt_time_height0=0",
+      "datafile": "fp",
+      "unit": "J/m^2",
+      "issues": ""
+    },
+    {
+      "name": "Water Evaporation Amount (Height = 0)",
+      "varname": "water_evaporation_amount_height0=0",
+      "datafile": "fp",
+      "unit": "kg/m^2",
+      "issues": ""
+    },
+    {
+      "name": "Surface Snow Sublimation Amount Acc (Height = 0)",
+      "varname": "surface_snow_sublimation_amount_acc_height0=0",
+      "datafile": "fp",
+      "unit": "kg/m^2",
+      "issues": ""
+    },
+    {
+      "name": "Integral Of Surface Downward Sensible Heat Flux Wrt Time (Height = 0)",
+      "varname": "integral_of_surface_downward_sensible_heat_flux_wrt_time_height0=0",
+      "datafile": "fp",
+      "unit": "W s/m^2",
+      "issues": ""
+    },
+    {
+      "name": "Integral Of Surface Downwelling Shortwave Flux In Air Wrt Time (Height = 0)",
+      "varname": "integral_of_surface_downwelling_shortwave_flux_in_air_wrt_time_height0=0",
+      "datafile": "fp",
+      "unit": "W s/m^2",
+      "issues": ""
+    },
+    {
+      "name": "Integral Of Surface Downwelling Longwave Flux In Air Wrt Time (Height = 0)",
+      "varname": "integral_of_surface_downwelling_longwave_flux_in_air_wrt_time_height0=0",
+      "datafile": "fp",
+      "unit": "J/m^2",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature 2m (Height = 2)",
+      "varname": "air_temperature_2m_height1=2",
+      "datafile": "fp",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Relative Humidity 2m (Height = 2)",
+      "varname": "relative_humidity_2m_height1=2",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Specific Humidity 2m (Height = 2)",
+      "varname": "specific_humidity_2m_height1=2",
+      "datafile": "fp",
+      "unit": "kg/kg",
+      "issues": ""
+    },
+    {
+      "name": "X Wind 10m (Height = 10)",
+      "varname": "x_wind_10m_height4=10",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind 10m (Height = 10)",
+      "varname": "y_wind_10m_height4=10",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Height = 0)",
+      "varname": "cloud_area_fraction_height3=0",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Height = 20)",
+      "varname": "cloud_area_fraction_height3=20",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Height = 50)",
+      "varname": "cloud_area_fraction_height3=50",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Height = 100)",
+      "varname": "cloud_area_fraction_height3=100",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Height = 150)",
+      "varname": "cloud_area_fraction_height3=150",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Height = 250)",
+      "varname": "cloud_area_fraction_height3=250",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Height = 500)",
+      "varname": "cloud_area_fraction_height3=500",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Height = 750)",
+      "varname": "cloud_area_fraction_height3=750",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Height = 1000)",
+      "varname": "cloud_area_fraction_height3=1000",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Height = 1250)",
+      "varname": "cloud_area_fraction_height3=1250",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Height = 1500)",
+      "varname": "cloud_area_fraction_height3=1500",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Height = 2000)",
+      "varname": "cloud_area_fraction_height3=2000",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Height = 2500)",
+      "varname": "cloud_area_fraction_height3=2500",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "X Wind Gust 10m (Height = 10)",
+      "varname": "x_wind_gust_10m_height4=10",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind Gust 10m (Height = 10)",
+      "varname": "y_wind_gust_10m_height4=10",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature Max (Height = 2)",
+      "varname": "air_temperature_max_height1=2",
+      "datafile": "fp",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature Min (Height = 2)",
+      "varname": "air_temperature_min_height1=2",
+      "datafile": "fp",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Convective Cloud Area Fraction (Height = 0)",
+      "varname": "convective_cloud_area_fraction_height0=0",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "High Type Cloud Area Fraction (Height = 0)",
+      "varname": "high_type_cloud_area_fraction_height0=0",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Medium Type Cloud Area Fraction (Height = 0)",
+      "varname": "medium_type_cloud_area_fraction_height0=0",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Low Type Cloud Area Fraction (Height = 0)",
+      "varname": "low_type_cloud_area_fraction_height0=0",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Atmosphere Boundary Layer Thickness (Height = 0)",
+      "varname": "atmosphere_boundary_layer_thickness_height0=0",
+      "datafile": "fp",
+      "unit": "m",
+      "issues": ""
+    },
+    {
+      "name": "Hail Diagnostic (Height = 0)",
+      "varname": "hail_diagnostic_height0=0",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Rainfall Amount (Height = 0)",
+      "varname": "rainfall_amount_height0=0",
+      "datafile": "fp",
+      "unit": "kg/m^2",
+      "issues": ""
+    },
+    {
+      "name": "Snowfall Amount (Height = 0)",
+      "varname": "snowfall_amount_height0=0",
+      "datafile": "fp",
+      "unit": "kg/m^2",
+      "issues": ""
+    },
+    {
+      "name": "Graupelfall Amount (Height = 0)",
+      "varname": "graupelfall_amount_height0=0",
+      "datafile": "fp",
+      "unit": "kg/m^2",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Pressure Level = 50)",
+      "varname": "x_wind_pl_pressure0=50",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Pressure Level = 100)",
+      "varname": "x_wind_pl_pressure0=100",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Pressure Level = 150)",
+      "varname": "x_wind_pl_pressure0=150",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Pressure Level = 200)",
+      "varname": "x_wind_pl_pressure0=200",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Pressure Level = 250)",
+      "varname": "x_wind_pl_pressure0=250",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Pressure Level = 300)",
+      "varname": "x_wind_pl_pressure0=300",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Pressure Level = 400)",
+      "varname": "x_wind_pl_pressure0=400",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Pressure Level = 500)",
+      "varname": "x_wind_pl_pressure0=500",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Pressure Level = 600)",
+      "varname": "x_wind_pl_pressure0=600",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Pressure Level = 700)",
+      "varname": "x_wind_pl_pressure0=700",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Pressure Level = 800)",
+      "varname": "x_wind_pl_pressure0=800",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Pressure Level = 850)",
+      "varname": "x_wind_pl_pressure0=850",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Pressure Level = 900)",
+      "varname": "x_wind_pl_pressure0=900",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Pressure Level = 925)",
+      "varname": "x_wind_pl_pressure0=925",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Pressure Level = 950)",
+      "varname": "x_wind_pl_pressure0=950",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind (Pressure Level = 1000)",
+      "varname": "x_wind_pl_pressure0=1000",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Pressure Level = 50)",
+      "varname": "y_wind_pl_pressure0=50",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Pressure Level = 100)",
+      "varname": "y_wind_pl_pressure0=100",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Pressure Level = 150)",
+      "varname": "y_wind_pl_pressure0=150",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Pressure Level = 200)",
+      "varname": "y_wind_pl_pressure0=200",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Pressure Level = 250)",
+      "varname": "y_wind_pl_pressure0=250",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Pressure Level = 300)",
+      "varname": "y_wind_pl_pressure0=300",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Pressure Level = 400)",
+      "varname": "y_wind_pl_pressure0=400",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Pressure Level = 500)",
+      "varname": "y_wind_pl_pressure0=500",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Pressure Level = 600)",
+      "varname": "y_wind_pl_pressure0=600",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Pressure Level = 700)",
+      "varname": "y_wind_pl_pressure0=700",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Pressure Level = 800)",
+      "varname": "y_wind_pl_pressure0=800",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Pressure Level = 850)",
+      "varname": "y_wind_pl_pressure0=850",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Pressure Level = 900)",
+      "varname": "y_wind_pl_pressure0=900",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Pressure Level = 925)",
+      "varname": "y_wind_pl_pressure0=925",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Pressure Level = 950)",
+      "varname": "y_wind_pl_pressure0=950",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind (Pressure Level = 1000)",
+      "varname": "y_wind_pl_pressure0=1000",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Pressure Level = 50)",
+      "varname": "air_temperature_pl_pressure0=50",
+      "datafile": "fp",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Pressure Level = 100)",
+      "varname": "air_temperature_pl_pressure0=100",
+      "datafile": "fp",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Pressure Level = 150)",
+      "varname": "air_temperature_pl_pressure0=150",
+      "datafile": "fp",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Pressure Level = 200)",
+      "varname": "air_temperature_pl_pressure0=200",
+      "datafile": "fp",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Pressure Level = 250)",
+      "varname": "air_temperature_pl_pressure0=250",
+      "datafile": "fp",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Pressure Level = 300)",
+      "varname": "air_temperature_pl_pressure0=300",
+      "datafile": "fp",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Pressure Level = 400)",
+      "varname": "air_temperature_pl_pressure0=400",
+      "datafile": "fp",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Pressure Level = 500)",
+      "varname": "air_temperature_pl_pressure0=500",
+      "datafile": "fp",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Pressure Level = 600)",
+      "varname": "air_temperature_pl_pressure0=600",
+      "datafile": "fp",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Pressure Level = 700)",
+      "varname": "air_temperature_pl_pressure0=700",
+      "datafile": "fp",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Pressure Level = 800)",
+      "varname": "air_temperature_pl_pressure0=800",
+      "datafile": "fp",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Pressure Level = 850)",
+      "varname": "air_temperature_pl_pressure0=850",
+      "datafile": "fp",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Pressure Level = 900)",
+      "varname": "air_temperature_pl_pressure0=900",
+      "datafile": "fp",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Pressure Level = 925)",
+      "varname": "air_temperature_pl_pressure0=925",
+      "datafile": "fp",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Pressure Level = 950)",
+      "varname": "air_temperature_pl_pressure0=950",
+      "datafile": "fp",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Air Temperature (Pressure Level = 1000)",
+      "varname": "air_temperature_pl_pressure0=1000",
+      "datafile": "fp",
+      "unit": "K",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Pressure Level = 50)",
+      "varname": "cloud_area_fraction_pl_pressure0=50",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Pressure Level = 100)",
+      "varname": "cloud_area_fraction_pl_pressure0=100",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Pressure Level = 150)",
+      "varname": "cloud_area_fraction_pl_pressure0=150",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Pressure Level = 200)",
+      "varname": "cloud_area_fraction_pl_pressure0=200",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Pressure Level = 250)",
+      "varname": "cloud_area_fraction_pl_pressure0=250",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Pressure Level = 300)",
+      "varname": "cloud_area_fraction_pl_pressure0=300",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Pressure Level = 400)",
+      "varname": "cloud_area_fraction_pl_pressure0=400",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Pressure Level = 500)",
+      "varname": "cloud_area_fraction_pl_pressure0=500",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Pressure Level = 600)",
+      "varname": "cloud_area_fraction_pl_pressure0=600",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Pressure Level = 700)",
+      "varname": "cloud_area_fraction_pl_pressure0=700",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Pressure Level = 800)",
+      "varname": "cloud_area_fraction_pl_pressure0=800",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Pressure Level = 850)",
+      "varname": "cloud_area_fraction_pl_pressure0=850",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Pressure Level = 900)",
+      "varname": "cloud_area_fraction_pl_pressure0=900",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Pressure Level = 925)",
+      "varname": "cloud_area_fraction_pl_pressure0=925",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Pressure Level = 950)",
+      "varname": "cloud_area_fraction_pl_pressure0=950",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Cloud Area Fraction (Pressure Level = 1000)",
+      "varname": "cloud_area_fraction_pl_pressure0=1000",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Geopotential (Pressure Level = 50)",
+      "varname": "geopotential_pl_pressure0=50",
+      "datafile": "fp",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Geopotential (Pressure Level = 100)",
+      "varname": "geopotential_pl_pressure0=100",
+      "datafile": "fp",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Geopotential (Pressure Level = 150)",
+      "varname": "geopotential_pl_pressure0=150",
+      "datafile": "fp",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Geopotential (Pressure Level = 200)",
+      "varname": "geopotential_pl_pressure0=200",
+      "datafile": "fp",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Geopotential (Pressure Level = 250)",
+      "varname": "geopotential_pl_pressure0=250",
+      "datafile": "fp",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Geopotential (Pressure Level = 300)",
+      "varname": "geopotential_pl_pressure0=300",
+      "datafile": "fp",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Geopotential (Pressure Level = 400)",
+      "varname": "geopotential_pl_pressure0=400",
+      "datafile": "fp",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Geopotential (Pressure Level = 500)",
+      "varname": "geopotential_pl_pressure0=500",
+      "datafile": "fp",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Geopotential (Pressure Level = 600)",
+      "varname": "geopotential_pl_pressure0=600",
+      "datafile": "fp",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Geopotential (Pressure Level = 700)",
+      "varname": "geopotential_pl_pressure0=700",
+      "datafile": "fp",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Geopotential (Pressure Level = 800)",
+      "varname": "geopotential_pl_pressure0=800",
+      "datafile": "fp",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Geopotential (Pressure Level = 850)",
+      "varname": "geopotential_pl_pressure0=850",
+      "datafile": "fp",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Geopotential (Pressure Level = 900)",
+      "varname": "geopotential_pl_pressure0=900",
+      "datafile": "fp",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Geopotential (Pressure Level = 925)",
+      "varname": "geopotential_pl_pressure0=925",
+      "datafile": "fp",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Geopotential (Pressure Level = 950)",
+      "varname": "geopotential_pl_pressure0=950",
+      "datafile": "fp",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Geopotential (Pressure Level = 1000)",
+      "varname": "geopotential_pl_pressure0=1000",
+      "datafile": "fp",
+      "unit": "m^2/s^2",
+      "issues": ""
+    },
+    {
+      "name": "Relative Humidity (Pressure Level = 50)",
+      "varname": "relative_humidity_pl_pressure0=50",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Relative Humidity (Pressure Level = 100)",
+      "varname": "relative_humidity_pl_pressure0=100",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Relative Humidity (Pressure Level = 150)",
+      "varname": "relative_humidity_pl_pressure0=150",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Relative Humidity (Pressure Level = 200)",
+      "varname": "relative_humidity_pl_pressure0=200",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Relative Humidity (Pressure Level = 250)",
+      "varname": "relative_humidity_pl_pressure0=250",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Relative Humidity (Pressure Level = 300)",
+      "varname": "relative_humidity_pl_pressure0=300",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Relative Humidity (Pressure Level = 400)",
+      "varname": "relative_humidity_pl_pressure0=400",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Relative Humidity (Pressure Level = 500)",
+      "varname": "relative_humidity_pl_pressure0=500",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Relative Humidity (Pressure Level = 600)",
+      "varname": "relative_humidity_pl_pressure0=600",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Relative Humidity (Pressure Level = 700)",
+      "varname": "relative_humidity_pl_pressure0=700",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Relative Humidity (Pressure Level = 800)",
+      "varname": "relative_humidity_pl_pressure0=800",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Relative Humidity (Pressure Level = 850)",
+      "varname": "relative_humidity_pl_pressure0=850",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Relative Humidity (Pressure Level = 900)",
+      "varname": "relative_humidity_pl_pressure0=900",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Relative Humidity (Pressure Level = 925)",
+      "varname": "relative_humidity_pl_pressure0=925",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Relative Humidity (Pressure Level = 950)",
+      "varname": "relative_humidity_pl_pressure0=950",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Relative Humidity (Pressure Level = 1000)",
+      "varname": "relative_humidity_pl_pressure0=1000",
+      "datafile": "fp",
+      "unit": "%",
+      "issues": ""
+    },
+    {
+      "name": "Upward Air Velocity (Pressure Level = 50)",
+      "varname": "upward_air_velocity_pl_pressure0=50",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Upward Air Velocity (Pressure Level = 100)",
+      "varname": "upward_air_velocity_pl_pressure0=100",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Upward Air Velocity (Pressure Level = 150)",
+      "varname": "upward_air_velocity_pl_pressure0=150",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Upward Air Velocity (Pressure Level = 200)",
+      "varname": "upward_air_velocity_pl_pressure0=200",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Upward Air Velocity (Pressure Level = 250)",
+      "varname": "upward_air_velocity_pl_pressure0=250",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Upward Air Velocity (Pressure Level = 300)",
+      "varname": "upward_air_velocity_pl_pressure0=300",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Upward Air Velocity (Pressure Level = 400)",
+      "varname": "upward_air_velocity_pl_pressure0=400",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Upward Air Velocity (Pressure Level = 500)",
+      "varname": "upward_air_velocity_pl_pressure0=500",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Upward Air Velocity (Pressure Level = 600)",
+      "varname": "upward_air_velocity_pl_pressure0=600",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Upward Air Velocity (Pressure Level = 700)",
+      "varname": "upward_air_velocity_pl_pressure0=700",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Upward Air Velocity (Pressure Level = 800)",
+      "varname": "upward_air_velocity_pl_pressure0=800",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Upward Air Velocity (Pressure Level = 850)",
+      "varname": "upward_air_velocity_pl_pressure0=850",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Upward Air Velocity (Pressure Level = 900)",
+      "varname": "upward_air_velocity_pl_pressure0=900",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Upward Air Velocity (Pressure Level = 925)",
+      "varname": "upward_air_velocity_pl_pressure0=925",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Upward Air Velocity (Pressure Level = 950)",
+      "varname": "upward_air_velocity_pl_pressure0=950",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Upward Air Velocity (Pressure Level = 1000)",
+      "varname": "upward_air_velocity_pl_pressure0=1000",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Air Pressure At Sea Level (Height Above Msl = 0)",
+      "varname": "air_pressure_at_sea_level_height_above_msl=0",
+      "datafile": "fp",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Lwe Thickness Of Atmosphere Mass Content Of Water Vapor Atmosphere As Single Layer",
+      "varname": "lwe_thickness_of_atmosphere_mass_content_of_water_vapor_atmosphere_as_single_layer=0",
+      "datafile": "fp",
+      "unit": "m",
+      "issues": ""
+    },
+    {
+      "name": "Surface Air Pressure (Height = 0)",
+      "varname": "surface_air_pressure_height0=0",
+      "datafile": "fp",
+      "unit": "Pa",
+      "issues": ""
+    },
+    {
+      "name": "Lifting Condensation Level (Height = 0)",
+      "varname": "lifting_condensation_level_height0=0",
+      "datafile": "fp",
+      "unit": "m",
+      "issues": ""
+    },
+    {
+      "name": "Atmosphere Level Of Free Convection (Height = 0)",
+      "varname": "atmosphere_level_of_free_convection_height0=0",
+      "datafile": "fp",
+      "unit": "m",
+      "issues": ""
+    },
+    {
+      "name": "Atmosphere Level Of Neutral Buoyancy (Height = 0)",
+      "varname": "atmosphere_level_of_neutral_buoyancy_height0=0",
+      "datafile": "fp",
+      "unit": "m",
+      "issues": ""
+    },
+    {
+      "name": "Wind Direction (Height = 10)",
+      "varname": "wind_direction_height4=10",
+      "datafile": "fp",
+      "unit": "degree",
+      "issues": ""
+    },
+    {
+      "name": "Wind Speed (Height = 10)",
+      "varname": "wind_speed_height4=10",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Precipitation Amount Acc (Height = 0)",
+      "varname": "precipitation_amount_acc_height0=0",
+      "datafile": "fp",
+      "unit": "kg/m^2",
+      "issues": ""
+    },
+    {
+      "name": "Snowfall Amount Acc (Height = 0)",
+      "varname": "snowfall_amount_acc_height0=0",
+      "datafile": "fp",
+      "unit": "kg/m^2",
+      "issues": ""
+    },
+    {
+      "name": "X Wind Z (Height = 20)",
+      "varname": "x_wind_z_height2=20",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind Z (Height = 50)",
+      "varname": "x_wind_z_height2=50",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind Z (Height = 100)",
+      "varname": "x_wind_z_height2=100",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind Z (Height = 250)",
+      "varname": "x_wind_z_height2=250",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind Z (Height = 500)",
+      "varname": "x_wind_z_height2=500",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "X Wind Z (Height = 750)",
+      "varname": "x_wind_z_height2=750",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind Z (Height = 20)",
+      "varname": "y_wind_z_height2=20",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind Z (Height = 50)",
+      "varname": "y_wind_z_height2=50",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind Z (Height = 100)",
+      "varname": "y_wind_z_height2=100",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind Z (Height = 250)",
+      "varname": "y_wind_z_height2=250",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind Z (Height = 500)",
+      "varname": "y_wind_z_height2=500",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    },
+    {
+      "name": "Y Wind Z (Height = 750)",
+      "varname": "y_wind_z_height2=750",
+      "datafile": "fp",
+      "unit": "m/s",
+      "issues": ""
+    }
+  ]
+}

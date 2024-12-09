@@ -44,10 +44,12 @@ Helper.DirectDownload <- function(URLS, Names, Cores, Dir) {
     looptext <- '
         URL <- URLS[DownIter]
         Name <- Names[DownIter]
-        Ret_rast <- tryCatch(
-            terra::rast(file.path(Dir, Name)),
-            error = function(e) e
+        suppressWarnings(
+            Ret_rast <- tryCatch(
+                terra::rast(file.path(Dir, Name)),
+                error = function(e) e
             )
+        )
         while (class(Ret_rast)[1] == "simpleError") {
             ## donwload data
             download.file(
@@ -85,7 +87,7 @@ Helper.DirectDownload <- function(URLS, Names, Cores, Dir) {
         for (DownIter in 1:length(Names)) {
             Fret <- eval(parse(text = looptext)) # evaluate the kriging specification per layer
             Downls <- c(Downls, Fret)
-            pb$tick(tokens = list(layer = progress_layer[DownIter]))
+            pb$tick(tokens = list(layer = progressIter[DownIter]))
         }
     }
 

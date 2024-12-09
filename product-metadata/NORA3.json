@@ -22,7 +22,8 @@
       84.0572
     ],
     "resolution": 0.0535,
-    "unit": "°"
+    "unit": "°",
+    "crs": "EPSG:25833"
   },
   "variables": [
     {

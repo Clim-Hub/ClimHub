@@ -125,7 +125,7 @@ Download.NORA3 <- function(
     ## Loading Data =================================
     message("###### Loading Downloaded Data from Disk")
     MetNo_rast <- Helper.LoadFiles(FilestoLoad)
-    terra::crs(MetNo_rast) <- Meta.QuickFacts("NORA3")$space$crs
+    # terra::crs(MetNo_rast) <- Meta.QuickFacts("NORA3")$space$crs
 
     ## Variable Extraction =================================
     message("###### Extracting Requested Variable")

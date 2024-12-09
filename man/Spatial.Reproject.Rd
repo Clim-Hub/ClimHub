@@ -9,7 +9,7 @@ Spatial.Reproject(ProjFrom, ProjTo)
 \arguments{
 \item{ProjFrom}{Either a SpatRaster or SF object which is to be reprojected.}
 
-\item{ProjTo}{Either a SpatRaster or SF object to whose projection the other opbject is to be reprojected.}
+\item{ProjTo}{Prefably, a character string identifying desired EPSG ID. Can also be a SpatRaster or SF object to whose projection the other opbject is to be reprojected. The latter specifications are less stable.}
 }
 \value{
 A SpatRaster or SF object reprojected to the same CRS as in ProjTo.

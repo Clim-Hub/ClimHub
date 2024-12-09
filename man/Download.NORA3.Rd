@@ -9,7 +9,7 @@ Download.NORA3(
   DateStart = "1961-08-01 00",
   DateStop = "2022-12-31 18",
   Leadtime = 3,
-  Cores = NULL,
+  Cores = 1,
   Dir = getwd(),
   FileName,
   Compression = 9,
@@ -17,86 +17,7 @@ Download.NORA3(
 )
 }
 \arguments{
-\item{Variable}{Character. NORA3 contains the following:
-\itemize{
-\item "land_area_fraction"
-\item "specific_humidity_ml"
-\item "turbulent_kinetic_energy_ml"
-\item "cloud_area_fraction_ml"
-\item "toa_net_downward_shortwave_flux"
-\item "surface_downwelling_shortwave_flux_in_air"
-\item "toa_outgoing_longwave_flux"
-\item "surface_downwelling_longwave_flux_in_air"
-\item "atmosphere_boundary_layer_thickness"
-\item "pressure_departure"
-\item "surface_air_pressure"
-\item "air_temperature_ml"
-\item "surface_geopotential"
-\item "x_wind_ml"
-\item "y_wind_ml"
-\item "air_pressure_at_sea_level"
-\item "precipitation_amount_acc"
-\item "SIC (Sea_ice_fraction)",
-\item "SST (Sea Surface Temperature (SST))",
-\item "TS (Surface temperature)",
-\item "T2M (2m_Temperature)",
-\item "Q2M (2m_Specific_Humidity)",
-\item "HU2M (2m_Relative_Humidity)",
-\item "ZON10M (10m_Zonal_wind)",
-\item "MER10M (10m_Meridian_Wind)",
-\item "H (Averaged_Sensible_Heat_Flux)",
-\item "LE (Averaged_Total_Latent_Heat_Flux)",
-\item "GFLUX (Averaged_Ground_Heat_Flux)",
-\item "air_temperature_0m"
-\item "liquid_water_content_of_surface_snow"
-\item "downward_northward_momentum_flux_in_air"
-\item "downward_eastward_momentum_flux_in_air"
-\item "integral_of_toa_net_downward_shortwave_flux_wrt_time"
-\item "integral_of_surface_net_downward_shortwave_flux_wrt_time"
-\item "integral_of_toa_outgoing_longwave_flux_wrt_time"
-\item "integral_of_surface_net_downward_longwave_flux_wrt_time"
-\item "integral_of_surface_downward_latent_heat_evaporation_flux_wrt_time"
-\item "integral_of_surface_downward_latent_heat_sublimation_flux_wrt_time"
-\item "water_evaporation_amount"
-\item "surface_snow_sublimation_amount_acc"
-\item "integral_of_surface_downward_sensible_heat_flux_wrt_time"
-\item "integral_of_surface_downwelling_shortwave_flux_in_air_wrt_time"
-\item "integral_of_surface_downwelling_longwave_flux_in_air_wrt_time"
-\item "air_temperature_2m"
-\item "relative_humidity_2m"
-\item "specific_humidity_2m"
-\item "x_wind_10m"
-\item "y_wind_10m"
-\item "cloud_area_fraction"
-\item "x_wind_gust_10m"
-\item "y_wind_gust_10m"
-\item "air_temperature_max"
-\item "air_temperature_min"
-\item "convective_cloud_area_fraction"
-\item "high_type_cloud_area_fraction"
-\item "medium_type_cloud_area_fraction"
-\item "low_type_cloud_area_fraction"
-\item "hail_diagnostic"
-\item "rainfall_amount"
-\item "snowfall_amount"
-\item "graupelfall_amount"
-\item "x_wind_pl"
-\item "y_wind_pl"
-\item "air_temperature_pl"
-\item "cloud_area_fraction_pl"
-\item "geopotential_pl"
-\item "relative_humidity_pl"
-\item "upward_air_velocity_pl"
-\item "lwe_thickness_of_atmosphere_mass_content_of_water_vapor"
-\item "lifting_condensation_level"
-\item "atmosphere_level_of_free_convection"
-\item "atmosphere_level_of_neutral_buoyancy"
-\item "wind_direction"
-\item "wind_speed"
-\item "snowfall_amount_acc"
-\item "x_wind_z"
-\item "y_wind_z"
-}}
+\item{Variable}{Character. An overview of NORA3 variables can be obtained with Meta.Variables(dataset = "NORA3").}
 
 \item{DateStart}{Character. "YYYY-MM-DD HH" date at which to start time series of downloaded data. Data is available daily at hours 00, 06, 12, and 18.}
 

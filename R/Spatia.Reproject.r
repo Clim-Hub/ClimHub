@@ -4,7 +4,7 @@
 #' Reprojecting one spatial data product to match another.
 #'
 #' @param ProjFrom Either a SpatRaster or SF object which is to be reprojected.
-#' @param ProjTo Either a SpatRaster or SF object to whose projection the other opbject is to be reprojected.
+#' @param ProjTo Prefably, a character string identifying desired EPSG ID. Can also be a SpatRaster or SF object to whose projection the other opbject is to be reprojected. The latter specifications are less stable.
 #'
 #' @importFrom terra crs
 #' @importFrom terra project
@@ -33,15 +33,25 @@ Spatial.Reproject <- function(ProjFrom, ProjTo) {
         Reprojected <- terra::project(ProjFrom, paste0("epsg:", crs_info <- sf::st_crs(ProjTo)$epsg))
     }
 
+    ## SpatRaster to EPSG
+    if (package_name[[1]] == "terra" & package_name[[2]] == "methods") {
+        Reprojected <- terra::project(ProjFrom, paste0("epsg:", ProjTo))
+    }
+
 
     ## SF to SpatRaster
     if (package_name[[1]] == "sf" & package_name[[2]] == "terra") {
-        Reprojected <- sf::st_transform(ProjFrom, terra::crs(ProjTo))
+        Reprojected <- sf::st_transform(ProjFrom, st_crs(terra::crs(ProjTo)))
     }
 
     ## SF to SF
     if (package_name[[1]] == "sf" & package_name[[2]] == "sf") {
         Reprojected <- sf::st_transform(ProjFrom, sf::st_crs(ProjTo))
+    }
+
+    ## SF to EPSG
+    if (package_name[[1]] == "sf" & package_name[[2]] == "methods") {
+        Reprojected <- sf::st_transform(ProjFrom, ProjTo)
     }
 
     ## return

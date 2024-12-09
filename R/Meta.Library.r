@@ -4,9 +4,7 @@
 #' Provide an overview of all data sets for which metadata files are present.
 #'
 #' @importFrom tools file_path_sans_ext
-#' @importFrom httr GET
-#' @importFrom httr content
-#' @importFrom jsonlite fromJSON
+#' @importFrom supportR github_ls
 #'
 #' @return A vector of supported datasets.
 #'
@@ -21,15 +19,10 @@ Meta.Library <- function() {
     repo <- "ClimHub"
     path <- "product-metadata"
 
-    # Construct the API URL
-    URL <- paste0("https://api.github.com/repos/", owner, "/", repo, "/contents/", path)
+    # Construct the URL
+    URL <- paste0("https://github.com/", owner, "/", repo)
 
-    # Get the file list
-    response <- httr::GET(URL)
-    file_list <- httr::content(response, as = "text", encoding = "UTF-8")
-    files <- jsonlite::fromJSON(file_list)
-
-    # Extract file names
-    file_names <- files$name
+    # list files
+    file_names <- supportR::github_ls(URL, folder = path, quiet = TRUE)$name
     tools::file_path_sans_ext(file_names)
 }

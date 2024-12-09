@@ -12,13 +12,13 @@ RoxygenNote: 7.3.2
 Imports: 
     doSNOW (>= 1.0.20),
     foreach (>= 1.5.2),
-    httr (>= 1.4.7),
     jsonlite (>= 1.8.8),
     ncdf4 (>= 1.23),
     parallel (>= 4.4.0),
     pbapply (>= 1.7.2),
     progress (>= 1.2.3),
     snow (>= 0.4.4),
+    supportR (>= 1.4.0),
     terra (>= 1.7.78),
     tools (>= 4.4.0),
     utils (>= 4.4.0)

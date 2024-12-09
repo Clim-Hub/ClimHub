@@ -3,84 +3,7 @@
 #' This function is used to obtain the NORA3 data product hosted through \href{https://thredds.met.no/thredds/projects/nora3.html}{thredds.met.no}. Specifically, this function makes available the following datasets:
 #'  1. NORA3 files contained within \href{https://thredds.met.no/thredds/catalog/nora3/catalog.html}{nora3}.
 #'
-#' @param Variable Character. NORA3 contains the following:
-#'  - "land_area_fraction"
-#'  - "specific_humidity_ml"
-#'  - "turbulent_kinetic_energy_ml"
-#'  - "cloud_area_fraction_ml"
-#'  - "toa_net_downward_shortwave_flux"
-#'  - "surface_downwelling_shortwave_flux_in_air"
-#'  - "toa_outgoing_longwave_flux"
-#'  - "surface_downwelling_longwave_flux_in_air"
-#'  - "atmosphere_boundary_layer_thickness"
-#'  - "pressure_departure"
-#'  - "surface_air_pressure"
-#'  - "air_temperature_ml"
-#'  - "surface_geopotential"
-#'  - "x_wind_ml"
-#'  - "y_wind_ml"
-#'  - "air_pressure_at_sea_level"
-#'  - "precipitation_amount_acc"
-#'  - "SIC (Sea_ice_fraction)",
-#'  - "SST (Sea Surface Temperature (SST))",
-#'  - "TS (Surface temperature)",
-#'  - "T2M (2m_Temperature)",
-#'  - "Q2M (2m_Specific_Humidity)",
-#'  - "HU2M (2m_Relative_Humidity)",
-#'  - "ZON10M (10m_Zonal_wind)",
-#'  - "MER10M (10m_Meridian_Wind)",
-#'  - "H (Averaged_Sensible_Heat_Flux)",
-#'  - "LE (Averaged_Total_Latent_Heat_Flux)",
-#'  - "GFLUX (Averaged_Ground_Heat_Flux)",
-#'  - "air_temperature_0m"
-#'  - "liquid_water_content_of_surface_snow"
-#'  - "downward_northward_momentum_flux_in_air"
-#'  - "downward_eastward_momentum_flux_in_air"
-#'  - "integral_of_toa_net_downward_shortwave_flux_wrt_time"
-#'  - "integral_of_surface_net_downward_shortwave_flux_wrt_time"
-#'  - "integral_of_toa_outgoing_longwave_flux_wrt_time"
-#'  - "integral_of_surface_net_downward_longwave_flux_wrt_time"
-#'  - "integral_of_surface_downward_latent_heat_evaporation_flux_wrt_time"
-#'  - "integral_of_surface_downward_latent_heat_sublimation_flux_wrt_time"
-#'  - "water_evaporation_amount"
-#'  - "surface_snow_sublimation_amount_acc"
-#'  - "integral_of_surface_downward_sensible_heat_flux_wrt_time"
-#'  - "integral_of_surface_downwelling_shortwave_flux_in_air_wrt_time"
-#'  - "integral_of_surface_downwelling_longwave_flux_in_air_wrt_time"
-#'  - "air_temperature_2m"
-#'  - "relative_humidity_2m"
-#'  - "specific_humidity_2m"
-#'  - "x_wind_10m"
-#'  - "y_wind_10m"
-#'  - "cloud_area_fraction"
-#'  - "x_wind_gust_10m"
-#'  - "y_wind_gust_10m"
-#'  - "air_temperature_max"
-#'  - "air_temperature_min"
-#'  - "convective_cloud_area_fraction"
-#'  - "high_type_cloud_area_fraction"
-#'  - "medium_type_cloud_area_fraction"
-#'  - "low_type_cloud_area_fraction"
-#'  - "hail_diagnostic"
-#'  - "rainfall_amount"
-#'  - "snowfall_amount"
-#'  - "graupelfall_amount"
-#'  - "x_wind_pl"
-#'  - "y_wind_pl"
-#'  - "air_temperature_pl"
-#'  - "cloud_area_fraction_pl"
-#'  - "geopotential_pl"
-#'  - "relative_humidity_pl"
-#'  - "upward_air_velocity_pl"
-#'  - "lwe_thickness_of_atmosphere_mass_content_of_water_vapor"
-#'  - "lifting_condensation_level"
-#'  - "atmosphere_level_of_free_convection"
-#'  - "atmosphere_level_of_neutral_buoyancy"
-#'  - "wind_direction"
-#'  - "wind_speed"
-#'  - "snowfall_amount_acc"
-#'  - "x_wind_z"
-#'  - "y_wind_z"
+#' @param Variable Character. An overview of NORA3 variables can be obtained with Meta.Variables(dataset = "NORA3").
 #' @param DateStart Character. "YYYY-MM-DD HH" date at which to start time series of downloaded data. Data is available daily at hours 00, 06, 12, and 18.
 #' @param DateStop Character. "YYYY-MM-DD HH" date at which to stop time series of downloaded data. Data is available daily at hours 00, 06, 12, and 18.
 #' @param Leadtime Integer. Lead time of reanalysis, either 3, 4, 5, 6, 7, 8 or 9.
@@ -91,19 +14,10 @@
 #' @param RemoveTemporary Logical. Whether to delete temporary files after completion.
 #'
 #' @importFrom tools file_path_sans_ext
-#' @importFrom terra rast
 #' @importFrom terra metags
-#' @importFrom terra writeRaster
-#' @importFrom utils download.file
-#' @importFrom pbapply pblapply
+#' @importFrom terra crs
+#' @importFrom terra names
 #' @importFrom stringr str_pad
-#' @importFrom doSNOW registerDoSNOW
-#' @importFrom parallel detectCores
-#' @importFrom parallel makeCluster
-#' @importFrom snow stopCluster
-#' @importFrom foreach %dopar%
-#' @importFrom foreach foreach
-#' @importFrom progress progress_bar
 #'
 #' @return A SpatRaster object containing the downloaded data, and a file in the specified directory. The SpatRaster contains metadata/attributes as a named vector that can be retrieved with terra::metags(...):
 #'  - *Citation* - A string which to use for in-line citation of the data product obtained}.
@@ -119,14 +33,52 @@
 Download.NORA3 <- function(
     Variable = "TS (Surface temperature)", # which variable
     DateStart = "1961-08-01 00", DateStop = "2022-12-31 18", # time-window
-    Leadtime = 3, Cores = NULL,
+    Leadtime = 3, Cores = 1,
     Dir = getwd(), FileName, Compression = 9, # file storing
     RemoveTemporary = TRUE) {
+    ## Input Checks ============
+    message("###### Checking Request Validity")
+    # maybe bundle this into one function that takes standard Variable, time, and filename and checks everything else via a list argument?
+    ### variable in dataset
+    if (!(Variable %in% Meta.Variables(dataset = "NORA3")$name)) {
+        stop("Please specify a valid variable for the NORA3 data set. You can get an overview of valid variables for NORA3 data by calling Meta.Variables(dataset = 'NORA3').")
+    }
+
+    ### time-window exceeded, we do this in UTC to avoid daylight savings shenanigans
+    Start <- as.POSIXct(paste0(DateStart, ":00:00"), tz = "UTC")
+    Stop <- as.POSIXct(paste0(DateStop, ":00:00"), tz = "UTC")
+    if (sum(format(c(Start, Stop), "%H") %in% c("00", "06", "12", "18")) != 2) {
+        stop("Please specify DateStart and DateStop such that they are strings of 'YYYY-MM-DD HH' where HH can be '00', '06', '12', or '18'.")
+    }
+
+    if (Start < as.POSIXct(Meta.QuickFacts(dataset = "NORA3")$time$extent[1], tz = "UTC")) {
+        stop(paste(
+            "Please specify DateStart so that it does not predate the NORA3 data layers. The earliest date you can specify for NORA3 is:",
+            format(as.POSIXct(Meta.QuickFacts(dataset = "NORA3")$time$extent[1], tz = "UTC"), "%Y-%m-%d %H")
+        ))
+    }
+    if (Start > as.POSIXct(Meta.QuickFacts(dataset = "NORA3")$time$extent[2], tz = "UTC")) {
+        stop(paste(
+            "Please specify DateStop so that it does not postdate the NORA3 data layers. The latest date you can specify for NORA3 is:",
+            format(as.POSIXct(Meta.QuickFacts(dataset = "NORA3")$time$extent[2], tz = "UTC"), "%Y-%m-%d %H")
+        ))
+    }
+
+    ### Leadtime
+    if (!(Leadtime %in% 3:9)) {
+        stop("Please specify a valid leadtime. Valid leadtimes are 3, 4, 5, 6, 7, 8, and 9.")
+    }
+
+    ### FileName
+    if (missing(FileName)) {
+        stop("Please specify a filename.")
+    }
+
     ## FileName Specification
     FileName <- paste0(file_path_sans_ext(FileName), ".nc")
 
     ## Metadata
-    Citation <- paste("NORA3 (DOI: 10.5194/wes-6-1501-2021) data provided by the The Norwegian Meteorological institute obtained on", Sys.Date())
+    Citation <- paste0("NOR3 (DOI:", Meta.DOI(dataset = "NORA3"), ") data provided by the The Norwegian Meteorological institute obtained on ", Sys.Date())
     names(Citation) <- "Citation"
     callargs <- mget(names(formals()), sys.frame(sys.nframe()))
     callargs[sapply(callargs, is.null)] <- "NULL"
@@ -134,121 +86,20 @@ Download.NORA3 <- function(
     names(callargs) <- paste("Call", names(callargs), sep = "_")
     Meta_vec <- c(Citation, unlist(callargs))
 
+    ## Data files & extraction varnames =========
+    NORA3_df <- Meta.Variables("NORA3")
+    FilePrefix <- NORA3_df$datafile[Variable == NORA3_df$name]
+    ExtractVar <- NORA3_df$varname[Variable == NORA3_df$name]
 
-    ## Data files ========= # replace with metadata ASAP!
-    NORA3_df <- data.frame(
-        variable = c(
-            "land_area_fraction",
-            "specific_humidity_ml",
-            "turbulent_kinetic_energy_ml",
-            "cloud_area_fraction_ml",
-            "toa_net_downward_shortwave_flux",
-            "surface_downwelling_shortwave_flux_in_air",
-            "toa_outgoing_longwave_flux",
-            "surface_downwelling_longwave_flux_in_air",
-            "atmosphere_boundary_layer_thickness",
-            "pressure_departure",
-            "surface_air_pressure",
-            "air_temperature_ml",
-            "surface_geopotential",
-            "x_wind_ml",
-            "y_wind_ml",
-            "air_pressure_at_sea_level",
-            "precipitation_amount_acc",
-            "SIC (Sea_ice_fraction)",
-            "SST (Sea Surface Temperature (SST))",
-            "TS (Surface temperature)",
-            "T2M (2m_Temperature)",
-            "Q2M (2m_Specific_Humidity)",
-            "HU2M (2m_Relative_Humidity)",
-            "ZON10M (10m_Zonal_wind)",
-            "MER10M (10m_Meridian_Wind)",
-            "H (Averaged_Sensible_Heat_Flux)",
-            "LE (Averaged_Total_Latent_Heat_Flux)",
-            "GFLUX (Averaged_Ground_Heat_Flux)",
-            "air_temperature_0m",
-            "surface_geopotential",
-            "liquid_water_content_of_surface_snow",
-            "downward_northward_momentum_flux_in_air",
-            "downward_eastward_momentum_flux_in_air",
-            "integral_of_toa_net_downward_shortwave_flux_wrt_time",
-            "integral_of_surface_net_downward_shortwave_flux_wrt_time",
-            "integral_of_toa_outgoing_longwave_flux_wrt_time",
-            "integral_of_surface_net_downward_longwave_flux_wrt_time",
-            "integral_of_surface_downward_latent_heat_evaporation_flux_wrt_time",
-            "integral_of_surface_downward_latent_heat_sublimation_flux_wrt_time",
-            "water_evaporation_amount",
-            "surface_snow_sublimation_amount_acc",
-            "integral_of_surface_downward_sensible_heat_flux_wrt_time",
-            "integral_of_surface_downwelling_shortwave_flux_in_air_wrt_time",
-            "integral_of_surface_downwelling_longwave_flux_in_air_wrt_time",
-            "air_temperature_2m",
-            "relative_humidity_2m",
-            "specific_humidity_2m",
-            "x_wind_10m",
-            "y_wind_10m",
-            "cloud_area_fraction",
-            "x_wind_gust_10m",
-            "y_wind_gust_10m",
-            "air_temperature_max",
-            "air_temperature_min",
-            "convective_cloud_area_fraction",
-            "high_type_cloud_area_fraction",
-            "medium_type_cloud_area_fraction",
-            "low_type_cloud_area_fraction",
-            "atmosphere_boundary_layer_thickness",
-            "hail_diagnostic",
-            "rainfall_amount",
-            "snowfall_amount",
-            "graupelfall_amount",
-            "x_wind_pl",
-            "y_wind_pl",
-            "air_temperature_pl",
-            "cloud_area_fraction_pl",
-            "geopotential_pl",
-            "relative_humidity_pl",
-            "upward_air_velocity_pl",
-            "air_pressure_at_sea_level",
-            "lwe_thickness_of_atmosphere_mass_content_of_water_vapor",
-            "surface_air_pressure",
-            "lifting_condensation_level",
-            "atmosphere_level_of_free_convection",
-            "atmosphere_level_of_neutral_buoyancy",
-            "wind_direction",
-            "wind_speed",
-            "snowfall_amount_acc",
-            "x_wind_z",
-            "y_wind_z"
-        ),
-        datafile = c(
-            rep("", 17),
-            rep("_sfx", 11),
-            rep("_fp", 53)
-        )
-    )
-    NORA3_df <- NORA3_df[-which(duplicated(NORA3_df$variable)), ]
-
-    ## Catching Most Frequent Issues ============
-    message("###### Checking Request Validity")
-
-    ## check variable names
-    # Unit <-
-
-    ## check dates & times
-
-    ## variable in which file
-    FilePrefix <- NORA3_df$datafile[Variable == NORA3_df$variable]
-
-    ## File Check
+    ## File Check =========
     FCheck <- WriteRead.FileCheck(FName = FileName, Dir = Dir, loadFun = terra::rast, load = TRUE, verbose = TRUE)
     if (!is.null(FCheck)) {
         FCheck <- WriteRead.NC(NC = FCheck, FName = file.path(Dir, FileName), Attrs = Meta_vec)
         return(FCheck)
     }
 
+    ## Download preparations =========
     ## temporary files names, we do this in UTC to avoid daylight savings shenanigans
-    Start <- as.POSIXct(paste0(DateStart, ":00:00"), tz = "UTC")
-    Stop <- as.POSIXct(paste0(DateStop, ":00:00"), tz = "UTC")
     Datetimes <- seq(
         from = Start,
         to = Stop,
@@ -257,88 +108,28 @@ Download.NORA3 <- function(
     Datetimes <- format(Datetimes, "%Y%m%d%H")
     FNames <- paste0("TEMP_", "fc", Datetimes, "_", stringr::str_pad(Leadtime, 3, "left", 0), FilePrefix, ".nc")
 
-    ## parallelisation
-    pb <- progress_bar$new(
-        format = "Downloading (:current/:total) | [:bar] Elapsed: :elapsed | Remaining: :eta",
-        total = length(FNames), # 100
-        width = getOption("width"),
-        clear = FALSE
-    )
-    progressIter <- 1:length(FNames) # token reported in progress bar
-    if (!is.null(Cores)) {
-        if (Cores > 1) {
-            cl <- makeCluster(Cores)
-            on.exit(snow::stopCluster(cl))
-            doSNOW::registerDoSNOW(cl)
-            progress <- function(n) {
-                pb$tick(tokens = list(layer = progressIter[n]))
-            }
-            ForeachObjects <- c("Dir", "FNames")
-        } else {
-            cl <- NULL
-        }
-    } else {
-        cl <- NULL
-    }
-
-    ## Downloads ================================
+    ## Download execution =========
     message("###### Data Download")
-    Downls <- foreach(
-        DownIter = 1:length(FNames),
-        # .packages = c(),
-        .export = ForeachObjects,
-        .options.snow = list(progress = progress)
-    ) %dopar% { # parallel loop
-        FName <- FNames[DownIter]
+    URLS <- sapply(FNames, FUN = function(FName) {
         Year <- substr(FName, 8, 11)
         Month <- substr(FName, 12, 13)
         Day <- substr(FName, 14, 15)
         Hour <- substr(FName, 16, 17)
-        URL <- paste("https://thredds.met.no/thredds/fileServer/nora3", Year, Month, Day, Hour,
+        paste("https://thredds.met.no/thredds/fileServer/nora3", Year, Month, Day, Hour,
             gsub(FName, pattern = "TEMP_", replacement = ""),
             sep = "/"
         )
-        if (!file.exists(file.path(Dir, FName))) {
-            download.file(
-                url = URL,
-                destfile = file.path(Dir, FName),
-                method = "wget",
-                quiet = TRUE
-            )
-        }
-        Sys.sleep(0.5)
-        NULL
-    } # end of parallel kriging loop
+    })
+    FilestoLoad <- Helper.DirectDownload(URLS = URLS, Names = FNames, Cores = Cores, Dir = Dir)
 
     ## Loading Data =================================
     message("###### Loading Downloaded Data from Disk")
-    pb <- progress_bar$new(
-        format = "Downloading (:current/:total) | [:bar] Elapsed: :elapsed | Remaining: :eta",
-        total = length(FNames), # 100
-        width = getOption("width"),
-        clear = FALSE
-    )
-    progressIter <- 1:length(FNames) # token reported in progress bar
-
-    MetNo_rast <- as.list(rep(NA, length(FNames)))
-    for (LoadIter in 1:length(FNames)) {
-        MetNo_rast[[LoadIter]] <- terra::rast(file.path(Dir, FNames[LoadIter]))
-        pb$tick(tokens = list(layer = progressIter[LoadIter]))
-    }
-    MetNo_rast <- do.call(c, MetNo_rast)
+    MetNo_rast <- Helper.LoadFiles(FilestoLoad)
+    terra::crs(MetNo_rast) <- Meta.QuickFacts("NORA3")$space$crs
 
     ## Variable Extraction =================================
     message("###### Extracting Requested Variable")
-    if (FilePrefix == "_sfx") {
-        VarLyr <- which(
-            startsWith(
-                prefix = paste0(stringr::str_trim(stringr::str_extract(Variable, "^[^(]*"), side = "right"), "_grib"),
-                x = names(MetNo_rast)
-            )
-        )
-    } else {
-        VarLyr <- grep(Variable, names(MetNo_rast))
-    }
+    VarLyr <- grep(ExtractVar, names(MetNo_rast))
     MetNo_rast <- MetNo_rast[[VarLyr]]
 
     ## Exports =================================

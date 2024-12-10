@@ -83,7 +83,7 @@ Download.NORA3 <- function(
     FileName <- paste0(file_path_sans_ext(FileName), ".nc")
 
     ## Metadata
-    Citation <- paste0("NOR3 (DOI:", Meta.DOI(dataset = "NORA3"), ") data provided by the The Norwegian Meteorological institute obtained on ", Sys.Date())
+    Citation <- paste0("NORA3 (DOI:", Meta.DOI(dataset = "NORA3"), ") data provided by the The Norwegian Meteorological institute obtained on ", Sys.Date())
     names(Citation) <- "Citation"
     callargs <- mget(names(formals()), sys.frame(sys.nframe()))
     callargs[sapply(callargs, is.null)] <- "NULL"

@@ -17,8 +17,8 @@ Imports:
     parallel (>= 4.4.0),
     pbapply (>= 1.7.2),
     progress (>= 1.2.3),
+    rvest (>= 1.0.4),
     snow (>= 0.4.4),
-    supportR (>= 1.4.0),
     terra (>= 1.7.78),
     tools (>= 4.4.0),
     utils (>= 4.4.0)

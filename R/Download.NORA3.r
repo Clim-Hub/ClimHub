@@ -34,8 +34,6 @@
 #'     RemoveTemporary = TRUE
 #' )
 #' }
-
-#' }
 #' @export
 Download.NORA3 <- function(
     Variable = "TS (Surface temperature)", # which variable

@@ -47,3 +47,14 @@ This function is used to obtain the NORA3 data product hosted through \href{http
 \item NORA3 files contained within \href{https://thredds.met.no/thredds/catalog/nora3/catalog.html}{nora3}.
 }
 }
+\examples{
+\dontrun{
+NORA3 <- Download.NORA3(
+    Variable = "TS (Surface temperature)", # which variable
+    DateStart = "1961-08-01 00", DateStop = "1961-08-02 18", # time-window
+    Leadtime = 3, Cores = 1,
+    Dir = getwd(), FileName = "NORA3", Compression = 9, # file storing
+    RemoveTemporary = TRUE
+)
+}
+}

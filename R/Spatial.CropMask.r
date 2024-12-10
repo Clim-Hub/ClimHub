@@ -7,6 +7,7 @@
 #' @param Shape Either a SPatExtent or an sf polygon(-collection) whose coverage of the raster object is to be found.
 #'
 #' @importFrom terra crop
+#' @importFrom terra ext
 #' @importFrom terra mask
 #' @importFrom terra nlyr
 #' @importFrom pbapply pblapply

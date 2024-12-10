@@ -22,12 +22,15 @@
 #' @return A SpatRaster with metadata
 #'
 WriteRead.NC <- function(NC, FName, Variable, Unit = "NA", Attrs, Write = FALSE, Compression = 9) {
+  ## remove = signs in variable vector, these break metags assignment
+  Attrs <- gsub(pattern = "=", replacement = "...", Attrs)
+
   ## Writing metadata
   if (Write) {
     NC <- writeCDF(x = NC, filename = FName, varname = Variable, unit = Unit, longname = longnames(NC), compression = Compression)
     nc <- nc_open(FName, write = TRUE)
     for (name in names(Attrs)) {
-      ncatt_put(nc, 0, name, Attrs[[name]])
+      ncatt_put(nc, varid = 0, attname = name, attval = Attrs[[name]])
     }
     nc_close(nc)
   }
@@ -42,6 +45,7 @@ WriteRead.NC <- function(NC, FName, Variable, Unit = "NA", Attrs, Write = FALSE,
   Meta_vec <- unlist(Meta)
   names(Meta_vec) <- names(Attrs)
   terra::metags(NC) <- Meta_vec
+
   ## return object
   return(NC)
 }

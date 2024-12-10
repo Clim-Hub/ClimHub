@@ -17,6 +17,7 @@
 #' @importFrom terra metags
 #' @importFrom terra crs
 #' @importFrom terra names
+#' @importFrom terra time
 #' @importFrom stringr str_pad
 #'
 #' @return A SpatRaster object containing the downloaded data, and a file in the specified directory. The SpatRaster contains metadata/attributes as a named vector that can be retrieved with terra::metags(...):
@@ -98,21 +99,23 @@ Download.NORA3 <- function(
     ExtractVar <- NORA3_df$varname[Variable == NORA3_df$name]
 
     ## File Check =========
-    FCheck <- WriteRead.FileCheck(FName = FileName, Dir = Dir, loadFun = terra::rast, load = TRUE, verbose = TRUE)
-    if (!is.null(FCheck)) {
-        FCheck <- WriteRead.NC(NC = FCheck, FName = file.path(Dir, FileName), Attrs = Meta_vec)
-        return(FCheck)
-    }
 
     ## Download preparations =========
     ## temporary files names, we do this in UTC to avoid daylight savings shenanigans
-    Datetimes <- seq(
+    TimeAssing <- Datetimes <- seq(
         from = Start,
         to = Stop,
         by = "6 hour"
     )
     Datetimes <- format(Datetimes, "%Y%m%d%H")
     FNames <- paste0("TEMP_", "fc", Datetimes, "_", stringr::str_pad(Leadtime, 3, "left", 0), FilePrefix, ".nc")
+
+    FCheck <- WriteRead.FileCheck(FName = FileName, Dir = Dir, loadFun = terra::rast, load = TRUE, verbose = TRUE)
+    if (!is.null(FCheck)) {
+        FCheck <- WriteRead.NC(NC = FCheck, FName = file.path(Dir, FileName), Attrs = Meta_vec)
+        terra::time(FCheck) <- TimeAssing
+        return(FCheck)
+    }
 
     ## Download execution =========
     message("###### Data Download")
@@ -142,14 +145,14 @@ Download.NORA3 <- function(
     message("###### Data Export & Return")
 
     ### Assign additional information
-    terra::metags(MetNo_rast) <- Meta_vec
+    terra::time(MetNo_rast) <- TimeAssing
 
     ### write file
     MetNo_rast <- WriteRead.NC(
         NC = MetNo_rast, FName = file.path(Dir, FileName),
         Variable = Variable,
         Unit = ifelse(length(unique(terra::units(MetNo_rast))) > 1, unique(terra::units(MetNo_rast))[2], unique(terra::units(MetNo_rast))), # clunky, but won't need this when integrating proper metadata solution
-        Attrs = terra::metags(MetNo_rast), Write = TRUE, Compression = Compression
+        Attrs = Meta_vec, Write = TRUE, Compression = Compression
     )
 
     ### unlink temporary files

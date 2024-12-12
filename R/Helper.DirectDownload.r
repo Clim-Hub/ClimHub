@@ -16,6 +16,7 @@
 #' @importFrom foreach %dopar%
 #' @importFrom foreach foreach
 #' @importFrom progress progress_bar
+#' @importFrom httr HEAD
 #'
 #' @return A vector of filenames. Same as the Names argument.
 #'
@@ -44,13 +45,13 @@ Helper.DirectDownload <- function(URLS, Names, Cores, Dir) {
     looptext <- '
         URL <- URLS[DownIter]
         Name <- Names[DownIter]
-        suppressWarnings(
-            Ret_rast <- tryCatch(
-                terra::rast(file.path(Dir, Name)),
-                error = function(e) e
-            )
-        )
-        while (class(Ret_rast)[1] == "simpleError") {
+        ## get expected file size
+        response <- httr::HEAD(URL)
+        fsize_expected <- as.numeric(headers(response)$`content-length`)
+        fsize_is <- file.size(file.path(Dir, Name))
+        while (fsize_is != fsize_expected | is.na(fsize_is)) {
+            ## unlink downloaded file, useful on reruns of while loop
+            unlink(file.path(Dir, Name))
             ## donwload data
             download.file(
                 url = URL,
@@ -58,15 +59,8 @@ Helper.DirectDownload <- function(URLS, Names, Cores, Dir) {
                 method = "wget",
                 quiet = TRUE
             )
-            ## try to load raster from file, if error returns simpleError
-            Ret_rast <- tryCatch(
-                terra::rast(file.path(Dir, Name)),
-                error = function(e) e
-            )
-            ## if loading file leads to error, remove file and try again
-            if (class(Ret_rast)[1] == "simpleError") {
-                unlink(file.path(Dir, Name))
-            }
+            ## get size of downloaded file
+            fsize_is <- file.size(file.path(Dir, Name))
         }
         rm(Ret_rast) # remove the raster object so it does not interfere with future iterations
         Sys.sleep(0.05)
@@ -76,7 +70,7 @@ Helper.DirectDownload <- function(URLS, Names, Cores, Dir) {
     if (Cores > 1) {
         Downls <- foreach(
             DownIter = 1:length(Names),
-            .packages = c("terra"),
+            .packages = c("httr"),
             .export = ForeachObjects,
             .options.snow = list(progress = progress)
         ) %dopar% { # parallel loop'

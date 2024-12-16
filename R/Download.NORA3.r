@@ -43,44 +43,41 @@ Download.NORA3 <- function(
     RemoveTemporary = TRUE) {
     ## Input Checks ============
     message("###### Checking Request Validity")
-    # maybe bundle this into one function that takes standard Variable, time, and filename and checks everything else via a list argument?
-    ### variable in dataset
-    if (!(Variable %in% Meta.Variables(dataset = "NORA3")$name)) {
-        stop("Please specify a valid variable for the NORA3 data set. You can get an overview of valid variables for NORA3 data by calling Meta.Variables(dataset = 'NORA3').")
-    }
-
-    ### time-window exceeded, we do this in UTC to avoid daylight savings shenanigans
-    Start <- as.POSIXct(paste0(DateStart, ":00:00"), tz = "UTC")
-    Stop <- as.POSIXct(paste0(DateStop, ":00:00"), tz = "UTC")
-    if (sum(format(c(Start, Stop), "%H") %in% c("00", "06", "12", "18")) != 2) {
-        stop("Please specify DateStart and DateStop such that they are strings of 'YYYY-MM-DD HH' where HH can be '00', '06', '12', or '18'.")
-    }
-
-    if (Start < as.POSIXct(Meta.QuickFacts(dataset = "NORA3")$time$extent[1], tz = "UTC")) {
-        stop(paste(
-            "Please specify DateStart so that it does not predate the NORA3 data layers. The earliest date you can specify for NORA3 is:",
-            format(as.POSIXct(Meta.QuickFacts(dataset = "NORA3")$time$extent[1], tz = "UTC"), "%Y-%m-%d %H")
-        ))
-    }
-    if (Start > as.POSIXct(Meta.QuickFacts(dataset = "NORA3")$time$extent[2], tz = "UTC")) {
-        stop(paste(
-            "Please specify DateStop so that it does not postdate the NORA3 data layers. The latest date you can specify for NORA3 is:",
-            format(as.POSIXct(Meta.QuickFacts(dataset = "NORA3")$time$extent[2], tz = "UTC"), "%Y-%m-%d %H")
-        ))
-    }
-
-    ### Leadtime
-    if (!(Leadtime %in% Meta.QuickFacts("NORA3")$leadtime)) {
-        stop(paste0("Please specify a valid leadtime. Valid leadtimes are ", paste(Meta.QuickFacts("NORA3")$leadtime, collapse = ", "), "."))
-    }
 
     ### FileName
     if (missing(FileName)) {
         stop("Please specify a filename.")
     }
-
-    ## FileName Specification
     FileName <- paste0(file_path_sans_ext(FileName), ".nc")
+
+    ### time-window exceeded, we do this in UTC to avoid daylight savings shenanigans
+    Start <- as.POSIXct(paste0(DateStart, ":00:00"), tz = "UTC")
+    Stop <- as.POSIXct(paste0(DateStop, ":00:00"), tz = "UTC")
+
+    ### actual checks
+    InCheck_ls <- list(
+        Variable = list(
+            Input = Variable,
+            Allowed = Meta.Variables("NORA3")$name,
+            Operator = "in"
+        ),
+        Time = list(
+            Input = c(Start, Stop),
+            Allowed = Meta.QuickFacts("NORA3")$time$extent,
+            Operator = "exceeds"
+        ),
+        Leadtime = list(
+            Input = Leadtime,
+            Allowed = Meta.QuickFacts("NORA3")$leadtime,
+            Operator = "in"
+        ),
+        HourCheck = list(
+            Input = format(c(Start, Stop), "%H"),
+            Allowed = c("00", "06", "12", "18"),
+            Operator = "in"
+        )
+    )
+    Helper.InputChecker(InCheck_ls)
 
     ## Metadata
     Citation <- paste0("NORA3 (DOI:", Meta.DOI(dataset = "NORA3"), ") data provided by the The Norwegian Meteorological institute obtained on ", Sys.Date())
@@ -96,8 +93,6 @@ Download.NORA3 <- function(
     FilePrefix <- NORA3_df$datafile[Variable == NORA3_df$name]
     ExtractVar <- NORA3_df$varname[Variable == NORA3_df$name]
 
-    ## File Check =========
-
     ## Download preparations =========
     ## temporary files names, we do this in UTC to avoid daylight savings shenanigans
     TimeAssing <- Datetimes <- seq(
@@ -108,6 +103,7 @@ Download.NORA3 <- function(
     Datetimes <- format(Datetimes, "%Y%m%d%H")
     FNames <- paste0("TEMP_", "fc", Datetimes, "_", stringr::str_pad(Leadtime, 3, "left", 0), FilePrefix, ".nc")
 
+    ## File Check =========
     FCheck <- WriteRead.FileCheck(FName = FileName, Dir = Dir, loadFun = terra::rast, load = TRUE, verbose = TRUE)
     if (!is.null(FCheck)) {
         FCheck <- WriteRead.NC(NC = FCheck, FName = file.path(Dir, FileName), Attrs = Meta_vec)

@@ -17,13 +17,13 @@ Download.NORA3(
 )
 }
 \arguments{
-\item{Variable}{Character. An overview of NORA3 variables can be obtained with Meta.Variables(dataset = "NORA3").}
+\item{Variable}{Character. An overview of NORA3 variables can be obtained with \code{Meta.Variables(dataset = "NORA3")}.}
 
 \item{DateStart}{Character. "YYYY-MM-DD HH" date at which to start time series of downloaded data. Data is available daily at hours 00, 06, 12, and 18.}
 
 \item{DateStop}{Character. "YYYY-MM-DD HH" date at which to stop time series of downloaded data. Data is available daily at hours 00, 06, 12, and 18.}
 
-\item{Leadtime}{Integer. Lead time of reanalysis, either 3, 4, 5, 6, 7, 8 or 9.}
+\item{Leadtime}{Integer. Lead time of reanalysis. NORA3 leadtimes can be obtained with \code{Meta.QuickFacts("NORA3")$leadtime}.}
 
 \item{Cores}{Integer. How many cores to use for parallel downloads. Default NULL defines no parallelisation.}
 

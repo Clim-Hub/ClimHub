@@ -6,7 +6,7 @@
 #' @param Variable Character. An overview of NORA3 variables can be obtained with `Meta.Variables(dataset = "NORA3")`.
 #' @param DateStart Character. "YYYY-MM-DD HH" date at which to start time series of downloaded data. Data is available daily at hours 00, 06, 12, and 18.
 #' @param DateStop Character. "YYYY-MM-DD HH" date at which to stop time series of downloaded data. Data is available daily at hours 00, 06, 12, and 18.
-#' @param Leadtime Integer. Lead time of reanalysis, either 3, 4, 5, 6, 7, 8 or 9.
+#' @param Leadtime Integer. Lead time of reanalysis. NORA3 leadtimes can be obtained with `Meta.QuickFacts("NORA3")$leadtime`.
 #' @param Cores Integer. How many cores to use for parallel downloads. Default NULL defines no parallelisation.
 #' @param Dir Character/Directory Pointer. Directory specifying where to download data to.
 #' @param FileName Character. A file name for the produced file.
@@ -70,8 +70,8 @@ Download.NORA3 <- function(
     }
 
     ### Leadtime
-    if (!(Leadtime %in% 3:9)) {
-        stop("Please specify a valid leadtime. Valid leadtimes are 3, 4, 5, 6, 7, 8, and 9.")
+    if (!(Leadtime %in% Meta.QuickFacts("NORA3")$leadtime)) {
+        stop(paste0("Please specify a valid leadtime. Valid leadtimes are ", paste(Meta.QuickFacts("NORA3")$leadtime, collapse = ", "), "."))
     }
 
     ### FileName

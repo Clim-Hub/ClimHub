@@ -91,12 +91,6 @@
       "unit": "kg/m^2",
       "prefix": "GRW",
       "issues": ""
-    },
-    {
-      "name": "Orography",
-      "unit": "m",
-      "prefix": "ORO",
-      "issues": "No Time Component"
     }
   ]
 }

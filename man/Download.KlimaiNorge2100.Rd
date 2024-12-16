@@ -18,7 +18,7 @@ Download.KlimaiNorge2100(
 )
 }
 \arguments{
-\item{Variable}{Character. An overview of Klima i Norge variables can be obtained with Meta.Variables(dataset = "KlimaiNorge2100").}
+\item{Variable}{Character. An overview of Klima i Norge variables can be obtained with \code{Meta.Variables(dataset = "KlimaiNorge2100")}.}
 
 \item{DateStart}{Character. "YYYY-MM-DD" date at which to start time series of downloaded data. Data is available daily at hourly intervals.}
 
@@ -26,7 +26,7 @@ Download.KlimaiNorge2100(
 
 \item{Model}{Character. An overview of climate models from which data can be obtained can be obtained with \code{Meta.QuickFacts("KlimaiNorge2100")$models}.}
 
-\item{Scenario}{Character. An overview of climate models from which data can be obtained can be obtained with \code{Meta.QuickFacts("KlimaiNorge2100")$scenarios}. Note that this choice only affects data post-dating 2004-12-31.}
+\item{Scenario}{Character. An overview of climate models from which data can be obtained can be obtained with \code{Meta.QuickFacts("KlimaiNorge2100")$scenarios}. Note that this choice only affects data post-dating 2005-12-31.}
 
 \item{Cores}{Integer. How many cores to use for parallel downloads. Default NULL defines no parallelisation.}
 
@@ -46,7 +46,7 @@ A SpatRaster object containing the downloaded data, and a file in the specified 
 }
 }
 \description{
-This function is used to obtain the \href{https://www.miljodirektoratet.no/publikasjoner/2015/september-2015/klima-i-norge-2100/}{Klima_i_Norge_2100} data product hosted through \href{https://thredds.met.no/thredds/catalog/KSS/catalog.html}{thredds.met.no}. Specifically, this function makes available the following datasets:
+This function is used to obtain the \href{https://www.miljodirektoratet.no/publikasjoner/2015/september-2015/klima-i-norge-2100/}{Klima_i_Norge_2100} data product hosted through \href{https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge_2100/catalog.html}{thredds.met.no}. Specifically, this function makes available the following datasets:
 \enumerate{
 \item \href{https://publikasjoner.nve.no/rapport/2016/rapport2016_59.pdf}{Gridded 1 x 1 km climate and hydrological projections for Norway} data contained within \href{https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge_2100/utgave2015/catalog.html}{utgave 2015}.
 }

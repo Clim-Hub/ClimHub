@@ -5,10 +5,10 @@
 \title{Downloading NORA3 3km NOrwegian Reanalysis Data from the Norwegian Meteorological Instite}
 \usage{
 Download.NORA3(
-  Variable = "TS (Surface temperature)",
-  DateStart = "1961-08-01 00",
-  DateStop = "2022-12-31 18",
-  Leadtime = 3,
+  Variable,
+  DateStart,
+  DateStop,
+  Leadtime,
   Cores = 1,
   Dir = getwd(),
   FileName,

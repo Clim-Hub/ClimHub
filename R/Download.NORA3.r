@@ -15,7 +15,6 @@
 #'
 #' @importFrom tools file_path_sans_ext
 #' @importFrom terra metags
-#' @importFrom terra crs
 #' @importFrom terra names
 #' @importFrom terra time
 #' @importFrom stringr str_pad
@@ -36,9 +35,10 @@
 #' }
 #' @export
 Download.NORA3 <- function(
-    Variable = "TS (Surface temperature)", # which variable
-    DateStart = "1961-08-01 00", DateStop = "2022-12-31 18", # time-window
-    Leadtime = 3, Cores = 1,
+    Variable, # which variable
+    DateStart, DateStop, # time-window
+    Leadtime, # NORA3 specific arguments
+    Cores = 1,
     Dir = getwd(), FileName, Compression = 9, # file storing
     RemoveTemporary = TRUE) {
     ## Input Checks ============
@@ -92,6 +92,7 @@ Download.NORA3 <- function(
     NORA3_df <- Meta.Variables("NORA3")
     FilePrefix <- NORA3_df$datafile[Variable == NORA3_df$name]
     ExtractVar <- NORA3_df$varname[Variable == NORA3_df$name]
+    Unit <- NORA3_df$unit[Variable == NORA3_df$name]
 
     ## Download preparations =========
     ## temporary files names, we do this in UTC to avoid daylight savings shenanigans
@@ -128,7 +129,6 @@ Download.NORA3 <- function(
     ## Loading Data =================================
     message("###### Loading Downloaded Data from Disk")
     MetNo_rast <- Helper.LoadFiles(FilestoLoad)
-    # terra::crs(MetNo_rast) <- Meta.QuickFacts("NORA3")$space$crs
 
     ## Variable Extraction =================================
     message("###### Extracting Requested Variable")
@@ -145,7 +145,7 @@ Download.NORA3 <- function(
     MetNo_rast <- WriteRead.NC(
         NC = MetNo_rast, FName = file.path(Dir, FileName),
         Variable = Variable,
-        Unit = ifelse(length(unique(terra::units(MetNo_rast))) > 1, unique(terra::units(MetNo_rast))[2], unique(terra::units(MetNo_rast))), # clunky, but won't need this when integrating proper metadata solution
+        Unit = Unit,
         Attrs = Meta_vec, Write = TRUE, Compression = Compression
     )
 

@@ -26,7 +26,7 @@
 #' Meta.QuickFacts()
 #'
 #' @export
-Meta.QuickFacts <- function(dataset = "reanalysis-era5-land") {
+Meta.QuickFacts <- function(dataset = "NULL") {
     Meta.DataSet.Check(dataset)
     metadata_ls <- Meta.Read(dataset)
     metadata_ls[which(names(metadata_ls) != "variables")]

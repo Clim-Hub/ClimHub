@@ -3,7 +3,7 @@
 #' This function is used to obtain the NORA3 data product hosted through \href{https://thredds.met.no/thredds/projects/nora3.html}{thredds.met.no}. Specifically, this function makes available the following datasets:
 #'  1. NORA3 files contained within \href{https://thredds.met.no/thredds/catalog/nora3/catalog.html}{nora3}.
 #'
-#' @param Variable Character. An overview of NORA3 variables can be obtained with Meta.Variables(dataset = "NORA3").
+#' @param Variable Character. An overview of NORA3 variables can be obtained with `Meta.Variables(dataset = "NORA3")`.
 #' @param DateStart Character. "YYYY-MM-DD HH" date at which to start time series of downloaded data. Data is available daily at hours 00, 06, 12, and 18.
 #' @param DateStop Character. "YYYY-MM-DD HH" date at which to stop time series of downloaded data. Data is available daily at hours 00, 06, 12, and 18.
 #' @param Leadtime Integer. Lead time of reanalysis, either 3, 4, 5, 6, 7, 8 or 9.

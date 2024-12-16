@@ -21,8 +21,8 @@
 #' @importFrom stringr str_pad
 #'
 #' @return A SpatRaster object containing the downloaded data, and a file in the specified directory. The SpatRaster contains metadata/attributes as a named vector that can be retrieved with terra::metags(...):
-#'  - *Citation* - A string which to use for in-line citation of the data product obtained}.
-#'
+#'  - *Citation* - A string which to use for in-line citation of the data product obtained.
+#'  - *Call_* - A set of strings matching arguments supplied to the download function call.
 #'
 #' @examples
 #' \dontrun{

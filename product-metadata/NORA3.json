@@ -2,8 +2,10 @@
   "name": "NORA3",
   "url": "https://thredds.met.no/thredds/projects/nora3.html",
   "license": "CC-BY-4.0",
-  "citation": "Solbrekke, I. M., Sorteberg, A., and Haakenstad, H.: The 3 km Norwegian reanalysis (NORA3) - a validation of offshore wind resources in the North Sea and the Norwegian Sea, Wind Energ. Sci., 6, 1501-1519, https://doi.org/10.5194/wes-6-1501-2021, 2021.",
+  "citation": "NORA3 Data from The Norwegian Meteorological Institute (MET Norway)",
   "doi": "10.5194/wes-6-1501-2021",
+  "issn": "",
+  "isbn": "",
   "access_mode": "Direct Download",
   "access_function": "Download.NORA3",
   "time": {

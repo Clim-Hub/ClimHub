@@ -38,7 +38,8 @@ Download.NORA3(
 \value{
 A SpatRaster object containing the downloaded data, and a file in the specified directory. The SpatRaster contains metadata/attributes as a named vector that can be retrieved with terra::metags(...):
 \itemize{
-\item \emph{Citation} - A string which to use for in-line citation of the data product obtained}.
+\item \emph{Citation} - A string which to use for in-line citation of the data product obtained.
+\item \emph{Call_} - A set of strings matching arguments supplied to the download function call.
 }
 }
 \description{

@@ -17,6 +17,7 @@
 #' @importFrom foreach foreach
 #' @importFrom progress progress_bar
 #' @importFrom httr HEAD
+#' @importFrom httr headers
 #'
 #' @return A vector of filenames. Same as the Names argument.
 #'

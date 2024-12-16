@@ -4,7 +4,7 @@
 \alias{Meta.QuickFacts}
 \title{Fact sheet overview of data set}
 \usage{
-Meta.QuickFacts(dataset = "reanalysis-era5-land")
+Meta.QuickFacts(dataset = "NULL")
 }
 \arguments{
 \item{dataset}{Character. Name of data set. Usually a set of words separated by dashes. See possible datasets by calling \code{\link{Meta\.Library()}}.}

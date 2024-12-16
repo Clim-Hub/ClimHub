@@ -38,8 +38,14 @@ Meta.Library <- function() {
     # Navigate to the relevant "tree" section
     tree_items <- raw_metadata$payload$tree$items
 
-    # Filter for JSON files
-    tools::file_path_sans_ext(unlist(lapply(tree_items, "[[", "name")))
+    # make into vector of names of files
+    tree_items <- unlist(lapply(tree_items, "[[", "name"))
+
+    # subset for .json files
+    tree_items <- tree_items[grep(pattern = "\\.json$", tree_items)]
+
+    # Filter for JSON files without extensions
+    tools::file_path_sans_ext(tree_items)
 }
 
 

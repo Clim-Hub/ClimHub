@@ -10,6 +10,7 @@
     "access_method": "Direct Download",
     "access_function": "Download.KlimaiNorge2100",
     "scenarios": ["rcp85", "rcp45"],
+    "models": ["CNRM_CCLM", "CNRM_RCA", "EC-EARTH_CCLM", "EC-EARTH_HIRHAM", "EC-EARTH_RACMO", "EC-EARTH_RCA", "HADGEM_RCA", "IPSL_RCA", "MPI_CCLM", "MPI_RCA"],
     "time": {
       "extent": ["1971-01-01", "2100-12-31"],
       "resolution": 1,

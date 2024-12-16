@@ -2,30 +2,12 @@
 #'
 #' This function is used to obtain the \href{https://www.miljodirektoratet.no/publikasjoner/2015/september-2015/klima-i-norge-2100/}{Klima_i_Norge_2100} data product hosted through \href{https://thredds.met.no/thredds/catalog/KSS/catalog.html}{thredds.met.no}. Specifically, this function makes available the following datasets:
 #'  1. \href{https://publikasjoner.nve.no/rapport/2016/rapport2016_59.pdf}{Gridded 1 x 1 km climate and hydrological projections for Norway} data contained within \href{https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge_2100/utgave2015/catalog.html}{utgave 2015}.
-#'  2. \href{https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge_2100/nyeindekser2015/catalog.html}{1x1km Climate Indices}
 #'
-#' @param Variable Character. An overview of Klima i Norge variables can be obtained with Meta.Variables(dataset = "KlimaiNorge2100").
-#' @param DateStart Character. "YYYY-MM-DD HH" date at which to start time series of downloaded data. Data is available daily at hourly intervals.
-#' @param DateStop Character. "YYYY-MM-DD HH" date at which to stop time series of downloaded data. Data is available daily at hourly intervals.
-#' @param DataSet Character. Which dataset to query data from. Supported strings:
-#'  - "utgave2015" (for annual 1x1km historic and projection data)
-#'  - "nyindekser2015" (for 1x1km climate indices)
-#' @param Model Character. Ignored when Dataset != "utgave2015". Klima_i_Norge_2100 contains the following:
-#'  - CNRM_CCLM
-#'  - CNRM_RCA
-#'  - EC-EARTH_CCLM
-#'  - EC-EARTH_HIRHAM
-#'  - EC-EARTH_RACMO
-#'  - EC-EARTH_RCA
-#'  - HADGEM_RCA
-#'  - IPSL_RCA
-#'  - MPI_CCLM
-#'  - MPI_RCA.
-#' @param Scenario Character. Ignored when Dataset != "utgave2015". Klima_i_Norge_2100 contains the following:
-#'  - "rcp85" ... RCP85 (2005 - 2100)
-#'  - "rcp45" ... RCP45 (2005 - 2100)
-#'  - "hist" ... Historical conditions (1971 - 2005)
-#' @param File Character. Required when Dataset != "utgave2015". Name of .nc file hosted on thredds.
+#' @param Variable Character. An overview of Klima i Norge variables can be obtained with `Meta.Variables(dataset = "KlimaiNorge2100")`.
+#' @param DateStart Character. "YYYY-MM-DD" date at which to start time series of downloaded data. Data is available daily at hourly intervals.
+#' @param DateStop Character. "YYYY-MM-DD" date at which to stop time series of downloaded data. Data is available daily at hourly intervals.
+#' @param Model Character. An overview of climate models from which data can be obtained can be obtained with `Meta.QuickFacts("KlimaiNorge2100")$models`.
+#' @param Scenario Character. An overview of climate models from which data can be obtained can be obtained with `Meta.QuickFacts("KlimaiNorge2100")$scenarios`. Note that this choice only affects data post-dating 2004-12-31.
 #' @param Cores Integer. How many cores to use for parallel downloads. Default NULL defines no parallelisation.
 #' @param Dir Character/Directory Pointer. Directory specifying where to download data to.
 #' @param FileName Character. A file name for the produced file.
@@ -52,11 +34,15 @@
 Download.KlimaiNorge2100 <- function(
     Variable, # which variable
     DateStart, DateStop, # time-window
-    DataSet, Model, Scenario,
+    Model, Scenario,
     Cores = 1,
     Dir = getwd(), FileName, Compression = 9, # file storing
     RemoveTemporary = TRUE) {
-  stop("BUILD metadata file")
+
+
+
+
+
 }
 
 

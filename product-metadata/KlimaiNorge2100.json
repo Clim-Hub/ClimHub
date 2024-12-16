@@ -1,82 +1,102 @@
 {
-  "dataset": {
-    "name": "Klima i Norge 2100",
-    "url": "https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge_2100/utgave2015/catalog.html",
-    "license": "CC-BY-4.0 and NLOD 2.0",
-    "citation": "Klima i Norge 2100 Data from The Norwegian Meteorological Institute (MET Norway)",
-    "doi": "",
-    "issn": "",
-    "isbn": "978-82-410-1512-0",
-    "access_method": "Direct Download",
-    "access_function": "Download.KlimaiNorge2100",
-    "scenarios": ["rcp85", "rcp45"],
-    "models": ["CNRM_CCLM", "CNRM_RCA", "EC-EARTH_CCLM", "EC-EARTH_HIRHAM", "EC-EARTH_RACMO", "EC-EARTH_RCA", "HADGEM_RCA", "IPSL_RCA", "MPI_CCLM", "MPI_RCA"],
-    "time": {
-      "extent": ["1971-01-01", "2100-12-31"],
-      "resolution": 1,
-      "unit": "day"
+  "name": "Klima i Norge 2100",
+  "url": "https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge_2100/utgave2015/catalog.html",
+  "license": "CC-BY-4.0 and NLOD 2.0",
+  "citation": "Klima i Norge 2100 Data from The Norwegian Meteorological Institute (MET Norway)",
+  "doi": "",
+  "issn": "",
+  "isbn": "978-82-410-1512-0",
+  "access_method": "Direct Download",
+  "access_function": "Download.KlimaiNorge2100",
+  "scenarios": [
+    "rcp85",
+    "rcp45"
+  ],
+  "models": [
+    "CNRM_CCLM",
+    "CNRM_RCA",
+    "EC-EARTH_CCLM",
+    "EC-EARTH_HIRHAM",
+    "EC-EARTH_RACMO",
+    "EC-EARTH_RCA",
+    "HADGEM_RCA",
+    "IPSL_RCA",
+    "MPI_CCLM",
+    "MPI_RCA"
+  ],
+  "time": {
+    "extent": [
+      "1971-01-01",
+      "2100-12-31"
+    ],
+    "resolution": 1,
+    "unit": "day"
+  },
+  "space": {
+    "extent": [
+      -1.3264,
+      32.5377,
+      57.7604,
+      72.0981
+    ],
+    "resolution": 0.0154,
+    "unit": "°",
+    "crs": "Custom CRS"
+  },
+  "variables": [
+    {
+      "name": "Maximum Air Temperature",
+      "unit": "K",
+      "prefix": "TX",
+      "issues": ""
     },
-    "space": {
-      "extent": [-1.3264, 32.5377, 57.7604, 72.0981],
-      "resolution": 0.0154,
-      "unit": "°",
-      "crs": "Custom CRS"
+    {
+      "name": "Minimum Air Temperature",
+      "unit": "K",
+      "prefix": "TN",
+      "issues": ""
     },
-    "variables": [
-      {
-        "name": "Maximum Air Temperature",
-        "unit": "K",
-        "prefix": "TX",
-        "issues": ""
-      },
-      {
-        "name": "Minimum Air Temperature",
-        "unit": "K",
-        "prefix": "TN",
-        "issues": ""
-      },
-      {
-        "name": "Mean Air Temperature",
-        "unit": "K",
-        "prefix": "TM",
-        "issues": "Values recorded *10"
-      },
-      {
-        "name": "Snow Water Equivalent",
-        "unit": "kg/m^2",
-        "prefix": "SWE",
-        "issues": ""
-      },
-      {
-        "name": "Soil Moisture Deficit",
-        "unit": "kg/m^2",
-        "prefix": "SMD",
-        "issues": "Values recorded *10"
-      },
-      {
-        "name": "Runoff",
-        "unit": "kg/m^2",
-        "prefix": "RUN",
-        "issues": "Values recorded *10"
-      },
-      {
-        "name": "Precipitation",
-        "unit": "kg/m^2",
-        "prefix": "RR",
-        "issues": "Values recorded *10"
-      },
-      {
-        "name": "Groundwater",
-        "unit": "kg/m^2",
-        "prefix": "GRW",
-        "issues": ""
-      },
-      {
-        "name": "Orography",
-        "unit": "m",
-        "prefix": "ORO",
-        "issues": "No Time Component"
-      }
-    ]
-  }
+    {
+      "name": "Mean Air Temperature",
+      "unit": "K",
+      "prefix": "TM",
+      "issues": "Values recorded *10"
+    },
+    {
+      "name": "Snow Water Equivalent",
+      "unit": "kg/m^2",
+      "prefix": "SWE",
+      "issues": ""
+    },
+    {
+      "name": "Soil Moisture Deficit",
+      "unit": "kg/m^2",
+      "prefix": "SMD",
+      "issues": "Values recorded *10"
+    },
+    {
+      "name": "Runoff",
+      "unit": "kg/m^2",
+      "prefix": "RUN",
+      "issues": "Values recorded *10"
+    },
+    {
+      "name": "Precipitation",
+      "unit": "kg/m^2",
+      "prefix": "RR",
+      "issues": "Values recorded *10"
+    },
+    {
+      "name": "Groundwater",
+      "unit": "kg/m^2",
+      "prefix": "GRW",
+      "issues": ""
+    },
+    {
+      "name": "Orography",
+      "unit": "m",
+      "prefix": "ORO",
+      "issues": "No Time Component"
+    }
+  ]
 }

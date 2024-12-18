@@ -130,29 +130,13 @@ WriteNC <- function(spatraster, output_file, compression = 1, variable, longname
         dim = list(xdim, ydim, zdim),
         prec = prec,
         missval = missval,
-        compression = compression
-        # ,
+        compression = compression,
         # shuffle = TRUE
     )
 
     # Create NetCDF file
     nc <- ncdf4::nc_create(output_file, vars = list(var_def, crs_def), force_v4 = TRUE)
     on.exit(ncdf4::nc_close(nc)) # Ensure the file is closed on function exit.
-
-    # Write CRS information
-    if (prj != "") {
-        haveprj <- TRUE
-        ncdf4::ncatt_put(nc, crs_def, "crs_wkt", prj, prec = "text")
-        proj4_string <- terra::crs(spatraster, proj = TRUE)
-        if (proj4_string != "") {
-            ncdf4::ncatt_put(nc, crs_def, "proj4", proj4_string, prec = "text")
-        }
-        epsg_code <- terra::crs(spatraster, describe = TRUE)[1, 3]
-        if (!is.na(epsg_code)) {
-            ncdf4::ncatt_put(nc, crs_def, "epsg_code", epsg_code, prec = "text")
-        }
-    }
-    ncdf4::ncatt_put(nc, crs_def, "geotransform", gt, prec = "text")
 
     # Progress bar
     pb <- progress_bar$new(
@@ -170,7 +154,7 @@ WriteNC <- function(spatraster, output_file, compression = 1, variable, longname
 
         # Write the WriteIter-th layer to the NetCDF file
         ncdf4::ncvar_put(nc,
-            varid = vars,
+            varid = var_def,
             vals = layer_data,
             start = c(1, 1, WriteIter),
             count = c(terra::ncol(spatraster), terra::nrow(spatraster), 1)
@@ -181,6 +165,20 @@ WriteNC <- function(spatraster, output_file, compression = 1, variable, longname
         Sys.sleep(0.05)
     }
 
+    # Write CRS information
+    if (prj != "") {
+        haveprj <- TRUE
+        ncdf4::ncatt_put(nc, crs_def, "crs_wkt", prj, prec = "text")
+        proj4_string <- terra::crs(spatraster, proj = TRUE)
+        if (proj4_string != "") {
+            ncdf4::ncatt_put(nc, crs_def, "proj4", proj4_string, prec = "text")
+        }
+        epsg_code <- terra::crs(spatraster, describe = TRUE)[1, 3]
+        if (!is.na(epsg_code)) {
+            ncdf4::ncatt_put(nc, crs_def, "epsg_code", epsg_code, prec = "text")
+        }
+    }
+    ncdf4::ncatt_put(nc, crs_def, "geotransform", gt, prec = "text")
     if (haveprj) {
         ncdf4::ncatt_put(nc, var_def, "grid_mapping", "crs", prec = "text")
     }

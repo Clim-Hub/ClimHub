@@ -8,10 +8,11 @@ WriteRead.NC(
   NC,
   FName,
   Variable,
+  LongVar,
   Unit = "NA",
   Attrs,
   Write = FALSE,
-  Compression = 9
+  Compression = 1
 )
 }
 \arguments{
@@ -20,6 +21,8 @@ WriteRead.NC(
 \item{FName}{Filename including directory}
 
 \item{Variable}{Character. Variable name to be saved as varname in NC output.}
+
+\item{LongVar}{Character. Character. Long variable name.}
 
 \item{Unit}{Character. Unit in which Variable is recorded.}
 

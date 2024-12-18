@@ -53,6 +53,17 @@ This function is used to obtain the \href{https://www.miljodirektoratet.no/publi
 }
 \examples{
 \dontrun{
-
+Download.KlimaiNorge2100(
+    Variable = "Maximum Air Temperature",
+    DateStart = "1999-08-01",
+    DateStop = "2010-09-17",
+    Model = "CNRM_CCLM",
+    Scenario = "rcp85",
+    Cores = 1,
+    Dir = getwd(),
+    FileName = "KlimaiNorge2100",
+    Compression = 9,
+    RemoveTemporary = TRUE
+)
 }
 }

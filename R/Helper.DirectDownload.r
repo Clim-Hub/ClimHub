@@ -63,7 +63,9 @@ Helper.DirectDownload <- function(URLS, Names, Cores, Dir) {
             ## get size of downloaded file
             fsize_is <- file.size(file.path(Dir, Name))
         }
-        rm(Ret_rast) # remove the raster object so it does not interfere with future iterations
+        if (exists("Ret_rast")) {
+            rm(Ret_rast)
+        } # remove the raster object so it does not interfere with future iterations
         Sys.sleep(0.05)
         file.path(Dir, Name)'
 

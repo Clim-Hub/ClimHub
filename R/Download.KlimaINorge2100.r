@@ -27,8 +27,8 @@
 #' \dontrun{
 #' Download.KlimaiNorge2100(
 #'     Variable = "Maximum Air Temperature",
-#'     DateStart = "1999-08-01",
-#'     DateStop = "2010-09-17",
+#'     DateStart = "2004-08-01",
+#'     DateStop = "2006-09-17",
 #'     Model = "CNRM_CCLM",
 #'     Scenario = "rcp85",
 #'     Cores = 1,
@@ -149,6 +149,7 @@ Download.KlimaiNorge2100 <- function(
     MetNo_rast <- WriteRead.NC(
         NC = MetNo_rast, FName = file.path(Dir, FileName),
         Variable = Variable,
+        LongVar = gsub(pattern = " ", replacement = "_", tolower(Variable)),
         Unit = Unit,
         Attrs = Meta_vec, Write = TRUE, Compression = Compression
     )

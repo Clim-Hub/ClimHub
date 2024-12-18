@@ -145,6 +145,7 @@ Download.NORA3 <- function(
     MetNo_rast <- WriteRead.NC(
         NC = MetNo_rast, FName = file.path(Dir, FileName),
         Variable = Variable,
+        LongVar = ExtractVar,
         Unit = Unit,
         Attrs = Meta_vec, Write = TRUE, Compression = Compression
     )

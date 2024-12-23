@@ -39,77 +39,77 @@
   "variables": [
     {
       "name": "SIC (Sea_ice_fraction)",
-      "varname": "SIC_grib1_vLevel102=0",
+      "varname": "SIC_grib1_vLevel",
       "datafile": "_sfx",
       "unit": "%",
       "issues": ""
     },
     {
       "name": "SST (Sea Surface Temperature (SST))",
-      "varname": "SST_grib1_vLevel102=0",
+      "varname": "SST_grib1_vLevel",
       "datafile": "_sfx",
       "unit": "K",
       "issues": ""
     },
     {
       "name": "TS (Surface temperature)",
-      "varname": "TS_grib1_vLevel1052=0",
+      "varname": "TS_grib1_vLevel",
       "datafile": "_sfx",
       "unit": "K",
       "issues": ""
     },
     {
       "name": "T2M (2m_Temperature)",
-      "varname": "T2M_grib1_vLevel1053=2",
+      "varname": "T2M_grib1_vLevel",
       "datafile": "_sfx",
       "unit": "K",
       "issues": ""
     },
     {
       "name": "Q2M (2m_Specific_Humidity)",
-      "varname": "Q2M_grib1_vLevel1053=2",
+      "varname": "Q2M_grib1_vLevel",
       "datafile": "_sfx",
       "unit": "kg/kg",
       "issues": ""
     },
     {
       "name": "HU2M (2m_Relative_Humidity)",
-      "varname": "HU2M_grib1_vLevel1053=2",
+      "varname": "HU2M_grib1_vLevel",
       "datafile": "_sfx",
       "unit": "%",
       "issues": ""
     },
     {
       "name": "ZON10M (10m_Zonal_wind)",
-      "varname": "ZON10M_grib1_vLevel1058=10",
+      "varname": "ZON10M_grib1_vLevel",
       "datafile": "_sfx",
       "unit": "m/s",
       "issues": ""
     },
     {
       "name": "MER10M (10m_Meridian_Wind)",
-      "varname": "MER10M_grib1_vLevel1058=10",
+      "varname": "MER10M_grib1_vLevel",
       "datafile": "_sfx",
       "unit": "m/s",
       "issues": ""
     },
     {
       "name": "H (Averaged_Sensible_Heat_Flux)",
-      "varname": "H_grib1_vLevel1052=0",
+      "varname": "H_grib1_vLevel",
       "datafile": "_sfx",
       "unit": "W/m2",
       "issues": ""
     },
     {
       "name": "LE (Averaged_Total_Latent_Heat_Flux)",
-      "varname": "LE_grib1_vLevel1052=0",
+      "varname": "LE_grib1_vLevel",
       "datafile": "_sfx",
       "unit": "W/m2",
       "issues": ""
     },
     {
       "name": "GFLUX (Averaged_Ground_Heat_Flux)",
-      "varname": "GFLUX_grib1_vLevel1051=810",
+      "varname": "GFLUX_grib1_vLevel",
       "datafile": "_sfx",
       "unit": "W/m2",
       "issues": ""

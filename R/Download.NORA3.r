@@ -132,7 +132,7 @@ Download.NORA3 <- function(
 
     ## Variable Extraction =================================
     message("###### Extracting Requested Variable")
-    VarLyr <- grep(ExtractVar, names(MetNo_rast))
+    VarLyr <- which(startsWith(names(MetNo_rast), ExtractVar))
     MetNo_rast <- MetNo_rast[[VarLyr]]
 
     ## Exports =================================

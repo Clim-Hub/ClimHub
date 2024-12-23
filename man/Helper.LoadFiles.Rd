@@ -4,10 +4,12 @@
 \alias{Helper.LoadFiles}
 \title{Load list of NetCDF files and stack them into a SpatRaster}
 \usage{
-Helper.LoadFiles(FNames)
+Helper.LoadFiles(FNames, TimeAssign = NULL)
 }
 \arguments{
 \item{FNames}{Character. Vector of absolute filenames to be loaded.}
+
+\item{TimeAssign}{POSIXct. Optional vector of times to apply to list-loaded data}
 }
 \value{
 A spatraster object.

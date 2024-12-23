@@ -4,13 +4,16 @@
 #' Iterates of a number of filenames, pointing to NetCDFs, and loads them into one SpatRaster.
 #'
 #' @param FNames Character. Vector of absolute filenames to be loaded.
+#' @param TimeAssign POSIXct. Optional vector of times to apply to list-loaded data
 #'
 #' @importFrom progress progress_bar
 #' @importFrom terra rast
+#' @importFrom terra time
+#' @importFrom terra nlyr
 #'
 #' @return A spatraster object.
 #'
-Helper.LoadFiles <- function(FNames) {
+Helper.LoadFiles <- function(FNames, TimeAssign = NULL) {
     ## make progress bar
     pb <- progress_bar$new(
         format = "Loading from disk (:current/:total) | [:bar] Elapsed: :elapsed | Remaining: :eta",
@@ -24,6 +27,9 @@ Helper.LoadFiles <- function(FNames) {
     MetNo_rast <- as.list(rep(NA, length(FNames)))
     for (LoadIter in 1:length(FNames)) {
         MetNo_rast[[LoadIter]] <- terra::rast(file.path(FNames[LoadIter]))
+        if (!is.null(TimeAssign)) {
+            terra::time(MetNo_rast[[LoadIter]]) <- rep(TimeAssign[LoadIter], terra::nlyr(MetNo_rast[[LoadIter]]))
+        }
         pb$tick(tokens = list(layer = progressIter[LoadIter]))
     }
 

@@ -128,7 +128,7 @@ Download.NORA3 <- function(
 
     ## Loading Data =================================
     message("###### Loading Downloaded Data from Disk")
-    MetNo_rast <- Helper.LoadFiles(FilestoLoad)
+    MetNo_rast <- Helper.LoadFiles(FilestoLoad, TimeAssign = TimeAssing)
 
     ## Variable Extraction =================================
     message("###### Extracting Requested Variable")
@@ -138,8 +138,8 @@ Download.NORA3 <- function(
     ## Exports =================================
     message("###### Data Export & Return")
 
-    ### Assign additional information
-    terra::time(MetNo_rast) <- TimeAssing
+    # ### Assign additional information, handled above now
+    # terra::time(MetNo_rast) <- TimeAssing
 
     ### write file
     MetNo_rast <- WriteRead.NC(

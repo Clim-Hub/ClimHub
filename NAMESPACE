@@ -2,6 +2,7 @@
 
 export(Download.KlimaiNorge2100)
 export(Download.NORA3)
+export(Handle.ListLayers)
 export(Meta.Citation)
 export(Meta.DOI)
 export(Meta.Library)

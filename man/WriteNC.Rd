@@ -7,7 +7,7 @@
 WriteNC(
   spatraster,
   output_file,
-  compression = 1,
+  compression = NA,
   variable,
   longname,
   unit,

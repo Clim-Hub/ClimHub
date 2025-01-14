@@ -9,11 +9,15 @@ Spatial.Buffer(SF, Buffer = 1000)
 \arguments{
 \item{SF}{An sf POINT object}
 
-\item{Buffer}{Size of buffer in km.}
+\item{Buffer}{Size of buffer (unit dependant on projection of input SF).}
 }
 \value{
 An sf polygon made up of individual square buffers around point-location input.
 }
 \description{
 Allow for drawing of buffer zones around point-location data for downloading and kriging of spatial data around point-locations. Overlapping individual buffers are merged.
+}
+\examples{
+data(Nor2K_sf)
+Spatial.Buffer(Nor2K_sf, Buffer = 1e3) # 1km buffer
 }

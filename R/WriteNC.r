@@ -32,7 +32,7 @@
 #'
 #' @return A SpatRaster with metadata written to the disk
 #'
-WriteNC <- function(spatraster, output_file, compression = 1, variable, longname, unit, attrs = NULL) {
+WriteNC <- function(spatraster, output_file, compression = NA, variable, longname, unit, attrs = NULL) {
     # Check if input is a SpatRaster
     if (!inherits(spatraster, "SpatRaster")) {
         stop("Input must be a SpatRaster object")

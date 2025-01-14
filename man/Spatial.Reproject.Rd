@@ -17,3 +17,12 @@ A SpatRaster or SF object reprojected to the same CRS as in ProjTo.
 \description{
 Reprojecting one spatial data product to match another.
 }
+\examples{
+Data_rast <- rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))[[1]]
+## reprojecting raster
+data(Jotunheimen_sf)
+Spatial.Reproject(Data_rast, Jotunheimen_sf)
+## reprojecting sf
+data(Nor2K_sf)
+Spatial.Reproject(Nor2K_sf, Data_rast)
+}

@@ -44,7 +44,7 @@ Download.KlimaiNorge2100 <- function(
     DateStart, DateStop, # time-window
     Model, Scenario, # Klima i Norge 2100 specific arguments
     Cores = 1,
-    Dir = getwd(), FileName, Compression = 9, # file storing
+    Dir = getwd(), FileName, Compression = NA, # file storing
     RemoveTemporary = TRUE) {
     ## Input Checks ============
     message("###### Checking Request Validity")

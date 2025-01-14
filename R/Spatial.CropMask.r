@@ -15,6 +15,10 @@
 #' @return A SpatRaster.
 #'
 #' @examples
+#' Data_rast <- rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))[[1]]
+#' data(Jotunheimen_sf)
+#' Data_rast <- Spatial.Reproject(Data_rast, Jotunheimen_sf)
+#' Spatial.CropMask(Data_rast, Jotunheimen_sf)
 #' @export
 Spatial.CropMask <- function(Raster, Shape) {
     ## splitting by rasterlayers if necessary to avoid error reported in https://github.com/rspatial/terra/issues/1556

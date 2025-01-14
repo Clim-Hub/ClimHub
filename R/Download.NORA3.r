@@ -39,7 +39,7 @@ Download.NORA3 <- function(
     DateStart, DateStop, # time-window
     Leadtime, # NORA3 specific arguments
     Cores = 1,
-    Dir = getwd(), FileName, Compression = 9, # file storing
+    Dir = getwd(), FileName, Compression = NA, # file storing
     RemoveTemporary = TRUE) {
     ## Input Checks ============
     message("###### Checking Request Validity")

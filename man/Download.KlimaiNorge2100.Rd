@@ -13,7 +13,7 @@ Download.KlimaiNorge2100(
   Cores = 1,
   Dir = getwd(),
   FileName,
-  Compression = 9,
+  Compression = NA,
   RemoveTemporary = TRUE
 )
 }

@@ -21,6 +21,18 @@
 #'
 #' @return A vector of filenames. Same as the Names argument.
 #'
+#' @examples
+#' \dontrun{
+#' Helper.DirectDownload(
+#'     URLs = c(
+#'         "https://thredds.met.no/thredds/fileServer/nora3/1961/08/01/00/fc1961080100_003_sfx.nc",
+#'         "https://thredds.met.no/thredds/fileServer/nora3/1961/08/01/06/fc1961080106_003_sfx.nc"
+#'     ),
+#'     Names = c("TEMP_fc1961080100_003_sfx.nc", "TEMP_fc1961080106_003_sfx.nc"),
+#'     Cores = 1,
+#'     Dir = getwd()
+#' )
+#' }
 Helper.DirectDownload <- function(URLS, Names, Cores, Dir) {
     ## progress bar
     pb <- progress_bar$new(

@@ -12,7 +12,7 @@ Download.NORA3(
   Cores = 1,
   Dir = getwd(),
   FileName,
-  Compression = 9,
+  Compression = NA,
   RemoveTemporary = TRUE
 )
 }

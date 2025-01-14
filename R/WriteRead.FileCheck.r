@@ -11,9 +11,7 @@
 #'
 #' @return Either a data object or NULL
 #'
-#' @examples
 #' @export
-#'
 WriteRead.FileCheck <- function(FName, Dir = getwd(), loadFun, load = TRUE, verbose = TRUE) {
   FNAME <- file.path(Dir, FName)
   file <- NULL

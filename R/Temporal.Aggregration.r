@@ -1,7 +1,7 @@
 ### TEMPORAL AGGREGATION =======================================================
 #' Carry out temporal aggregation
 #'
-#' Takes a SpatRaster and user-specifications of temporal aggregation and carries it out
+#' Takes a SpatRaster and user-specifications of temporal aggregation and carries it out.
 #'
 #' @param Raster A SpatRaster within which coverage should be identified
 #' @param TResolution Character. User-specified temporal resolution
@@ -9,8 +9,11 @@
 #' @param FUN User-defined aggregation function
 #'
 #' @importFrom terra time
-#' @importFrom terra tapp
 #' @importFrom terra app
+#' @importFrom terra nlyr
+#' @importFrom terra varnames
+#' @importFrom lubridate tz
+#' @importFrom progress progress_bar
 #'
 #' @return A SpatRaster
 #' @example
@@ -21,7 +24,6 @@
 #'     TStep = 2,
 #'     FUN = mean
 #' )
-#'
 #' @export
 Temporal.Aggregration <- function(Raster, TResolution, TStep, FUN) {
     ## formatting

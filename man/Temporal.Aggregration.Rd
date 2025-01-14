@@ -4,39 +4,16 @@
 \alias{Temporal.Aggregration}
 \title{Carry out temporal aggregation}
 \usage{
-Temporal.Aggregration(
-  Raster,
-  BaseResolution,
-  BaseStep,
-  TResolution,
-  TStep,
-  FUN,
-  Cores,
-  QueryTargetSteps,
-  TZone,
-  verbose = TRUE
-)
+Temporal.Aggregration(Raster, TResolution, TStep, FUN)
 }
 \arguments{
 \item{Raster}{A SpatRaster within which coverage should be identified}
-
-\item{BaseResolution}{Character. Base temporal resolution of data set}
-
-\item{BaseStep}{Numeric. Base time step of data set}
 
 \item{TResolution}{Character. User-specified temporal resolution}
 
 \item{TStep}{Numeric. User-specified time step}
 
 \item{FUN}{User-defined aggregation function}
-
-\item{Cores}{Numeric. Number of cores for parallel processing}
-
-\item{QueryTargetSteps}{Character. Target resolution steps}
-
-\item{TZone}{Character. Time zone for queried data.}
-
-\item{verbose}{Logical. Whether to print/message function progress in console or not.}
 }
 \value{
 A SpatRaster

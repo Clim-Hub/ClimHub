@@ -19,5 +19,5 @@ Temporal.Aggregration(Raster, TResolution, TStep, FUN)
 A SpatRaster
 }
 \description{
-Takes a SpatRaster and user-specifications of temporal aggregation and carries it out
+Takes a SpatRaster and user-specifications of temporal aggregation and carries it out.
 }

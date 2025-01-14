@@ -1,45 +1,46 @@
 ### EXTRACTING DATA IN SPACE =========================================================
 #' Extracting data from SpatRaster with a SpatialFeaturesObject
 #'
-#' Cropped and masking the original SpatRaster (`Raster`) using supplied SpatExtent or shapefile (`Shape`) and retaining all pixels which are even just partially covered.
+#' Extract data from SpatRaster corresponding to spatial features in SF object.
 #'
 #' @param Raster A SpatRaster within which coverage should be identified
-#' @param Shape Either a SPatExtent or an sf polygon(-collection) whose coverage of the raster object is to be found.
+#' @param SF Either an sf polygon(-collection) or an sf point(-collection).
+#' @param FUN User-defined function by which to aggregate values of cells within a polygon. Supported functions are mean, sum, min, max and table.
 #'
-#' @importFrom terra crop
-#' @importFrom terra ext
-#' @importFrom terra mask
-#' @importFrom terra nlyr
-#' @importFrom pbapply pblapply
+#' @importFrom terra extract
+#' @importFrom terra crs
+#' @importFrom sf st_crs
+#' @importFrom terra time
 #'
-#' @return A SpatRaster.
+#' @return A data.frame.
 #'
 #' @examples
-#' Data_rast <- rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))[[1]]
+#' Data_rast <- rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))
 #' data(Jotunheimen_sf)
-#' Data_rast <- Spatial.Reproject(Data_rast, Jotunheimen_sf)
-#' Spatial.CropMask(Data_rast, Jotunheimen_sf)
+#' Spatial.Extract(
+#'     Raster = Data_rast,
+#'     SF = Jotunheimen_sf,
+#'     FUN = mean
+#' )
+#' data(Nor2K_sf)
+#' Spatial.Extract(
+#'     Raster = Data_rast,
+#'     SF = Nor2K_sf
+#' )
 #' @export
-Spatial.CropMask <- function(Raster, Shape) {
-    ## splitting by rasterlayers if necessary to avoid error reported in https://github.com/rspatial/terra/issues/1556
-    if (terra::nlyr(Raster) > 65535) {
-        Indices <- ceiling((1:terra::nlyr(Raster)) / 2e4)
-        r_ls <- terra::split(x = Raster, f = Indices)
-        ret_ls <- pblapply(r_ls, FUN = function(Raster_iter) {
-            ret_rast <- crop(Raster_iter, ext(Shape))
-            if (class(Shape)[1] == "sf") {
-                ret_rast <- mask(ret_rast, Shape, touches = TRUE)
-            }
-            ret_rast
-        })
-        ret_rast <- do.call(c, ret_ls)
-        return(ret_rast)
+Spatial.Extract <- function(Raster, SF, FUN = mean) {
+    ## preparing extraction
+    if (terra::crs(Raster) != st_crs(SF)$wkt) {
+        warning("Had to reproject your SF object to align with the Raster object CRS. This was done automatically, but I recommend doing so yourself and investigating the reprojected objects.")
+        SF <- Spatial.Reproject(SF, Raster)
     }
 
-    ## regular cropping and masking for SPatRasters not exceeding layer limit
-    ret_rast <- crop(Raster, ext(Shape))
-    if (class(Shape)[1] == "sf") {
-        ret_rast <- mask(ret_rast, Shape, touches = TRUE)
-    }
-    return(ret_rast)
+    ## actual extraction
+    Extracted_df <- terra::extract(x = Raster, y = SF, fun = FUN, exact = TRUE)
+
+    ## column names as dates/times
+    colnames(Extracted_df)[-1] <- as.character(terra::time(Raster))
+
+    ## return
+    return(Extracted_df)
 }

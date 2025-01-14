@@ -16,7 +16,7 @@
 #' @importFrom progress progress_bar
 #'
 #' @return A SpatRaster
-#' @example
+#' @examples
 #' Data_rast <- rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))
 #' Temporal.Aggregration(
 #'     Raster = Data_rast,

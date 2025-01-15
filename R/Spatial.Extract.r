@@ -36,7 +36,7 @@ Spatial.Extract <- function(Raster, SF, FUN = mean) {
     }
 
     ## actual extraction
-    Extracted_df <- terra::extract(x = Raster, y = SF, fun = FUN, exact = TRUE)
+    Extracted_df <- terra::extract(x = Raster, y = SF, fun = FUN, exact = TRUE, na.rm = TRUE)
 
     ## column names as dates/times
     colnames(Extracted_df)[-1] <- as.character(terra::time(Raster))

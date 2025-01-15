@@ -48,7 +48,7 @@ Handle.ListLayers <- function(Rast_ls, FUN = mean) {
     if (length(LayerCount) != 1) {
         stop("The rasters contained in your supplied list contain different numbers of layers.")
     }
-    if (class(FUN) != "function") {
+    if (is.function(FUN)) {
         stop("You have not specified a function for the FUN argument.")
     }
 

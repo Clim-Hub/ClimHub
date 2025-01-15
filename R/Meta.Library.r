@@ -8,6 +8,7 @@
 #' @importFrom rvest html_nodes
 #' @importFrom rvest html_text
 #' @importFrom jsonlite fromJSON
+#' @importFrom dplyr %>%
 #'
 #' @return A vector of supported datasets.
 #'

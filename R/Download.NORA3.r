@@ -155,7 +155,7 @@ Download.NORA3 <- function(
     }
 
     ### unlink temporary files
-    if (RemoveTemporary & !WriteFile) {
+    if (RemoveTemporary & WriteFile) {
         unlink(file.path(Dir, FNames))
     }
 

@@ -1,7 +1,7 @@
 Package: ClimHub
 Title: Climate Data Toolbox developed at CICERO Centre for International Climate Research
-Version: 0.0.6.2
-Authors@R: 
+Version: 0.0.6.3
+Authors@R:
     person("Erik", "Kusch", , "erik.kusch@cicero.oslo.no", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-4984-7646"))
 Description: Collection of functions relevant to work at CICERO. 
 License: MIT + file LICENSE

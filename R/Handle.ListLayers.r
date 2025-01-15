@@ -53,7 +53,7 @@ Handle.ListLayers <- function(Rast_ls, FUN = mean) {
     # }
 
     ## progress bar
-    pb <- progress_bar$new(
+    pb <- progress::progress_bar$new(
         format = "List-Layer Handling (:current/:total) | [:bar] Elapsed: :elapsed | Remaining: :eta",
         total = LayerCount,
         width = getOption("width"),
@@ -65,11 +65,11 @@ Handle.ListLayers <- function(Rast_ls, FUN = mean) {
     NewLayers <- list() # Use a list for better performance than concatenation
     for (AppIter in 1:LayerCount) {
         # Perform the terra::app operation directly without constructing strings
-        Fret <- terra::app(do.call(c, lapply(Rast_ls, "[[", AppIter)), fun = FUN)
+        Fret <- terra::app(rast(lapply(Rast_ls, "[[", AppIter)), fun = FUN)
         NewLayers[[AppIter]] <- Fret # Append result to list
         pb$tick(tokens = list(layer = progressIter[AppIter]))
     }
-    NewLayers <- do.call(c, NewLayers)
+    NewLayers <- rast(NewLayers)
 
     ## Assign time component of first raster in list to final raster
     terra::time(NewLayers) <- terra::time(Rast_ls[[1]])

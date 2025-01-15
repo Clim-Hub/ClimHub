@@ -14,7 +14,8 @@ Download.KlimaiNorge2100(
   Dir = getwd(),
   FileName,
   Compression = NA,
-  RemoveTemporary = TRUE
+  RemoveTemporary = TRUE,
+  WriteFile = TRUE
 )
 }
 \arguments{
@@ -37,6 +38,8 @@ Download.KlimaiNorge2100(
 \item{Compression}{Integer between 1 to 9. Applied to final .nc file that the function writes to hard drive. Same as compression argument in terra::writeCDF().}
 
 \item{RemoveTemporary}{Logical. Whether to delete temporary files after completion.}
+
+\item{WriteFile}{Logical. Whether to write final SpatRaster to disk as an .nc or to return information from memory. Note that setting WriteFile = FALSE will prohibit removal of temporary files.}
 }
 \value{
 A SpatRaster object containing the downloaded data, and a file in the specified directory. The SpatRaster contains metadata/attributes as a named vector that can be retrieved with terra::metags(...):

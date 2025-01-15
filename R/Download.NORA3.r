@@ -12,6 +12,7 @@
 #' @param FileName Character. A file name for the produced file.
 #' @param Compression Integer between 1 to 9. Applied to final .nc file that the function writes to hard drive. Same as compression argument in terra::writeCDF().
 #' @param RemoveTemporary Logical. Whether to delete temporary files after completion.
+#' @param WriteFile Logical. Whether to write final SpatRaster to disk as an .nc or to return information from memory. Note that setting WriteFile = FALSE will prohibit removal of temporary files.
 #'
 #' @importFrom tools file_path_sans_ext
 #' @importFrom terra metags
@@ -40,7 +41,8 @@ Download.NORA3 <- function(
     Leadtime, # NORA3 specific arguments
     Cores = 1,
     Dir = getwd(), FileName, Compression = NA, # file storing
-    RemoveTemporary = TRUE) {
+    RemoveTemporary = TRUE,
+    WriteFile = TRUE) {
     ## Input Checks ============
     message("###### Checking Request Validity")
 
@@ -142,16 +144,18 @@ Download.NORA3 <- function(
     # terra::time(MetNo_rast) <- TimeAssing
 
     ### write file
-    MetNo_rast <- WriteRead.NC(
-        NC = MetNo_rast, FName = file.path(Dir, FileName),
-        Variable = Variable,
-        LongVar = ExtractVar,
-        Unit = Unit,
-        Attrs = Meta_vec, Write = TRUE, Compression = Compression
-    )
+    if (WriteFile) {
+        MetNo_rast <- WriteRead.NC(
+            NC = MetNo_rast, FName = file.path(Dir, FileName),
+            Variable = Variable,
+            LongVar = ExtractVar,
+            Unit = Unit,
+            Attrs = Meta_vec, Write = TRUE, Compression = Compression
+        )
+    }
 
     ### unlink temporary files
-    if (RemoveTemporary) {
+    if (RemoveTemporary & !WriteFile) {
         unlink(file.path(Dir, FNames))
     }
 

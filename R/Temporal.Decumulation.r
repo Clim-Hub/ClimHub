@@ -73,6 +73,7 @@ Temporal.Decumulation <- function(Raster, Interval, Mode, Cores = 1) {
     "
 
     ## Make downloads
+    message("Decumulation")
     if (Cores > 1) {
         Decumulls <- foreach(
             CumulIter = 1:nrow(df),

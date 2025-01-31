@@ -95,7 +95,7 @@ Temporal.Decumulation <- function(Raster, Interval, Mode, Cores = 1) {
 
     ## Reassing values to output and return it
     message("Reassigning data to Raster")
-    decumulated_df <- Reduce(rbind, lapply(Decumulls, unlist))
+    decumulated_df <- do.call(rbind, lapply(Decumulls, unlist))
     values(Out) <- decumulated_df
     return(Out)
 }

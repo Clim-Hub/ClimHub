@@ -4,12 +4,14 @@
 \alias{Spatial.Reproject}
 \title{Reprojecting spatial data.}
 \usage{
-Spatial.Reproject(ProjFrom, ProjTo)
+Spatial.Reproject(ProjFrom, ProjTo, RasterResample = TRUE)
 }
 \arguments{
 \item{ProjFrom}{Either a SpatRaster or SF object which is to be reprojected.}
 
 \item{ProjTo}{Prefably, a character string identifying desired EPSG ID. Can also be a SpatRaster or SF object to whose projection the other opbject is to be reprojected. The latter specifications are less stable.}
+
+\item{RasterResample}{Logical. If TRUE and both objects are SpatRasters, ProjFrom is also resampled to match the resolution and origin of ProjTo.}
 }
 \value{
 A SpatRaster or SF object reprojected to the same CRS as in ProjTo.

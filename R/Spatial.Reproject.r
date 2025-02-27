@@ -5,9 +5,12 @@
 #'
 #' @param ProjFrom Either a SpatRaster or SF object which is to be reprojected.
 #' @param ProjTo Prefably, a character string identifying desired EPSG ID. Can also be a SpatRaster or SF object to whose projection the other opbject is to be reprojected. The latter specifications are less stable.
+#' @param RasterResample Logical. If TRUE and both objects are SpatRasters, ProjFrom is also resampled to match the resolution and origin of ProjTo.
 #'
 #' @importFrom terra crs
 #' @importFrom terra project
+#' @importFrom terra res
+#' @importFrom terra origin
 #' @importFrom sf st_transform
 #' @importFrom sf st_crs
 #'
@@ -22,7 +25,7 @@
 #' data(Nor2K_sf)
 #' Spatial.Reproject(Nor2K_sf, Data_rast)
 #' @export
-Spatial.Reproject <- function(ProjFrom, ProjTo) {
+Spatial.Reproject <- function(ProjFrom, ProjTo, RasterResample = TRUE) {
     ## classes of arguments
     class_name <- lapply(list(ProjFrom, ProjTo), class)
     class_def <- lapply(class_name, getClass)
@@ -32,7 +35,11 @@ Spatial.Reproject <- function(ProjFrom, ProjTo) {
 
     ## SpatRaster to SpatRaster
     if (package_name[[1]] == "terra" & package_name[[2]] == "terra") {
-        Reprojected <- terra::project(ProjFrom, terra::crs(ProjTo))
+        if (RasterResample) {
+            Reprojected <- terra::project(ProjFrom, terra::crs(ProjTo), res = terra::res(ProjTo)[1], origin = terra::origin(ProjTo))
+        } else {
+            Reprojected <- terra::project(ProjFrom, terra::crs(ProjTo))
+        }
     }
 
     ## SpatRaster to SF

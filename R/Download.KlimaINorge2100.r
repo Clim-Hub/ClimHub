@@ -146,6 +146,7 @@ Download.KlimaiNorge2100 <- function(
 
     ### Assign additional information
     terra::time(MetNo_rast) <- TimeAssing
+    terra::metags(MetNo_rast) <- Meta_vec
 
     ### write file
     if (WriteFile) {

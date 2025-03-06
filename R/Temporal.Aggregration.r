@@ -109,7 +109,7 @@ Temporal.Aggregration <- function(Raster, TResolution, TStep, FUN) {
     }
 
     ## variable naming
-    terra::varnames(Aggregated_rast) <- terra::varnames(Raster)
+    terra::varnames(Aggregated_rast) <- terra::varnames(Raster)[1]
 
     ## return
     return(Aggregated_rast)

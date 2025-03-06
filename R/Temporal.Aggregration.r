@@ -53,12 +53,12 @@ Temporal.Aggregration <- function(Raster, TResolution, TStep, FUN) {
         stop("Generation of aggregation indices for the layers in your supplied data led to erroneous records. This is likely caused by you specifying a temporal resolution finer that what the data you supplied contains natively.")
     }
 
-    ### Can we cleanly aggregate all data?
-    if (!all(table(AggrIndex) == TStep)) {
-        message(paste0("Your specified temporal resolution (", TStep, "-", TResolution, " intervals) does not align cleanly with the underlying temporal component of the data you have supplied. Temporal.Aggregation will proceed but discard some information from the data you supplied to achieve consistent temporal aggregation intervals."))
-    }
-    KeepIndices <- names(table(AggrIndex))[which(table(AggrIndex) == TStep)]
-    AggrIndex <- AggrIndex[AggrIndex %in% KeepIndices]
+    # ### Can we cleanly aggregate all data?, taken out as it introduced some issues
+    # if (!all(table(AggrIndex) == TStep)) {
+    #     message(paste0("Your specified temporal resolution (", TStep, "-", TResolution, " intervals) does not align cleanly with the underlying temporal component of the data you have supplied. Temporal.Aggregation will proceed but discard some information from the data you supplied to achieve consistent temporal aggregation intervals."))
+    # }
+    # KeepIndices <- names(table(AggrIndex))[which(table(AggrIndex) == TStep)]
+    # AggrIndex <- AggrIndex[AggrIndex %in% KeepIndices]
 
     ## Actual Aggregation
     ### make progress bar

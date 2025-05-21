@@ -10,7 +10,7 @@ WriteRead.NC(
   Variable,
   LongVar,
   Unit = "NA",
-  Attrs,
+  Attrs = NULL,
   Write = FALSE,
   Compression = 1
 )
@@ -20,17 +20,17 @@ WriteRead.NC(
 
 \item{FName}{Filename including directory}
 
-\item{Variable}{Character. Variable name to be saved as varname in NC output.}
+\item{Variable}{Character. Needed for writing. Variable name to be saved as varname in NC output.}
 
-\item{LongVar}{Character. Character. Long variable name.}
+\item{LongVar}{Character. Needed for writing. Long variable name.}
 
-\item{Unit}{Character. Unit in which Variable is recorded.}
+\item{Unit}{Character. Needed for writing. Unit in which Variable is recorded.}
 
-\item{Attrs}{Named vector of metadata attributes}
+\item{Attrs}{Named vector of metadata attributes to be written. Needed for writing.  When reading, all attributes in the .nc file are read.}
 
 \item{Write}{Logical. Whether to write metadata}
 
-\item{Compression}{Integer between 1 to 9. Applied to final .nc file that the function writes to hard drive. Same as compression argument in terra::writeCDF().}
+\item{Compression}{Integer between 1 to 9. Needed for writing. Applied to final .nc file that the function writes to hard drive. Same as compression argument in terra::writeCDF().}
 }
 \value{
 A SpatRaster with metadata

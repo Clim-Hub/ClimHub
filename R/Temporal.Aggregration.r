@@ -71,7 +71,7 @@ Temporal.Aggregration <- function(Raster, TResolution, TStep, FUN, verbose = TRU
             x = Raster[[which(AggrIndex == AggrIter)]],
             fun = FUN
         )
-        if(verbose){pb$tick(tokens = list(layer = progressIter[AggrIter]))}
+        if(verbose){pb$tick(tokens = list(layer = AggrIter))}
     }
     Aggregated_rast <- do.call(c, Aggregated_rast)
 

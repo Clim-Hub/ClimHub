@@ -31,8 +31,8 @@
 Spatial.Extract <- function(Raster, SF, FUN = mean) {
     ## preparing extraction
     if (terra::crs(Raster) != st_crs(SF)$wkt) {
-        warning("Had to reproject your SF object to align with the Raster object CRS. This was done automatically, but I recommend doing so yourself and investigating the reprojected objects.")
         SF <- Spatial.Reproject(SF, Raster)
+        warning("Had to reproject your SF object to align with the Raster object CRS. This was done automatically, but I recommend doing so yourself and investigating the reprojected objects.")
     }
 
     ## actual extraction

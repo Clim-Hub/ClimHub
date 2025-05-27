@@ -5,23 +5,32 @@
 #'
 #' @param FNames Character. Vector of absolute filenames to be loaded.
 #' @param TimeAssign POSIXct. Optional vector of times to apply to list-loaded data
+#' @param verbose Logical. If progress should be displayed in the console.
 #'
-#' @importFrom progress progress_bar
 #' @importFrom terra rast
 #' @importFrom terra time
 #' @importFrom terra nlyr
 #'
 #' @return A spatraster object.
+#' 
+#' @examples
+#' Helper.LoadFiles(
+#'    FNames = c(
+#'        system.file("extdata", "KiN_AT.nc", package = "ClimHub"), 
+#'        system.file("extdata", "KiN_PR.nc", package = "ClimHub")
+#'        )
+#'    )
 #'
-Helper.LoadFiles <- function(FNames, TimeAssign = NULL) {
+Helper.LoadFiles <- function(FNames, TimeAssign = NULL, verbose = TRUE) {
     ## make progress bar
-    pb <- progress_bar$new(
-        format = "Loading from disk (:current/:total) | [:bar] Elapsed: :elapsed | Remaining: :eta",
-        total = length(FNames), # 100
-        width = getOption("width"),
-        clear = FALSE
-    )
-    progressIter <- 1:length(FNames) # token reported in progress bar
+    pb <- Helper.Progress(IterLength = length(FNames), Text = "Loading Files")
+    # pb <- progress_bar$new(
+    #     format = "Loading from disk (:current/:total) | [:bar] Elapsed: :elapsed | Remaining: :eta",
+    #     total = length(FNames), # 100
+    #     width = getOption("width"),
+    #     clear = FALSE
+    # )
+    # progressIter <- 1:length(FNames) # token reported in progress bar
 
     ## loading data
     MetNo_rast <- as.list(rep(NA, length(FNames)))
@@ -30,7 +39,7 @@ Helper.LoadFiles <- function(FNames, TimeAssign = NULL) {
         if (!is.null(TimeAssign)) {
             terra::time(MetNo_rast[[LoadIter]]) <- rep(TimeAssign[LoadIter], terra::nlyr(MetNo_rast[[LoadIter]]))
         }
-        pb$tick(tokens = list(layer = progressIter[LoadIter]))
+        if(verbose){pb$tick(tokens = list(layer = LoadIter))}
     }
 
     ## retunring data

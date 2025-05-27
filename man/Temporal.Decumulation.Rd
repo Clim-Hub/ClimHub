@@ -4,7 +4,7 @@
 \alias{Temporal.Decumulation}
 \title{Carry out decumulation of cumulatively stored data}
 \usage{
-Temporal.Decumulation(Raster, Interval, Mode, Cores = 1)
+Temporal.Decumulation(Raster, Interval, Mode, Cores = 1, verbose = TRUE)
 }
 \arguments{
 \item{Raster}{A SpatRaster within which coverage should be identified}
@@ -14,10 +14,33 @@ Temporal.Decumulation(Raster, Interval, Mode, Cores = 1)
 \item{Mode}{Character. Mode of cumulative storage of values. Currently supported: CDS (first layer per day is the cumulative sum of the previous day).}
 
 \item{Cores}{Integer. Number of cores for parallelisation if desired.}
+
+\item{verbose}{Logical. If progress should be displayed in the console.}
 }
 \value{
 A SpatRaster
 }
 \description{
 Takes a SpatRaster and user-specifications of temporal cumulation and reverses the cumulative measurements into indvidual ones. Currently conceptualised to decumulate hourly CDS records.
+}
+\examples{
+
+Data_rast <- rast(system.file("extdata", "KiN_AT.nc", package = "ClimHub"))[[1:360]]
+Data_rast <- terra::crop(Data_rast, c(0, 7e4, 6.7e6, 6.77e6))
+# single-core
+SingleCore <- Temporal.Decumulation(
+    Raster = Data_rast,
+    Interval = 24,
+    Mode = "CDS"
+)
+# multi-core
+MultiCore <- Temporal.Decumulation(
+    Raster = Data_rast,
+    Interval = 24,
+    Mode = "CDS",
+    Cores = 2
+)
+## both are the same?
+all.equal(SingleCore, MultiCore)
+
 }

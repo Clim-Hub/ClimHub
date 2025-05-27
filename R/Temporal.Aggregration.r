@@ -7,13 +7,13 @@
 #' @param TResolution Character. User-specified temporal resolution
 #' @param TStep Numeric. User-specified time step
 #' @param FUN User-defined aggregation function
+#' @param verbose Logical. If progress should be displayed in the console.
 #'
 #' @importFrom terra time
 #' @importFrom terra app
 #' @importFrom terra nlyr
 #' @importFrom terra varnames
 #' @importFrom lubridate tz
-#' @importFrom progress progress_bar
 #'
 #' @return A SpatRaster
 #' @examples
@@ -25,7 +25,7 @@
 #'     FUN = mean
 #' )
 #' @export
-Temporal.Aggregration <- function(Raster, TResolution, TStep, FUN) {
+Temporal.Aggregration <- function(Raster, TResolution, TStep, FUN, verbose = TRUE) {
     ## formatting
     Form <- substr(TResolution, 1, 1)
     Form <- ifelse(Form %in% c("h", "y"), toupper(Form), Form)
@@ -62,14 +62,8 @@ Temporal.Aggregration <- function(Raster, TResolution, TStep, FUN) {
 
     ## Actual Aggregation
     ### make progress bar
-    pb <- progress_bar$new(
-        format = "Temporal Aggregation (:current/:total) | [:bar] Elapsed: :elapsed | Remaining: :eta",
-        total = length(unique(AggrIndex)),
-        width = getOption("width"),
-        clear = FALSE
-    )
-    progressIter <- 1:length(unique(AggrIndex)) # token reported in progress bar
-
+    pb <- Helper.Progress(IterLength = length(unique(AggrIndex)), Text = "Temporal Aggregation")
+    
     ### aggregating data
     Aggregated_rast <- as.list(rep(NA, length(unique(AggrIndex))))
     for (AggrIter in unique(AggrIndex)) {
@@ -77,7 +71,7 @@ Temporal.Aggregration <- function(Raster, TResolution, TStep, FUN) {
             x = Raster[[which(AggrIndex == AggrIter)]],
             fun = FUN
         )
-        pb$tick(tokens = list(layer = progressIter[AggrIter]))
+        if(verbose){pb$tick(tokens = list(layer = progressIter[AggrIter]))}
     }
     Aggregated_rast <- do.call(c, Aggregated_rast)
 

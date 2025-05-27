@@ -4,12 +4,14 @@
 \alias{Handle.ListLayers}
 \title{Layer-wise application on SpatRasters in a list}
 \usage{
-Handle.ListLayers(Rast_ls, FUN = mean)
+Handle.ListLayers(Rast_ls, FUN = mean, verbose = TRUE)
 }
 \arguments{
 \item{Rast_ls}{List. List of SpatRasters whose layers to compute with each other. All SpatRasters need to have the same layer count.}
 
 \item{FUN}{Function. Function by which to summarise/compute SpatRaster layers with each other.}
+
+\item{verbose}{Logical. If progress should be displayed in the console.}
 }
 \value{
 A SpatRaster.
@@ -18,32 +20,13 @@ A SpatRaster.
 Loops over layers of SpatRasters within supplied list object and calculates one resulting layer per layer-group across SpatRasters in accordance with supplied FUN argument.
 }
 \examples{
-Rast1 <- Download.KlimaiNorge2100(
-    Variable = "Mean Air Temperature",
-    DateStart = "1990-01-01",
-    DateStop = "1990-12-31",
-    Model = "CNRM_CCLM",
-    Scenario = "rcp85",
-    Cores = 1,
-    Dir = getwd(),
-    FileName = "CNRM_CCLM",
-    Compression = NA,
-    RemoveTemporary = TRUE
-)
-
-Rast2 <- Download.KlimaiNorge2100(
-    Variable = "Mean Air Temperature",
-    DateStart = "1990-01-01",
-    DateStop = "1990-12-31",
-    Model = "CNRM_RCA",
-    Scenario = "rcp85",
-    Cores = 1,
-    Dir = getwd(),
-    FileName = "CNRM_RCA",
-    Compression = NA,
-    RemoveTemporary = TRUE
-)
-
-Handle.ListLayers(Rast_ls = list(Rast1, Rast2), FUN = mean)
+## load the first 2 days of the KiN temperature data provided with ClimHub to two separate list slots and articifially increase values by 1 for the second list item
+Rast_ls <- list(
+    Base = terra::rast(system.file("extdata", "KiN_AT.nc", package = "ClimHub"))[[1:2]],
+    Base1 = terra::rast(system.file("extdata", "KiN_AT.nc", package = "ClimHub"))[[1:2]]+1
+    )
+## calculate difference between each layer in the two list slots
+Diff_rast <- Handle.ListLayers(Rast_ls = Rast_ls, FUN = diff)
+Diff_rast # all values in this 2-layer raster, ought to be 1 or NA
 
 }

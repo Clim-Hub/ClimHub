@@ -4,7 +4,7 @@
 \alias{Temporal.Aggregration}
 \title{Carry out temporal aggregation}
 \usage{
-Temporal.Aggregration(Raster, TResolution, TStep, FUN)
+Temporal.Aggregration(Raster, TResolution, TStep, FUN, verbose = TRUE)
 }
 \arguments{
 \item{Raster}{A SpatRaster within which coverage should be identified}
@@ -14,6 +14,8 @@ Temporal.Aggregration(Raster, TResolution, TStep, FUN)
 \item{TStep}{Numeric. User-specified time step}
 
 \item{FUN}{User-defined aggregation function}
+
+\item{verbose}{Logical. If progress should be displayed in the console.}
 }
 \value{
 A SpatRaster

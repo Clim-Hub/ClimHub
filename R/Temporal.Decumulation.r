@@ -7,6 +7,7 @@
 #' @param Interval Number of layers in the raster belonging to the same interval of cumulation.
 #' @param Mode Character. Mode of cumulative storage of values. Currently supported: CDS (first layer per day is the cumulative sum of the previous day).
 #' @param Cores Integer. Number of cores for parallelisation if desired.
+#' @param verbose Logical. If progress should be displayed in the console.
 #'
 #' @importFrom terra as.data.frame
 #' @importFrom doSNOW registerDoSNOW
@@ -15,15 +16,33 @@
 #' @importFrom snow stopCluster
 #' @importFrom foreach %dopar%
 #' @importFrom foreach foreach
-#' @importFrom progress progress_bar
 #' @importFrom terra nlyr
 #'
 #' @return A SpatRaster
 #' @examples
+#' 
+#' Data_rast <- rast(system.file("extdata", "KiN_AT.nc", package = "ClimHub"))[[1:360]]
+#' Data_rast <- terra::crop(Data_rast, c(0, 7e4, 6.7e6, 6.77e6))
+#' # single-core
+#' SingleCore <- Temporal.Decumulation(
+#'     Raster = Data_rast,
+#'     Interval = 24,
+#'     Mode = "CDS"
+#' )
+#' # multi-core
+#' MultiCore <- Temporal.Decumulation(
+#'     Raster = Data_rast,
+#'     Interval = 24,
+#'     Mode = "CDS",
+#'     Cores = 2
+#' )
+#' ## both are the same?
+#' all.equal(SingleCore, MultiCore)
+#' 
 #' @export
-Temporal.Decumulation <- function(Raster, Interval, Mode, Cores = 1) {
+Temporal.Decumulation <- function(Raster, Interval, Mode, Cores = 1, verbose = TRUE) {
     ## Make Raster into data.frame
-    message("Turning Spatial Data into DataFrame")
+    if(verbose){message("Turning Spatial Data into DataFrame")}
     df <- as.data.frame(Raster)
 
     ## Limit data according to cumulation mode
@@ -36,13 +55,7 @@ Temporal.Decumulation <- function(Raster, Interval, Mode, Cores = 1) {
     }
 
     ## progress bar
-    pb <- progress_bar$new(
-        format = "Decumulation (:current/:total) | [:bar] Elapsed: :elapsed | Remaining: :eta",
-        total = nrow(df), # 100
-        width = getOption("width"),
-        clear = FALSE
-    )
-    progressIter <- 1:nrow(df) # token reported in progress bar
+    pb <- Helper.Progress(IterLength = nrow(df), Text = "Decumulation")
 
     ## cluster opening
     if (Cores > 1) {
@@ -50,7 +63,7 @@ Temporal.Decumulation <- function(Raster, Interval, Mode, Cores = 1) {
         on.exit(snow::stopCluster(cl))
         doSNOW::registerDoSNOW(cl)
         progress <- function(n) {
-            pb$tick(tokens = list(layer = progressIter[n]))
+            pb$tick(tokens = list(layer = n))
         }
         ForeachObjects <- c("df", "Interval")
     }
@@ -73,7 +86,6 @@ Temporal.Decumulation <- function(Raster, Interval, Mode, Cores = 1) {
     "
 
     ## Make downloads
-    message("Decumulation")
     if (Cores > 1) {
         Decumulls <- foreach(
             CumulIter = 1:nrow(df),
@@ -88,9 +100,10 @@ Temporal.Decumulation <- function(Raster, Interval, Mode, Cores = 1) {
         for (CumulIter in 1:nrow(df)) {
             Fret <- eval(parse(text = looptext)) # evaluate the kriging specification per layer
             Decumulls <- c(Decumulls, Fret)
-            pb$tick(tokens = list(layer = progressIter[CumulIter]))
+            if(verbose){pb$tick(tokens = list(layer = CumulIter))}
         }
-        Decumulls <- Decumulls[[-1]]
+        print(class(Decumulls))
+        Decumulls <- Decumulls[-1] # get rid of NA slot I started with
     }
 
     ## Reassing values to output and return it

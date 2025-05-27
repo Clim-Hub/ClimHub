@@ -5,44 +5,25 @@
 #'
 #' @param Rast_ls List. List of SpatRasters whose layers to compute with each other. All SpatRasters need to have the same layer count.
 #' @param FUN Function. Function by which to summarise/compute SpatRaster layers with each other.
+#' @param verbose Logical. If progress should be displayed in the console.
 #'
 #' @importFrom terra nlyr
 #' @importFrom terra time
-#' @importFrom progress progress_bar
 #'
 #' @return A SpatRaster.
 #'
 #' @examples
-#' Rast1 <- Download.KlimaiNorge2100(
-#'     Variable = "Mean Air Temperature",
-#'     DateStart = "1990-01-01",
-#'     DateStop = "1990-12-31",
-#'     Model = "CNRM_CCLM",
-#'     Scenario = "rcp85",
-#'     Cores = 1,
-#'     Dir = getwd(),
-#'     FileName = "CNRM_CCLM",
-#'     Compression = NA,
-#'     RemoveTemporary = TRUE
-#' )
-#'
-#' Rast2 <- Download.KlimaiNorge2100(
-#'     Variable = "Mean Air Temperature",
-#'     DateStart = "1990-01-01",
-#'     DateStop = "1990-12-31",
-#'     Model = "CNRM_RCA",
-#'     Scenario = "rcp85",
-#'     Cores = 1,
-#'     Dir = getwd(),
-#'     FileName = "CNRM_RCA",
-#'     Compression = NA,
-#'     RemoveTemporary = TRUE
-#' )
-#'
-#' Handle.ListLayers(Rast_ls = list(Rast1, Rast2), FUN = mean)
+#' ## load the first 2 days of the KiN temperature data provided with ClimHub to two separate list slots and articifially increase values by 1 for the second list item
+#' Rast_ls <- list(
+#'     Base = terra::rast(system.file("extdata", "KiN_AT.nc", package = "ClimHub"))[[1:2]],
+#'     Base1 = terra::rast(system.file("extdata", "KiN_AT.nc", package = "ClimHub"))[[1:2]]+1
+#'     )
+#' ## calculate difference between each layer in the two list slots
+#' Diff_rast <- Handle.ListLayers(Rast_ls = Rast_ls, FUN = diff)
+#' Diff_rast # all values in this 2-layer raster, ought to be 1 or NA
 #'
 #' @export
-Handle.ListLayers <- function(Rast_ls, FUN = mean) {
+Handle.ListLayers <- function(Rast_ls, FUN = mean, verbose = TRUE) {
     ## Checks
     LayerCount <- unique(unlist(lapply(Rast_ls, terra::nlyr)))
     if (length(LayerCount) != 1) {
@@ -53,13 +34,7 @@ Handle.ListLayers <- function(Rast_ls, FUN = mean) {
     # }
 
     ## progress bar
-    pb <- progress::progress_bar$new(
-        format = "List-Layer Handling (:current/:total) | [:bar] Elapsed: :elapsed | Remaining: :eta",
-        total = LayerCount,
-        width = getOption("width"),
-        clear = FALSE
-    )
-    progressIter <- 1:LayerCount # token reported in progress bar
+    pb <- Helper.Progress(IterLength = LayerCount, Text = "List-Layer Handling")
 
     ## Make layer-wise application; does not support multi-core execution as described here: https://github.com/rspatial/terra/issues/36
     NewLayers <- list() # Use a list for better performance than concatenation
@@ -67,7 +42,7 @@ Handle.ListLayers <- function(Rast_ls, FUN = mean) {
         # Perform the terra::app operation directly without constructing strings
         Fret <- terra::app(rast(lapply(Rast_ls, "[[", AppIter)), fun = FUN)
         NewLayers[[AppIter]] <- Fret # Append result to list
-        pb$tick(tokens = list(layer = progressIter[AppIter]))
+        if(verbose){pb$tick(tokens = list(layer = AppIter))}
     }
     NewLayers <- rast(NewLayers)
 

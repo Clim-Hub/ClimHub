@@ -4,7 +4,7 @@
 \alias{Helper.DirectDownload}
 \title{Execute direct download calls}
 \usage{
-Helper.DirectDownload(URLS, Names, Cores, Dir)
+Helper.DirectDownload(URLS, Names, Cores, Dir, verbose = TRUE)
 }
 \arguments{
 \item{URLS}{Character. Vector of URLs for download.}
@@ -14,6 +14,8 @@ Helper.DirectDownload(URLS, Names, Cores, Dir)
 \item{Cores}{Integer. Number of cores for parallelisation if desired.}
 
 \item{Dir}{Character. Path to directory where files should be stored}
+
+\item{verbose}{Logical. If progress should be displayed in the console.}
 }
 \value{
 A vector of filenames. Same as the Names argument.
@@ -22,15 +24,13 @@ A vector of filenames. Same as the Names argument.
 Loops over all supplied file urls and file names, assuming these query NetCDF file from open hosts and downloads these files. In the process, it checks whether files that have been downloaded can be loaded from the disk. Parallelisation can speed this process up a lot.
 }
 \examples{
-\dontrun{
 Helper.DirectDownload(
-    URLs = c(
-        "https://thredds.met.no/thredds/fileServer/nora3/1961/08/01/00/fc1961080100_003_sfx.nc",
-        "https://thredds.met.no/thredds/fileServer/nora3/1961/08/01/06/fc1961080106_003_sfx.nc"
-    ),
-    Names = c("TEMP_fc1961080100_003_sfx.nc", "TEMP_fc1961080106_003_sfx.nc"),
-    Cores = 1,
-    Dir = getwd()
+   URLS = c(
+       "https://thredds.met.no/thredds/fileServer/nora3/1961/08/01/00/fc1961080100_003_sfx.nc",
+       "https://thredds.met.no/thredds/fileServer/nora3/1961/08/01/06/fc1961080106_003_sfx.nc"
+   ),
+   Names = c("TEMP_fc1961080100_003_sfx.nc", "TEMP_fc1961080106_003_sfx.nc"),
+   Cores = 2,
+   Dir = getwd()
 )
-}
 }

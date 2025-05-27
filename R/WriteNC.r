@@ -10,6 +10,7 @@
 #' @param unit Character. Unit in which Variable is recorded.
 #' @param attrs Named vector of metadata attributes
 #' @param compression Integer between 1 to 9. Applied to final .nc file that the function writes to hard drive. Same as compression argument in terra::writeCDF().
+#' @param verbose Logical. If progress should be displayed in the console.
 #'
 #' @importFrom terra is.lonlat
 #' @importFrom terra xFromCol
@@ -27,12 +28,24 @@
 #' @importFrom ncdf4 nc_close
 #' @importFrom ncdf4 ncatt_put
 #' @importFrom ncdf4 ncvar_put
-#' @importFrom progress progress_bar
 #' @importFrom utils packageVersion
 #'
 #' @return A SpatRaster with metadata written to the disk
+#' 
+#' @examples
+#' Data_rast <- rast(system.file("extdata", "KiN_AT.nc", package = "ClimHub"))[[1:360]]
+#' Data_rast <- terra::crop(Data_rast, c(0, 7e4, 6.7e6, 6.77e6))
+#' WriteNC(spatraster = Data_rast, 
+#'         output_file = "temp.nc", 
+#'         compression = NA, 
+#'         variable = varnames(Data_rast), 
+#'         longname = "testvar", 
+#'         unit = "K", 
+#'         attrs = c("Citation" = "ClimHub WriteNC Test")
+#'     )
+#' unlink("temp.nc")
 #'
-WriteNC <- function(spatraster, output_file, compression = NA, variable, longname, unit, attrs = NULL) {
+WriteNC <- function(spatraster, output_file, compression = NA, variable, longname, unit, attrs = NULL, verbose = TRUE) {
     # Check if input is a SpatRaster
     if (!inherits(spatraster, "SpatRaster")) {
         stop("Input must be a SpatRaster object")
@@ -139,14 +152,8 @@ WriteNC <- function(spatraster, output_file, compression = NA, variable, longnam
     on.exit(ncdf4::nc_close(nc)) # Ensure the file is closed on function exit.
 
     # Progress bar
-    pb <- progress_bar$new(
-        format = "Writing layers to disk (:current/:total) | [:bar] Elapsed: :elapsed | Remaining: :eta",
-        total = terra::nlyr(spatraster), # 100
-        width = getOption("width"),
-        clear = FALSE
-    )
-    progressIter <- 1:terra::nlyr(spatraster) # token reported in progress bar
-
+    pb <- Helper.Progress(IterLength = terra::nlyr(spatraster), Text = "Writing Layers to NetCDF")
+    
     # Write data layer by layer
     for (WriteIter in 1:terra::nlyr(spatraster)) {
         # Extract the data for the WriteIter-th layer as a matrix
@@ -161,8 +168,8 @@ WriteNC <- function(spatraster, output_file, compression = NA, variable, longnam
         )
 
         # Update progress bar
-        pb$tick(tokens = list(layer = progressIter[WriteIter]))
-        Sys.sleep(0.05)
+        if(verbose){pb$tick(tokens = list(layer = WriteIter))}
+        Sys.sleep(0.01)
     }
 
     # Write CRS information

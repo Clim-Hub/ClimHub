@@ -11,7 +11,8 @@ WriteNC(
   variable,
   longname,
   unit,
-  attrs = NULL
+  attrs = NULL,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -28,10 +29,26 @@ WriteNC(
 \item{unit}{Character. Unit in which Variable is recorded.}
 
 \item{attrs}{Named vector of metadata attributes}
+
+\item{verbose}{Logical. If progress should be displayed in the console.}
 }
 \value{
 A SpatRaster with metadata written to the disk
 }
 \description{
 Write NetCDF files and their metadata with a progress bar for netcdf layers. Adapted from the .writeCDF method in the terra package: https://github.com/rspatial/terra/blob/master/R/ncdf.R
+}
+\examples{
+Data_rast <- rast(system.file("extdata", "KiN_AT.nc", package = "ClimHub"))[[1:360]]
+Data_rast <- terra::crop(Data_rast, c(0, 7e4, 6.7e6, 6.77e6))
+WriteNC(spatraster = Data_rast, 
+        output_file = "temp.nc", 
+        compression = NA, 
+        variable = varnames(Data_rast), 
+        longname = "testvar", 
+        unit = "K", 
+        attrs = c("Citation" = "ClimHub WriteNC Test")
+    )
+unlink("temp.nc")
+
 }

@@ -5,41 +5,35 @@
 #'
 #' @param Raster A SpatRaster within which coverage should be identified
 #' @param Shape Either a SPatExtent or an sf polygon(-collection) whose coverage of the raster object is to be found.
+#' @param verbose Logical. If progress should be displayed in the console.
 #'
 #' @importFrom terra crop
 #' @importFrom terra ext
 #' @importFrom terra mask
 #' @importFrom terra nlyr
-#' @importFrom pbapply pblapply
 #'
 #' @return A SpatRaster.
 #'
 #' @examples
-#' Data_rast <- rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))[[1]]
+#' Data_rast <- rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))[[1:31]]
 #' data(Jotunheimen_sf)
 #' Data_rast <- Spatial.Reproject(Data_rast, Jotunheimen_sf)
 #' Spatial.CropMask(Data_rast, Jotunheimen_sf)
 #' @export
-Spatial.CropMask <- function(Raster, Shape) {
-    ## splitting by rasterlayers if necessary to avoid error reported in https://github.com/rspatial/terra/issues/1556
-    if (terra::nlyr(Raster) > 65535) {
-        Indices <- ceiling((1:terra::nlyr(Raster)) / 2e4)
-        r_ls <- terra::split(x = Raster, f = Indices)
-        ret_ls <- pblapply(r_ls, FUN = function(Raster_iter) {
-            ret_rast <- crop(Raster_iter, ext(Shape))
-            if (class(Shape)[1] == "sf") {
-                ret_rast <- mask(ret_rast, Shape, touches = TRUE)
-            }
-            ret_rast
-        })
-        ret_rast <- do.call(c, ret_ls)
-        return(ret_rast)
-    }
+Spatial.CropMask <- function(Raster, Shape, verbose = TRUE) {
+    ## progress bar
+    pb <- Helper.Progress(IterLength = nlyr(Raster), Text = "Cropping/Masking Layers")
 
-    ## regular cropping and masking for SPatRasters not exceeding layer limit
-    ret_rast <- crop(Raster, ext(Shape))
-    if (class(Shape)[1] == "sf") {
-        ret_rast <- mask(ret_rast, Shape, touches = TRUE)
-    }
-    return(ret_rast)
+    ## going layer by layer to avoid error reported in https://github.com/rspatial/terra/issues/1556
+    CroppedLayers_ls <- lapply(1:nlyr(Raster), FUN = function(Iter){
+        ret_rast <- crop(Raster[[Iter]], ext(Shape))
+        if (class(Shape)[1] == "sf") {
+            ret_rast <- mask(ret_rast, Shape, touches = TRUE)
+        }
+        if(verbose){pb$tick(tokens = list(layer = Iter))}
+        ret_rast
+    })
+
+    ## return fused layers as SpatRaster
+    return(do.call(c, CroppedLayers_ls))
 }

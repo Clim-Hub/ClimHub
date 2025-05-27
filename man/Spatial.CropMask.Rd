@@ -4,12 +4,14 @@
 \alias{Spatial.CropMask}
 \title{Cropping & Range Masking with Edge Support}
 \usage{
-Spatial.CropMask(Raster, Shape)
+Spatial.CropMask(Raster, Shape, verbose = TRUE)
 }
 \arguments{
 \item{Raster}{A SpatRaster within which coverage should be identified}
 
 \item{Shape}{Either a SPatExtent or an sf polygon(-collection) whose coverage of the raster object is to be found.}
+
+\item{verbose}{Logical. If progress should be displayed in the console.}
 }
 \value{
 A SpatRaster.
@@ -18,7 +20,7 @@ A SpatRaster.
 Cropped and masking the original SpatRaster (\code{Raster}) using supplied SpatExtent or shapefile (\code{Shape}) and retaining all pixels which are even just partially covered.
 }
 \examples{
-Data_rast <- rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))[[1]]
+Data_rast <- rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))[[1:31]]
 data(Jotunheimen_sf)
 Data_rast <- Spatial.Reproject(Data_rast, Jotunheimen_sf)
 Spatial.CropMask(Data_rast, Jotunheimen_sf)

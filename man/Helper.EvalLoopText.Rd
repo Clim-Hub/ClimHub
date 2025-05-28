@@ -4,7 +4,14 @@
 \alias{Helper.EvalLoopText}
 \title{Loop over a set numnber of iterations of a string to harmonise looping in package}
 \usage{
-Helper.EvalLoopText(LoopText, Iters, Objects, Cores = 1, verbose = TRUE)
+Helper.EvalLoopText(
+  LoopText,
+  Iters,
+  Objects,
+  Packages = "",
+  Cores = 1,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{LoopText}{Character. String to be valuated in Loop.}
@@ -12,6 +19,8 @@ Helper.EvalLoopText(LoopText, Iters, Objects, Cores = 1, verbose = TRUE)
 \item{Iters}{Numeric. Sequence of iterator values for "Iter" object to take.}
 
 \item{Objects}{List. List of objects the evaluator needs access to.}
+
+\item{Packages}{Character. Vector containing R package names which are needed for LoopText evaluation.}
 
 \item{Cores}{Integer. Number of cores for parallelisation if desired.}
 

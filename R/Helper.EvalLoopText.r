@@ -6,6 +6,7 @@
 #' @param LoopText Character. String to be valuated in Loop.
 #' @param Iters Numeric. Sequence of iterator values for "Iter" object to take.
 #' @param Objects List. List of objects the evaluator needs access to. 
+#' @param Packages Character. Vector containing R package names which are needed for LoopText evaluation.
 #' @param Cores Integer. Number of cores for parallelisation if desired.
 #' @param verbose Logical. If progress should be displayed in the console.
 #' 
@@ -48,7 +49,7 @@
 #'     verbose = FALSE
 #'     )
 #'
-Helper.EvalLoopText <- function(LoopText, Iters, Objects, Cores = 1, verbose = TRUE) {
+Helper.EvalLoopText <- function(LoopText, Iters, Objects, Packages = "", Cores = 1, verbose = TRUE) {
     ## make objects available to function-internal environment ----
     list2env(Objects, envir = environment()) ## make objects into environment within function
 
@@ -75,7 +76,7 @@ Helper.EvalLoopText <- function(LoopText, Iters, Objects, Cores = 1, verbose = T
         ForeachObjects <- names(Objects)
         Return <- foreach(
             Iter = Iters,
-            # .packages = c("httr"),
+            .packages = c("httr"),
             .export = ForeachObjects,
             .options.snow = list(progress = progress)
         ) %dopar% { # parallel loop'

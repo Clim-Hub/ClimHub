@@ -10,12 +10,6 @@
 #' @param verbose Logical. If progress should be displayed in the console.
 #'
 #' @importFrom utils download.file
-#' @importFrom doSNOW registerDoSNOW
-#' @importFrom parallel detectCores
-#' @importFrom parallel makeCluster
-#' @importFrom snow stopCluster
-#' @importFrom foreach %dopar%
-#' @importFrom foreach foreach
 #' @importFrom httr HEAD
 #' @importFrom httr headers
 #'
@@ -35,21 +29,10 @@ Helper.DirectDownload <- function(URLS, Names, Cores, Dir, verbose = TRUE) {
     ## progress bar
     pb <- Helper.Progress(IterLength = length(Names), Text = "Downloading")
 
-    ## cluster opening
-    if (Cores > 1) {
-        cl <- makeCluster(Cores)
-        on.exit(snow::stopCluster(cl))
-        doSNOW::registerDoSNOW(cl)
-        progress <- function(n) {
-            pb$tick(tokens = list(layer = n))
-        }
-        ForeachObjects <- c("Dir", "Names", "URLS")
-    }
-
     ## iteration code
     looptext <- '
-        URL <- URLS[DownIter]
-        Name <- Names[DownIter]
+        URL <- URLS[Iter]
+        Name <- Names[Iter]
         ## get expected file size
         response <- httr::HEAD(URL)
         fsize_expected <- as.numeric(headers(response)$`content-length`)
@@ -72,25 +55,9 @@ Helper.DirectDownload <- function(URLS, Names, Cores, Dir, verbose = TRUE) {
         } # remove the raster object so it does not interfere with future iterations
         Sys.sleep(0.05)
         file.path(Dir, Name)'
-
-    ## Make downloads
-    if (Cores > 1) {
-        Downls <- foreach(
-            DownIter = 1:length(Names),
-            .packages = c("httr"),
-            .export = ForeachObjects,
-            .options.snow = list(progress = progress)
-        ) %dopar% { # parallel loop'
-            eval(parse(text = looptext))
-        } # end of parallel loop
-    } else {
-        Downls <- c()
-        for (DownIter in 1:length(Names)) {
-            Fret <- eval(parse(text = looptext)) # evaluate the kriging specification per layer
-            Downls <- c(Downls, Fret)
-            if(verbose){pb$tick(tokens = list(layer = DownIter))}
-        }
-    }
+        
+    ## iterations
+    Downls <- Helper.EvalLoopText(LoopText = looptext, Iters = 1:length(Names), Packages = c("httr"), Objects = list(URLS = URLS, Names = Names, Dir = Dir, pb = pb), Cores = Cores, verbose = verbose)
 
     ## return file names
     return(unlist(Downls))

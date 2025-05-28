@@ -10,19 +10,14 @@
 #' @param verbose Logical. If progress should be displayed in the console.
 #'
 #' @importFrom terra as.data.frame
-#' @importFrom doSNOW registerDoSNOW
-#' @importFrom parallel detectCores
-#' @importFrom parallel makeCluster
-#' @importFrom snow stopCluster
-#' @importFrom foreach %dopar%
-#' @importFrom foreach foreach
 #' @importFrom terra nlyr
+#' @importFrom terra values
 #'
 #' @return A SpatRaster
 #' @examples
 #' 
 #' Data_rast <- rast(system.file("extdata", "KiN_AT.nc", package = "ClimHub"))[[1:360]]
-#' Data_rast <- terra::crop(Data_rast, c(0, 7e4, 6.7e6, 6.77e6))
+#' Data_rast <- ClimHub::Spatial.CropMask(Data_rast, c(0, 7e4, 6.7e6, 6.77e6))
 #' # single-core
 #' SingleCore <- Temporal.Decumulation(
 #'     Raster = Data_rast,
@@ -42,8 +37,15 @@
 #' @export
 Temporal.Decumulation <- function(Raster, Interval, Mode, Cores = 1, verbose = TRUE) {
     ## Make Raster into data.frame
-    if(verbose){message("Turning Spatial Data into DataFrame")}
-    df <- as.data.frame(Raster)
+    ### progress bar
+    pb <- Helper.Progress(IterLength = nlyr(Raster), Text = "Turning Raster into DataFrame")
+    df_ls <- lapply(1:nlyr(Raster), FUN = function(Iter){
+        df <- as.data.frame(Raster[[Iter]], na.rm = FALSE)
+        if(verbose){pb$tick(tokens = list(layer = Iter))}
+        df
+    })
+    df <- do.call(cbind, df_ls)
+    rm(df_ls)
 
     ## Limit data according to cumulation mode
     if (Mode == "CDS") {
@@ -54,23 +56,13 @@ Temporal.Decumulation <- function(Raster, Interval, Mode, Cores = 1, verbose = T
         stop("Only CDS cumulation is currently supported as the Mode argument.")
     }
 
-    ## progress bar
-    pb <- Helper.Progress(IterLength = nrow(df), Text = "Decumulation")
+    ## actual decumulation
+    ### progress bar
+    pb <- Helper.Progress(IterLength = nrow(df), Text = "Decumulation by Pixel in Raster")
 
-    ## cluster opening
-    if (Cores > 1) {
-        cl <- makeCluster(Cores)
-        on.exit(snow::stopCluster(cl))
-        doSNOW::registerDoSNOW(cl)
-        progress <- function(n) {
-            pb$tick(tokens = list(layer = n))
-        }
-        ForeachObjects <- c("df", "Interval")
-    }
-
-    ## iteration code
+    ### iteration code
     looptext <- "
-    row <- as.numeric(df[CumulIter, ])
+    row <- as.numeric(df[Iter, ])
 
     # Split the row into groups of size `Interval`
     groups <- base::split(
@@ -85,29 +77,11 @@ Temporal.Decumulation <- function(Raster, Interval, Mode, Cores = 1, verbose = T
     list(Iter = unlist(decumulated_groups))
     "
 
-    ## Make downloads
-    if (Cores > 1) {
-        Decumulls <- foreach(
-            CumulIter = 1:nrow(df),
-            # .packages = c("httr"),
-            .export = ForeachObjects,
-            .options.snow = list(progress = progress)
-        ) %dopar% { # parallel loop'
-            eval(parse(text = looptext))
-        } # end of parallel loop
-    } else {
-        Decumulls <- list("NA" = NA)
-        for (CumulIter in 1:nrow(df)) {
-            Fret <- eval(parse(text = looptext)) # evaluate the kriging specification per layer
-            Decumulls <- c(Decumulls, Fret)
-            if(verbose){pb$tick(tokens = list(layer = CumulIter))}
-        }
-        print(class(Decumulls))
-        Decumulls <- Decumulls[-1] # get rid of NA slot I started with
-    }
+    ### iterations
+    Decumulls <- Helper.EvalLoopText(LoopText = looptext, Iters = 1:nrow(df), Objects = list(df = df, Interval = Interval, pb = pb), Cores = Cores, verbose = verbose)
 
     ## Reassing values to output and return it
-    message("Reassigning data to Raster")
+    message("Assigning Decumulated Data to Raster")
     decumulated_df <- do.call(rbind, lapply(Decumulls, unlist))
     values(Out) <- decumulated_df
     return(Out)

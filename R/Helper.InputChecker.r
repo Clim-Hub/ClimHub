@@ -63,6 +63,6 @@ Helper.InputChecker <- function(InCheck_ls) {
     Checked_vec <- unlist(Checked_ls)
 
     if (length(Checked_vec[!Checked_vec]) > 0) {
-        stop(paste0("Your download request seems misspecified. Request validation fails for", paste(Checked_vec[!Checked_vec], collapse = ","), ". Please reinvestigate your specification of this/these argument(s)."))
+        stop(paste0("Your function input seems misspecified. Request validation fails for ", paste(names(Checked_vec)[!Checked_vec], collapse = ","), ". Please reinvestigate your specification of this/these argument(s)."))
     }
 }

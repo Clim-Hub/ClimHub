@@ -108,9 +108,9 @@ Metrics.ETCCDI <- function(Rasters) {
     )
 
     Return_ls <- lapply(1:length(Return_ls), FUN = function(Iter) {
-        varnames(Return_ls[[Iter]]) <- VarNames_ls[[Iter]][[1]]
-        longnames(Return_ls[[Iter]]) <- VarNames_ls[[Iter]][[2]]
-        time(Return_ls[[Iter]]) <- Dates
+        terra::varnames(Return_ls[[Iter]]) <- VarNames_ls[[Iter]][[1]]
+        terra::longnames(Return_ls[[Iter]]) <- VarNames_ls[[Iter]][[2]]
+        terra::time(Return_ls[[Iter]]) <- Dates
         Return_ls[[Iter]]
     })
     names(Return_ls) <- names(VarNames_ls)

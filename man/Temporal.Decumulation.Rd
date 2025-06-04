@@ -25,7 +25,7 @@ Takes a SpatRaster and user-specifications of temporal cumulation and reverses t
 }
 \examples{
 
-Data_rast <- rast(system.file("extdata", "KiN_AT.nc", package = "ClimHub"))[[1:360]]
+Data_rast <- terra::rast(system.file("extdata", "KiN_AT.nc", package = "ClimHub"))[[1:360]]
 Data_rast <- ClimHub::Spatial.CropMask(Data_rast, c(0, 7e4, 6.7e6, 6.77e6))
 # single-core
 SingleCore <- Temporal.Decumulation(

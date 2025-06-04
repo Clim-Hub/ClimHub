@@ -1,9 +1,9 @@
-### DOWNLOAD ARGUMENT INPUT CHECKING ========================================================
-#' Check validity of user input
+### THRESHOLDING OF RASTER CELLS ACROSS LAYERS ========================================================
+#' Apply tresholding to raster layers
 #'
-#' Loops over contents of a named list of lists where each sublist contains the pointers Input, Allowed, and Operator.
+#' Loops over layers in a SpatRaster object and evaluates threshold criteria defined by user.
 #'
-#' @param Raster A SpatRaster within which coverage should be identified
+#' @param Raster A SpatRaster within which thresholding should be applied
 #' @param Operator Character. One of ">", "<", ">=", "<=", "==", "!=" to evaluate Raster cells against Threshold value.
 #' @param Threshold Numeric or Character. Threshold to evaluate Raster cells against using Operator value.
 #' @param ReturnValues Logical. Whether to return Raster of values matching thresholding (TRUE) or only logical raster indicating where thresholding is matched (FALSE).
@@ -14,7 +14,7 @@
 #' @return A SpatRaster.
 #'
 #' @examples
-#' Data_rast <- rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))[[1:31]]
+#' Data_rast <- terra::rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))[[1:31]]
 #' Helper.Threshold(
 #'     Raster = Data_rast,
 #'     Operator = "<",

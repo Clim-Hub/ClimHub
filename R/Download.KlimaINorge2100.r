@@ -1,4 +1,4 @@
-#' Downloading Klima i Norge 2100 Data from the Norwegian Meteorological Instite
+#' DOWNLOADING KLIMA I NORGE 2100 DATA FROM THE NORWEGIAN METEOROLOGICAL INSTITUE ======================================================
 #'
 #' This function is used to obtain the \href{https://www.miljodirektoratet.no/publikasjoner/2015/september-2015/klima-i-norge-2100/}{Klima_i_Norge_2100} data product hosted through \href{https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge_2100/catalog.html}{thredds.met.no}. Specifically, this function makes available the following datasets:
 #'  1. \href{https://publikasjoner.nve.no/rapport/2016/rapport2016_59.pdf}{Gridded 1 x 1 km climate and hydrological projections for Norway} data contained within \href{https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge_2100/utgave2015/catalog.html}{utgave 2015}.
@@ -43,7 +43,8 @@
 Download.KlimaiNorge2100 <- function(
     Variable, # which variable
     DateStart, DateStop, # time-window
-    Model, Scenario, # Klima i Norge 2100 specific arguments
+    Model,
+    Scenario = c("rcp45", "rcp85"), # Klima i Norge 2100 specific arguments
     Cores = 1,
     Dir = getwd(), FileName, Compression = NA, # file storing
     RemoveTemporary = TRUE,

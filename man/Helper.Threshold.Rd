@@ -2,7 +2,7 @@
 % Please edit documentation in R/Helper.Threshold.r
 \name{Helper.Threshold}
 \alias{Helper.Threshold}
-\title{Check validity of user input}
+\title{Apply tresholding to raster layers}
 \usage{
 Helper.Threshold(
   Raster,
@@ -13,7 +13,7 @@ Helper.Threshold(
 )
 }
 \arguments{
-\item{Raster}{A SpatRaster within which coverage should be identified}
+\item{Raster}{A SpatRaster within which thresholding should be applied}
 
 \item{Operator}{Character. One of ">", "<", ">=", "<=", "==", "!=" to evaluate Raster cells against Threshold value.}
 
@@ -27,10 +27,10 @@ Helper.Threshold(
 A SpatRaster.
 }
 \description{
-Loops over contents of a named list of lists where each sublist contains the pointers Input, Allowed, and Operator.
+Loops over layers in a SpatRaster object and evaluates threshold criteria defined by user.
 }
 \examples{
-Data_rast <- rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))[[1:31]]
+Data_rast <- terra::rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))[[1:31]]
 Helper.Threshold(
     Raster = Data_rast,
     Operator = "<",

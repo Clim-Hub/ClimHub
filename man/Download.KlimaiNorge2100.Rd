@@ -2,14 +2,14 @@
 % Please edit documentation in R/Download.KlimaiNorge2100.r
 \name{Download.KlimaiNorge2100}
 \alias{Download.KlimaiNorge2100}
-\title{Downloading Klima i Norge 2100 Data from the Norwegian Meteorological Instite}
+\title{DOWNLOADING KLIMA I NORGE 2100 DATA FROM THE NORWEGIAN METEOROLOGICAL INSTITUE ======================================================}
 \usage{
 Download.KlimaiNorge2100(
   Variable,
   DateStart,
   DateStop,
   Model,
-  Scenario,
+  Scenario = c("rcp45", "rcp85"),
   Cores = 1,
   Dir = getwd(),
   FileName,

@@ -15,8 +15,8 @@
 #'
 #' @return A SpatRaster
 #' @examples
-#' 
-#' Data_rast <- rast(system.file("extdata", "KiN_AT.nc", package = "ClimHub"))[[1:360]]
+#'
+#' Data_rast <- terra::rast(system.file("extdata", "KiN_AT.nc", package = "ClimHub"))[[1:360]]
 #' Data_rast <- ClimHub::Spatial.CropMask(Data_rast, c(0, 7e4, 6.7e6, 6.77e6))
 #' # single-core
 #' SingleCore <- Temporal.Decumulation(
@@ -33,15 +33,17 @@
 #' )
 #' ## both are the same?
 #' all.equal(SingleCore, MultiCore)
-#' 
+#'
 #' @export
 Temporal.Decumulation <- function(Raster, Interval, Mode, Cores = 1, verbose = TRUE) {
     ## Make Raster into data.frame
     ### progress bar
     pb <- Helper.Progress(IterLength = nlyr(Raster), Text = "Turning Raster into DataFrame")
-    df_ls <- lapply(1:nlyr(Raster), FUN = function(Iter){
+    df_ls <- lapply(1:nlyr(Raster), FUN = function(Iter) {
         df <- as.data.frame(Raster[[Iter]], na.rm = FALSE)
-        if(verbose){pb$tick(tokens = list(layer = Iter))}
+        if (verbose) {
+            pb$tick(tokens = list(layer = Iter))
+        }
         df
     })
     df <- do.call(cbind, df_ls)

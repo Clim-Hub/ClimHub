@@ -1,0 +1,37 @@
+{
+    "name": "",
+    "url": "",
+    "license": "",
+    "citation": "",
+    "doi": "",
+    "issn": "",
+    "isbn": "",
+    "access_mode": "",
+    "access_function": "",
+    "time": {
+        "extent": [
+            "YYY-MM-DD HH:MM:SS",
+            "YYY-MM-DD HH:MM:SS"
+        ],
+        "resolution": #,
+        "unit": ""
+    },
+    "space": {
+        "extent": [
+            xmin,
+            xmax,
+            ymin,
+            ymax
+        ],
+        "resolution": #,
+        "unit": "°",
+        "crs": ""
+    },
+    "variables": [
+        {
+            "name": "",
+            "unit": "",
+            "issues": ""
+        }
+    ]
+}

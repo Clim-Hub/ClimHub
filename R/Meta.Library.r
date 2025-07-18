@@ -46,9 +46,5 @@ Meta.Library <- function() {
     tree_items <- tree_items[grep(pattern = "\\.json$", tree_items)]
 
     # Filter for JSON files without extensions
-    tools::file_path_sans_ext(tree_items)
+    tools::file_path_sans_ext(gsub("SKELETON", "", tree_items))
 }
-
-
-
-library(rvest)

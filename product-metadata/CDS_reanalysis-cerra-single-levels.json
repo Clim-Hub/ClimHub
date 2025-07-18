@@ -7,7 +7,7 @@
     "issn": "",
     "isbn": "",
     "access_mode": "API Call",
-    "access_function": "Download.reanalysis-cerra-single-levels",
+    "access_function": "Download.reanalysis_cerra_single_levels",
     "leadtime": [
         1,
         2,
@@ -16,7 +16,7 @@
         5,
         6,
         9,
-        12
+        12,
         15,
         18,
         21,

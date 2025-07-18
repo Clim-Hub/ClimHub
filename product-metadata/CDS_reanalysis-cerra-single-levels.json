@@ -1,0 +1,543 @@
+{
+    "name": "CERRA sub-daily regional reanalysis data for Europe on single levels from 1984 to present",
+    "url": "https://cds.climate.copernicus.eu/datasets/reanalysis-cerra-single-levels",
+    "license": " CC-BY",
+    "citation": "Schimanke S., Ridal M., Le Moigne P., Berggren L., Undén P., Randriamampianina R., Andrea U., Bazile E., Bertelsen A., Brousseau P., Dahlgren P., Edvinsson L., El Said A., Glinton M., Hopsch S., Isaksson L., Mladek R., Olsson E., Verrelle A., Wang Z.Q., (2021): CERRA sub-daily regional reanalysis data for Europe on single levels from 1984 to present. Copernicus Climate Change Service (C3S) Climate Data Store (CDS), DOI: 10.24381/cds.622a565a",
+    "doi": "10.24381/cds.622a565a",
+    "issn": "",
+    "isbn": "",
+    "access_mode": "API Call",
+    "access_function": "Download.reanalysis-cerra-single-levels",
+    "leadtime": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        9,
+        12
+        15,
+        18,
+        21,
+        24,
+        27,
+        30
+    ],
+    "time": {
+        "extent": [
+            "1984-09-01 00:00:00",
+            "PRESENT"
+        ],
+        "resolution": 3,
+        "unit": "hour"
+    },
+    "space": {
+        "extent": [
+            -58.18128,
+            74.18844,
+            20.29425,
+            75.33643
+        ],
+        "resolution": 0.06712461,
+        "unit": "°",
+        "crs": "+proj=lcc +lat_1=50 +lat_2=50 +lat_0=50 +lon_0=8 +R=6371229 +x_0=0 +y_0=0 +units=m +no_defs"
+    },
+    "variables": [
+        {
+            "name": "10m wind direction",
+            "unit": "deg true",
+            "level type": "Surface or atmosphere",
+            "soil layer": "",
+            "data type": [
+                "Ensemble members",
+                "Reanalysis"
+            ],
+            "product type": [
+                "Analysis",
+                "Forecast"
+            ],
+            "issues": ""
+        },
+        {
+            "name": "10m wind gust since previous post-processing",
+            "unit": "m/s",
+            "level type": "Surface or atmosphere",
+            "soil layer": "",
+            "data type": [
+                "Ensemble members",
+                "Reanalysis"
+            ],
+            "product type": "Forecast",
+            "issues": ""
+        },
+        {
+            "name": "10m wind speed",
+            "unit": "m/s",
+            "level type": "Surface or atmosphere",
+            "soil layer": "",
+            "data type": [
+                "Ensemble members",
+                "Reanalysis"
+            ],
+            "product type": [
+                "Analysis",
+                "Forecast"
+            ],
+            "issues": ""
+        },
+        {
+            "name": "2m relative humidity",
+            "unit": "%",
+            "level type": "Surface or atmosphere",
+            "soil layer": "",
+            "data type": [
+                "Ensemble members",
+                "Reanalysis"
+            ],
+            "product type": [
+                "Analysis",
+                "Forecast"
+            ],
+            "issues": ""
+        },
+        {
+            "name": "2m temperature",
+            "unit": "C",
+            "level type": "Surface or atmosphere",
+            "soil layer": "",
+            "data type": [
+                "Ensemble members",
+                "Reanalysis"
+            ],
+            "product type": [
+                "Analysis",
+                "Forecast"
+            ],
+            "issues": ""
+        },
+        {
+            "name": "Albedo",
+            "unit": "%",
+            "level type": "Surface or atmosphere",
+            "soil layer": "",
+            "data type": [
+                "Ensemble members",
+                "Reanalysis"
+            ],
+            "product type": [
+                "Analysis",
+                "Forecast"
+            ],
+            "issues": ""
+        },
+        {
+            "name": "Evaporation",
+            "unit": "kg/(m^2*s)",
+            "level type": "Surface or atmosphere",
+            "soil layer": "",
+            "data type": [
+                "Ensemble members",
+                "Reanalysis"
+            ],
+            "product type": "Forecast",
+            "issues": ""
+        },
+        {
+            "name": "High cloud cover",
+            "unit": "%",
+            "level type": "Surface or atmosphere",
+            "soil layer": "",
+            "data type": [
+                "Ensemble members",
+                "Reanalysis"
+            ],
+            "product type": [
+                "Analysis",
+                "Forecast"
+            ],
+            "issues": ""
+        },
+        {
+            "name": "Low cloud cover",
+            "unit": "%",
+            "level type": "Surface or atmosphere",
+            "soil layer": "",
+            "data type": [
+                "Ensemble members",
+                "Reanalysis"
+            ],
+            "product type": [
+                "Analysis",
+                "Forecast"
+            ],
+            "issues": ""
+        },
+        {
+            "name": "Maximum 2m temperature since previous post-processing",
+            "unit": "C",
+            "level type": "Surface or atmosphere",
+            "soil layer": "",
+            "data type": [
+                "Ensemble members",
+                "Reanalysis"
+            ],
+            "product type": "Forecast",
+            "issues": ""
+        },
+        {
+            "name": "Mean sea level pressure",
+            "unit": "Pa",
+            "level type": "Surface or atmosphere",
+            "soil layer": "",
+            "data type": [
+                "Ensemble members",
+                "Reanalysis"
+            ],
+            "product type": [
+                "Analysis",
+                "Forecast"
+            ],
+            "issues": ""
+        },
+        {
+            "name": "Medium cloud cover",
+            "unit": "%",
+            "level type": "Surface or atmosphere",
+            "soil layer": "",
+            "data type": [
+                "Ensemble members",
+                "Reanalysis"
+            ],
+            "product type": [
+                "Analysis",
+                "Forecast"
+            ],
+            "issues": ""
+        },
+        {
+            "name": "Minimum 2m temperature since previous post-processing",
+            "unit": "C",
+            "level type": "Surface or atmosphere",
+            "soil layer": "",
+            "data type": [
+                "Ensemble members",
+                "Reanalysis"
+            ],
+            "product type": "Forecast",
+            "issues": ""
+        },
+        {
+            "name": "Momentum flux at the surface u-component",
+            "unit": "N/(m^2)",
+            "level type": "Surface or atmosphere",
+            "soil layer": "",
+            "data type": "Reanalysis",
+            "product type": "Forecast",
+            "issues": ""
+        },
+        {
+            "name": "Momentum flux at the surface v-component",
+            "unit": "N/(m^2)",
+            "level type": "Surface or atmosphere",
+            "soil layer": "",
+            "data type": "Reanalysis",
+            "product type": "Forecast",
+            "issues": ""
+        },
+        {
+            "name": "Skin temperature",
+            "unit": "C",
+            "level type": "Surface or atmosphere",
+            "soil layer": "",
+            "data type": [
+                "Ensemble members",
+                "Reanalysis"
+            ],
+            "product type": [
+                "Analysis",
+                "Forecast"
+            ],
+            "issues": ""
+        },
+        {
+            "name": "Snow density",
+            "unit": "kg/m^3",
+            "level type": "Surface or atmosphere",
+            "soil layer": "",
+            "data type": [
+                "Ensemble members",
+                "Reanalysis"
+            ],
+            "product type": [
+                "Analysis",
+                "Forecast"
+            ],
+            "issues": ""
+        },
+        {
+            "name": "Snow depth",
+            "unit": "m",
+            "level type": "Surface or atmosphere",
+            "soil layer": "",
+            "data type": [
+                "Ensemble members",
+                "Reanalysis"
+            ],
+            "product type": [
+                "Analysis",
+                "Forecast"
+            ],
+            "issues": ""
+        },
+        {
+            "name": "Snow depth water equivalent",
+            "unit": "kg/m^2",
+            "level type": "Surface or atmosphere",
+            "soil layer": "",
+            "data type": [
+                "Ensemble members",
+                "Reanalysis"
+            ],
+            "product type": [
+                "Analysis",
+                "Forecast"
+            ],
+            "issues": ""
+        },
+        {
+            "name": "Snow fall water equivalent",
+            "unit": "kg/(m^2*s)",
+            "level type": "Surface or atmosphere",
+            "soil layer": "",
+            "data type": [
+                "Ensemble members",
+                "Reanalysis"
+            ],
+            "product type": "Forecast",
+            "issues": ""
+        },
+        {
+            "name": "Surface latent heat flux",
+            "unit": "W/(m^2)",
+            "level type": "Surface or atmosphere",
+            "soil layer": "",
+            "data type": [
+                "Ensemble members",
+                "Reanalysis"
+            ],
+            "product type": "Forecast",
+            "issues": ""
+        },
+        {
+            "name": "Surface net solar radiation",
+            "unit": "W/(m^2)",
+            "level type": "Surface or atmosphere",
+            "soil layer": "",
+            "data type": [
+                "Ensemble members",
+                "Reanalysis"
+            ],
+            "product type": "Forecast",
+            "issues": ""
+        },
+        {
+            "name": "Surface net solar radiation, clear sky",
+            "unit": "W/(m^2)",
+            "level type": "Surface or atmosphere",
+            "soil layer": "",
+            "data type": [
+                "Ensemble members",
+                "Reanalysis"
+            ],
+            "product type": "Forecast",
+            "issues": ""
+        },
+        {
+            "name": "Surface net thermal radiation",
+            "unit": "W/(m^2)",
+            "level type": "Surface or atmosphere",
+            "soil layer": "",
+            "data type": [
+                "Ensemble members",
+                "Reanalysis"
+            ],
+            "product type": "Forecast",
+            "issues": ""
+        },
+        {
+            "name": "Surface net thermal radiation, clear sky",
+            "unit": "W/(m^2)",
+            "level type": "Surface or atmosphere",
+            "soil layer": "",
+            "data type": [
+                "Ensemble members",
+                "Reanalysis"
+            ],
+            "product type": "Forecast",
+            "issues": ""
+        },
+        {
+            "name": "Surface pressure",
+            "unit": "Pa",
+            "level type": "Surface or atmosphere",
+            "soil layer": "",
+            "data type": [
+                "Ensemble members",
+                "Reanalysis"
+            ],
+            "product type": [
+                "Analysis",
+                "Forecast"
+            ],
+            "issues": ""
+        },
+        {
+            "name": "Surface roughness",
+            "unit": "m",
+            "level type": "Surface or atmosphere",
+            "soil layer": "",
+            "data type": [
+                "Ensemble members",
+                "Reanalysis"
+            ],
+            "product type": [
+                "Analysis",
+                "Forecast"
+            ],
+            "issues": ""
+        },
+        {
+            "name": "Surface sensible heat flux",
+            "unit": "W/(m^2)",
+            "level type": "Surface or atmosphere",
+            "soil layer": "",
+            "data type": [
+                "Ensemble members",
+                "Reanalysis"
+            ],
+            "product type": "Forecast",
+            "issues": ""
+        },
+        {
+            "name": "Surface solar radiation downwards",
+            "unit": "W/(m^2)",
+            "level type": "Surface or atmosphere",
+            "soil layer": "",
+            "data type": [
+                "Ensemble members",
+                "Reanalysis"
+            ],
+            "product type": "Forecast",
+            "issues": ""
+        },
+        {
+            "name": "Surface thermal radiation downwards",
+            "unit": "W/(m^2)",
+            "level type": "Surface or atmosphere",
+            "soil layer": "",
+            "data type": [
+                "Ensemble members",
+                "Reanalysis"
+            ],
+            "product type": "Forecast",
+            "issues": ""
+        },
+        {
+            "name": "Time-integrated surface direct short wave radiation flux",
+            "unit": "W/(m^2)",
+            "level type": "Surface or atmosphere",
+            "soil layer": "",
+            "data type": [
+                "Ensemble members",
+                "Reanalysis"
+            ],
+            "product type": "Forecast",
+            "issues": ""
+        },
+        {
+            "name": "Total cloud cover",
+            "unit": "%",
+            "level type": "Surface or atmosphere",
+            "soil layer": "",
+            "data type": [
+                "Ensemble members",
+                "Reanalysis"
+            ],
+            "product type": [
+                "Analysis",
+                "Forecast"
+            ],
+            "issues": ""
+        },
+        {
+            "name": "Total column integrated water vapour",
+            "unit": "kg/m^2",
+            "level type": "Surface or atmosphere",
+            "soil layer": "",
+            "data type": [
+                "Ensemble members",
+                "Reanalysis"
+            ],
+            "product type": [
+                "Analysis",
+                "Forecast"
+            ],
+            "issues": ""
+        },
+        {
+            "name": "Total precipitation",
+            "unit": "kg/(m^2*s)",
+            "level type": "Surface or atmosphere",
+            "soil layer": "",
+            "data type": "Reanalysis",
+            "product type": "Forecast",
+            "issues": ""
+        },
+        {
+            "name": "Liquid volumetric soil moisture (non-frozen)",
+            "unit": "m^3/m^3",
+            "level type": "Soil",
+            "soil layer": "Top Soil",
+            "data type": [
+                "Ensemble members",
+                "Reanalysis"
+            ],
+            "product type": [
+                "Analysis",
+                "Forecast"
+            ],
+            "issues": ""
+        },
+        {
+            "name": "Soil Temperature",
+            "unit": "C",
+            "level type": "Soil",
+            "soil layer": "Top Soil",
+            "data type": [
+                "Ensemble members",
+                "Reanalysis"
+            ],
+            "product type": [
+                "Analysis",
+                "Forecast"
+            ],
+            "issues": ""
+        },
+        {
+            "name": "Volumetric soil moisture",
+            "unit": "m^3/m^3",
+            "level type": "Soil",
+            "soil layer": "Top Soil",
+            "data type": [
+                "Ensemble members",
+                "Reanalysis"
+            ],
+            "product type": [
+                "Analysis",
+                "Forecast"
+            ],
+            "issues": ""
+        }
+    ]
+}

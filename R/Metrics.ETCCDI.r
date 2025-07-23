@@ -48,10 +48,10 @@ Metrics.ETCCDI <- function(Rasters) {
         )
     )
     Helper.InputChecker(InCheck_ls)
-    #' shoudl also check here for:
-    #'  1. temporal resolution being days
-    #'  2. time ranges being neat years
-    #'  3. time across all inputs in Rasters being the same
+    # should also check here for:
+    #  1. temporal resolution being days
+    #  2. time ranges being neat years
+    #  3. time across all inputs in Rasters being the same
 
     ## split into years
     AnnualRasters_ls <- lapply(Rasters, Helper.TimeSplit, TimeSplit = "Year")

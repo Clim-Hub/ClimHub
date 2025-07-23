@@ -17,8 +17,8 @@ The package is currently still in development.
 <img align="right" width="300" src="inst/extdata/CodeBadge.png" />
 
 `ClimHub` is an R Package for downloading and processing a variety of climate data products. The package interfaces with select data products provided by:
-1. The [Climate Data Store](https://cds.climate.copernicus.eu/#!/home) hosted by the [Copernicus Climate Change Service (C3S)](https://cds.climate.copernicus.eu/about-c3s)
-2. The [Norwegian Meteorological Institute](https://www.met.no/en)
+1. The [Climate Data Store (CDS)](https://cds.climate.copernicus.eu/#!/home) hosted by the [Copernicus Climate Change Service (C3S)](https://cds.climate.copernicus.eu/about-c3s) of the [European Centre for Medium-Range Weather Forecasts (ECMWF)](https://www.ecmwf.int/)
+1. The [Norwegian Meteorological Institute](https://www.met.no/en)
 
 `ClimHub` contains functionality centred on four distinct groups of `R` functions:
 
@@ -54,3 +54,6 @@ devtools::install_github("https://github.com/ErikKusch/ClimHub")
 library(ClimHub)
 ```
 To access ECMWF CDS data products, users require personal CDS API-access tokens which can be obtained [here](https://accounts.ecmwf.int/auth/realms/ecmwf/login-actions/registration?client_id=cds&tab_id=VkbipqjwuIQ).
+
+# Walkthrough
+A walkthrough of the basic functionality of `ClimHub` will be developed and added here when data visualisation and automated code coverage and testing is in place.

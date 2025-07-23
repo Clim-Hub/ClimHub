@@ -10,7 +10,9 @@
 
 <!-- badges: end -->
 
-The package is currently still in development.
+<div style="border: 1px solid #f5c6cb; background-color: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px; text-align: center;">
+  ⚠️ <strong>The package is currently still in early development.</strong>
+</div>
 
 # ClimHub
 
@@ -45,6 +47,9 @@ The package is currently still in development.
 
 # How to Cite
 `ClimHub` has not been published yet. Please cite it for the time being as you would any other GitHub page.
+
+# How to Contribute
+I will explain how to make feature requests or report bugs here as soon as I have prepared issue templates for these purposes.
 
 # Installation
 `ClimHub` is not yet on CRAN, so it needs to be installed as such:

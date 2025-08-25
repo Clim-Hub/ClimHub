@@ -38,7 +38,7 @@ Helper.DirectDownload <- function(URLS, Names, Cores, Dir, verbose = TRUE) {
         fsize_expected <- as.numeric(headers(response)$`content-length`)
         if(length(fsize_expected) == 0){
             if(grepl("https://thredds.met.no/thredds/", URL)){
-                Add <- https://status.met.no/
+                Add <- "https://status.met.no/"
             }else{
                 Add <- URL
             }

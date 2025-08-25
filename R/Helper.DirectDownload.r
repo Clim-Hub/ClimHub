@@ -36,6 +36,14 @@ Helper.DirectDownload <- function(URLS, Names, Cores, Dir, verbose = TRUE) {
         ## get expected file size
         response <- httr::HEAD(URL)
         fsize_expected <- as.numeric(headers(response)$`content-length`)
+        if(length(fsize_expected) == 0){
+            if(grepl("https://thredds.met.no/thredds/", URL)){
+                Add <- https://status.met.no/
+            }else{
+                Add <- URL
+            }
+            stop(paste0("Could not retrieve size of file which is meant to be downloaded from server. Online file server may not be reachable. You should probably check server functionality by accessing: ", Add, "."))
+        }
         fsize_is <- file.size(file.path(Dir, Name))
         while (fsize_is != fsize_expected | is.na(fsize_is)) {
             ## unlink downloaded file, useful on reruns of while loop

@@ -57,6 +57,7 @@ Download.NORA3 <- function(
     Stop <- as.POSIXct(paste0(DateStop, ":00:00"), tz = "UTC")
 
     ### actual checks
+    QuickFacts_ls <- QuickFacts_ls
     warning(paste("Cannot validate user-specified DateStop argument as", QuickFacts_ls$name, "is released continuously. You may want to consult the download tab at", QuickFacts_ls$url, "to ensure that the data you query is available."))
     InCheck_ls <- list(
         Variable = list(
@@ -66,12 +67,12 @@ Download.NORA3 <- function(
         ),
         Time = list(
             Input = c(Start, Stop),
-            Allowed = c(Meta.QuickFacts("NORA3")$time$extent[1], paste0(format(Sys.time(), "%Y-%m-%d %H"), ":00")), # assuming current day and hour as possible end since dataset is released ongoingly
+            Allowed = c(QuickFacts_ls$time$extent[1], paste0(format(Sys.time(), "%Y-%m-%d %H"), ":00")), # assuming current day and hour as possible end since dataset is released ongoingly
             Operator = "exceeds"
         ),
         Leadtime = list(
             Input = Leadtime,
-            Allowed = Meta.QuickFacts("NORA3")$leadtime,
+            Allowed = QuickFacts_ls$leadtime,
             Operator = "in"
         ),
         HourCheck = list(

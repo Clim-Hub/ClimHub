@@ -20,7 +20,7 @@
   "time": {
     "extent": [
       "1961-08-01 00:00:00",
-      "2024-09-30 18:00:00"
+      "PRESENT"
     ],
     "resolution": 6,
     "unit": "hour"

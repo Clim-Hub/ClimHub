@@ -57,7 +57,7 @@ Download.NORA3 <- function(
     Stop <- as.POSIXct(paste0(DateStop, ":00:00"), tz = "UTC")
 
     ### actual checks
-    QuickFacts_ls <- QuickFacts_ls
+    QuickFacts_ls <- Meta.QuickFacts("NORA3")
     warning(paste("Cannot validate user-specified DateStop argument as", QuickFacts_ls$name, "is released continuously. You may want to consult the download tab at", QuickFacts_ls$url, "to ensure that the data you query is available."))
     InCheck_ls <- list(
         Variable = list(

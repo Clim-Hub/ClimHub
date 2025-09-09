@@ -33,18 +33,18 @@
 #' @return A SpatRaster with metadata written to the disk
 #' 
 #' @examples
-#' Data_rast <- rast(system.file("extdata", "KiN_AT.nc", package = "ClimHub"))[[1:360]]
+#' Data_rast <- terra::rast(system.file("extdata", "KiN_AT.nc", package = "ClimHub"))[[1:360]]
 #' Data_rast <- terra::crop(Data_rast, c(0, 7e4, 6.7e6, 6.77e6))
 #' WriteNC(spatraster = Data_rast, 
 #'         output_file = "temp.nc", 
 #'         compression = NA, 
-#'         variable = varnames(Data_rast), 
+#'         variable = terra::varnames(Data_rast), 
 #'         longname = "testvar", 
 #'         unit = "K", 
 #'         attrs = c("Citation" = "ClimHub WriteNC Test")
 #'     )
 #' unlink("temp.nc")
-#'
+#' @export
 WriteNC <- function(spatraster, output_file, compression = NA, variable, longname, unit, attrs = NULL, verbose = TRUE) {
     # Check if input is a SpatRaster
     if (!inherits(spatraster, "SpatRaster")) {

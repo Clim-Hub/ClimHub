@@ -1,13 +1,13 @@
 Package: ClimHub
 Title: Climate Data Toolbox developed at CICERO Centre for International Climate Research
-Version: 0.1.1-2
+Version: 0.1.2
 Authors@R:
     person("Erik", "Kusch", , "erik.kusch@cicero.oslo.no", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-4984-7646"))
 Description: Collection of functions relevant to work at CICERO and beyond. 
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Imports: 
     doSNOW (>= 1.0.20),
     dplyr (>= 1.1.4),
@@ -22,7 +22,11 @@ Imports:
     snow (>= 0.4.4),
     terra (>= 1.7.78),
     tools (>= 4.4.0),
-    utils (>= 4.4.0)
+    utils (>= 4.4.0),
+    ecmwfr (>= 2.0.3), 
+    httr (>= 1.4.7), 
+    sf (>= 1.0-21), 
+    stringr (>= 1.5.2)
 Depends: 
     R (>= 2.10)
 LazyData: true

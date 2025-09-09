@@ -23,5 +23,4 @@ Helper.TimeSplit(Raster = Data_rast, TimeSplit = "Year")
 Helper.TimeSplit(Raster = Data_rast, TimeSplit = "Season")
 Helper.TimeSplit(Raster = Data_rast, TimeSplit = "Month")
 Helper.TimeSplit(Raster = Data_rast, TimeSplit = "YearMonth")
-
 }

@@ -23,7 +23,7 @@
 #' @seealso \code{\link{Meta\.Library}}, \code{\link{Meta.Read}}, \code{\link{Meta.Variables}}, \code{\link{Meta.DOI}, \code{\link{Meta.Citation}}.
 #'
 #' @examples
-#' Meta.QuickFacts()
+#' Meta.QuickFacts("NORA3")
 #'
 #' @export
 Meta.QuickFacts <- function(dataset = "NULL") {

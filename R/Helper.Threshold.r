@@ -26,7 +26,7 @@
 #'     Threshold = 2650,
 #'     ReturnValues = TRUE
 #' )
-#'
+#' @export
 Helper.Threshold <- function(Raster, Operator, Threshold, ReturnValues = FALSE, verbose = TRUE) {
     ## input check, needs rwriting to Helper.InputChecker
     if (!Operator %in% c(">", "<", ">=", "<=", "==", "!=")) {

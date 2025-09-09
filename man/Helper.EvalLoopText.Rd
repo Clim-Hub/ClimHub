@@ -61,5 +61,4 @@ Helper.EvalLoopText(LoopText = LoopText,
     Cores = 2,
     verbose = FALSE
     )
-
 }

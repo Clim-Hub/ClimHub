@@ -14,6 +14,7 @@
 #'
 #'
 #' @examples
+#' \dontrun{
 #' TX_rast <- Download.KlimaiNorge2100(
 #'     Variable = "Maximum Air Temperature",
 #'     DateStart = "1995-01-01",
@@ -31,6 +32,7 @@
 #' )
 #'
 #' Metrics.ETCCDI(Rasters = list(TX = TX_rast, TN = TN_rast))
+#' }
 #'
 #' @export
 Metrics.ETCCDI <- function(Rasters) {

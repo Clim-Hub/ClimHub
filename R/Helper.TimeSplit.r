@@ -17,7 +17,7 @@
 #' Helper.TimeSplit(Raster = Data_rast, TimeSplit = "Season")
 #' Helper.TimeSplit(Raster = Data_rast, TimeSplit = "Month")
 #' Helper.TimeSplit(Raster = Data_rast, TimeSplit = "YearMonth")
-#'
+#' @export
 Helper.TimeSplit <- function(Raster, TimeSplit) {
     ## validate specification
     InCheck_ls <- list(

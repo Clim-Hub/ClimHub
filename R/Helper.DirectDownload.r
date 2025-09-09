@@ -25,6 +25,7 @@
 #'    Cores = 2,
 #'    Dir = getwd()
 #')
+#' @export
 Helper.DirectDownload <- function(URLS, Names, Cores, Dir, verbose = TRUE) {
     ## progress bar
     pb <- Helper.Progress(IterLength = length(Names), Text = "Downloading")

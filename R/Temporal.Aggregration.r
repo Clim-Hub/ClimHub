@@ -17,7 +17,7 @@
 #'
 #' @return A SpatRaster
 #' @examples
-#' Data_rast <- rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))
+#' Data_rast <- terra::rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))
 #' Temporal.Aggregration(
 #'     Raster = Data_rast,
 #'     TResolution = "day",

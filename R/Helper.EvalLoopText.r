@@ -48,7 +48,7 @@
 #'     Cores = 2,
 #'     verbose = FALSE
 #'     )
-#'
+#' @export
 Helper.EvalLoopText <- function(LoopText, Iters, Objects, Packages = "", Cores = 1, verbose = TRUE) {
     ## make objects available to function-internal environment ----
     list2env(Objects, envir = environment()) ## make objects into environment within function

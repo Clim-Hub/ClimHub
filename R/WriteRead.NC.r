@@ -20,7 +20,7 @@
 #' @importFrom terra longnames
 #'
 #' @return A SpatRaster with metadata
-#'
+#' @export
 WriteRead.NC <- function(NC, FName, Variable, LongVar, Unit = "NA", Attrs = NULL, Write = FALSE, Compression = 1) {
   ## remove = signs in variable vector, these break metags assignment
   Attrs <- gsub(pattern = "=", replacement = "...", Attrs)

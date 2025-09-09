@@ -29,7 +29,7 @@ A list object reporting information on queried dataset in standardised way:
 Read and return short overview of data set characteristics, supported types, extent, time frames and required arguments.
 }
 \examples{
-Meta.QuickFacts()
+Meta.QuickFacts("NORA3")
 
 }
 \seealso{

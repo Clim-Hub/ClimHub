@@ -10,7 +10,7 @@
 #' @examples
 #' IN_DateStart <- as.POSIXct("1995-01-01 00:00", tz = "CET")
 #' IN_DateStop <- as.POSIXct("2005-01-01 23:00", tz = "CET")
-#' Dates_df <- Make.UTC(DatesVec = c(IN_DateStart, IN_DateStop))
+#' Dates_df <- Helper.MakeUTC(DatesVec = c(IN_DateStart, IN_DateStop))
 #' Dates_df
 #'
 #' @export

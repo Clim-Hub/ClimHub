@@ -17,6 +17,7 @@ A named list of SpatRasters with each element corresponding to an ETCCDI.
 This function calculates \href{https://etccdi.pacificclimate.org/list_27_indices.shtml}{ETCCDIs} from a named list of SpatRaster objects. Currently, only the first four ETCCDI are supported.
 }
 \examples{
+\dontrun{
 TX_rast <- Download.KlimaiNorge2100(
     Variable = "Maximum Air Temperature",
     DateStart = "1995-01-01",
@@ -34,5 +35,6 @@ TN_rast <- Download.KlimaiNorge2100(
 )
 
 Metrics.ETCCDI(Rasters = list(TX = TX_rast, TN = TN_rast))
+}
 
 }

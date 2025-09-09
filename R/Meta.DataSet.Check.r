@@ -13,8 +13,8 @@
 #'
 #' @examples
 #' Meta.DataSet.Check(dataset = "NORA3")
-#' Meta.DataSet.Check(dataset = "NULL")
-#'
+#' # Meta.DataSet.Check(dataset = "NULL")
+#' @export
 Meta.DataSet.Check <- function(dataset) {
     if (!(dataset %in% Meta.Library())) {
         stop(

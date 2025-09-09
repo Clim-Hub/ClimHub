@@ -20,7 +20,7 @@ A data.frame.
 Extract data from SpatRaster corresponding to spatial features in SF object.
 }
 \examples{
-Data_rast <- rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))
+Data_rast <- terra::rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))
 data(Jotunheimen_sf)
 Spatial.Extract(
     Raster = Data_rast,

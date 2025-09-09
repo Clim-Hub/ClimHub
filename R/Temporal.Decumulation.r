@@ -17,7 +17,7 @@
 #' @examples
 #'
 #' Data_rast <- terra::rast(system.file("extdata", "KiN_AT.nc", package = "ClimHub"))[[1:360]]
-#' Data_rast <- ClimHub::Spatial.CropMask(Data_rast, c(0, 7e4, 6.7e6, 6.77e6))
+#' Data_rast <- Spatial.CropMask(Data_rast, c(0, 7e4, 6.7e6, 6.77e6))
 #' # single-core
 #' SingleCore <- Temporal.Decumulation(
 #'     Raster = Data_rast,
@@ -85,6 +85,6 @@ Temporal.Decumulation <- function(Raster, Interval, Mode, Cores = 1, verbose = T
     ## Reassing values to output and return it
     message("Assigning Decumulated Data to Raster")
     decumulated_df <- do.call(rbind, lapply(Decumulls, unlist))
-    values(Out) <- decumulated_df
+    terra::values(Out) <- decumulated_df
     return(Out)
 }

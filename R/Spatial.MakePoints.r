@@ -14,7 +14,7 @@
 #' data(Nor2K_sf)
 #' df <- cbind(sf::st_drop_geometry(Nor2K_sf), sf::st_coordinates(Nor2K_sf))
 #' colnames(df)[5:6] <- c("Lon", "Lat")
-#' Spatial.MakePoints(df, st_crs(Nor2K_sf))
+#' Spatial.MakePoints(df, sf::st_crs(Nor2K_sf))
 #' @export
 Spatial.MakePoints <- function(DataFrame, CRS = 4326) {
     DataFrame <- data.frame(DataFrame) ## attempt to catch tibbles or data.tables

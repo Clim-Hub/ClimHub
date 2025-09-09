@@ -17,8 +17,7 @@ Check if dataset string is resolvable in metadata library.
 }
 \examples{
 Meta.DataSet.Check(dataset = "NORA3")
-Meta.DataSet.Check(dataset = "NULL")
-
+# Meta.DataSet.Check(dataset = "NULL")
 }
 \seealso{
 \code{\link{Meta.Library}}, \code{\link{Meta.Variables}}, \code{\link{Meta.DOI}}, \code{\link{Meta.QuickFacts}}.

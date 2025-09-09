@@ -21,27 +21,27 @@
 #'     Variable = list(
 #'         Input = Variable,
 #'         Allowed = Meta.Variables("KlimaiNorge2100")$name,
-#'         operator = "in"
+#'         Operator = "in"
 #'     ),
 #'     Time = list(
 #'         Input = c(Start, Stop),
 #'         Allowed = Meta.QuickFacts("KlimaiNorge2100")$time$extent,
-#'         operator = "exceeds"
+#'         Operator = "exceeds"
 #'     ),
 #'     Models = list(
 #'         Input = Model,
 #'         Allowed = Meta.QuickFacts("KlimaiNorge2100")$models,
-#'         operator = "in"
+#'         Operator = "in"
 #'     ),
 #'     Scenarios = list(
 #'         Input = Scenario,
 #'         Allowed = Meta.QuickFacts("KlimaiNorge2100")$scenarios,
-#'         operator = "in"
+#'         Operator = "in"
 #'     )
 #' )
 #'
 #' Helper.InputChecker(InCheck_ls)
-#'
+#' @export
 Helper.InputChecker <- function(InCheck_ls) {
     Checked_ls <- lapply(InCheck_ls, FUN = function(Loop_ls) {
         CheckReturn <- FALSE

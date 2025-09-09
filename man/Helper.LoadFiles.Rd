@@ -26,5 +26,4 @@ Helper.LoadFiles(
        system.file("extdata", "KiN_PR.nc", package = "ClimHub")
        )
    )
-
 }

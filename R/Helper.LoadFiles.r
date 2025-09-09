@@ -20,7 +20,7 @@
 #'        system.file("extdata", "KiN_PR.nc", package = "ClimHub")
 #'        )
 #'    )
-#'
+#' @export
 Helper.LoadFiles <- function(FNames, TimeAssign = NULL, verbose = TRUE) {
     ## make progress bar
     pb <- Helper.Progress(IterLength = length(FNames), Text = "Loading Files")

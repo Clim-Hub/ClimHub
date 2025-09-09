@@ -20,7 +20,7 @@ A SpatRaster or SF object reprojected to the same CRS as in ProjTo.
 Reprojecting one spatial data product to match another.
 }
 \examples{
-Data_rast <- rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))[[1]]
+Data_rast <- terra::rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))[[1]]
 ## reprojecting raster
 data(Jotunheimen_sf)
 Spatial.Reproject(Data_rast, Jotunheimen_sf)

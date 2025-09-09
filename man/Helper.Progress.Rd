@@ -24,5 +24,4 @@ for(i in 1:Iter_n){
     Sys.sleep(0.25)
     pb$tick(tokens = list(layer = i))
 }
-
 }

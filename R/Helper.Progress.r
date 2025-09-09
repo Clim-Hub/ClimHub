@@ -17,7 +17,7 @@
 #'     Sys.sleep(0.25)
 #'     pb$tick(tokens = list(layer = i))
 #' }
-#'
+#' @export
 Helper.Progress <- function(IterLength, Text) {
     progress_bar$new(
         format = paste(Text, "(:current/:total) | [:bar] Elapsed: :elapsed | Remaining: :eta"),

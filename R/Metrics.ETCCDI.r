@@ -1,7 +1,7 @@
 #' CALCULATE EXPERT TEAM CLIMATE CHANGE DETECTION INDICES (ETCCDI) METRICS ======================================================
 #' Calculate ETCCDI indices from list input
 #'
-#' This function calculates \href{https://etccdi.pacificclimate.org/list_27_indices.shtml}{ETCCDIs} from a named list of SpatRaster objects. Currently, only the first four ETCCDI are supported.
+#' This function calculates \href{https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/jgrd.50203}{ETCCDIs} from a named list of SpatRaster objects. Currently, only the first four ETCCDI are supported.
 #'
 #' @param Rasters List of SpatRasters. Names of elements bust be "TX" and "TN", holding maximum and minimum daily air temperature respectively.
 #'
@@ -15,23 +15,14 @@
 #'
 #' @examples
 #' \dontrun{
-#' TX_rast <- Download.KlimaiNorge2100(
-#'     Variable = "Maximum Air Temperature",
-#'     DateStart = "1995-01-01",
-#'     DateStop = "1996-12-31",
-#'     Model = "CNRM_CCLM",
-#'     FileName = "KiN_TX",
-#' )
+#' TX_rast <- terra::rast("inst/extdata/Jotunheimen_TX.nc") # terra::rast(system.file("extdata", "Jotunheimen_TX.nc", package = "ClimHub"))
+#' TN_rast <- terra::rast("inst/extdata/Jotunheimen_TN.nc")
+#' RR_rast <- terra::rast("inst/extdata/Jotunheimen_RR.nc")
+#' # BASEPeriod_rast <- terra::rast("inst/extdata/Jotunheimen_BASEPeriod.nc")
 #'
-#' TN_rast <- Download.KlimaiNorge2100(
-#'     Variable = "Minimum Air Temperature",
-#'     DateStart = "1995-01-01",
-#'     DateStop = "1996-12-31",
-#'     Model = "CNRM_CCLM",
-#'     FileName = "KiN_TN",
+#' Metrics.ETCCDI(Rasters = list(TX = TX_rast, TN = TN_rast, RR = RR_rast
+#' # , BASEPeriod = BASEPeriod_rast)
 #' )
-#'
-#' Metrics.ETCCDI(Rasters = list(TX = TX_rast, TN = TN_rast))
 #' }
 #'
 #' @export
@@ -47,6 +38,11 @@ Metrics.ETCCDI <- function(Rasters) {
             Input = unique(units(Rasters$TN)),
             Allowed = c("K"),
             Operator = "in"
+        ),
+        Unit_RR = list(
+            Input = unique(units(Rasters$RR)),
+            Allowed = c("mm"),
+            Operator = "in"
         )
     )
     Helper.InputChecker(InCheck_ls)
@@ -54,13 +50,17 @@ Metrics.ETCCDI <- function(Rasters) {
     #  1. temporal resolution being days
     #  2. time ranges being neat years
     #  3. time across all inputs in Rasters being the same
+    #  4. Check that CRS is EPS:4326
+
+    stop("Add extra checks")
+    stop("do quantile calculations for percentile based ETCCDI")
 
     ## split into years
     AnnualRasters_ls <- lapply(Rasters, Helper.TimeSplit, TimeSplit = "Year")
     Dates <- as.POSIXct(paste0(unique(names(AnnualRasters_ls[[1]])), "-01-01"), tz = "UTC") ## merging lists into SpatRaster does not like numeric names of list elements
 
     ## ETCCDI
-    ### Frost Days
+    ### Frost Days; Number of frost days: Annual count of days when TN (daily minimum temperature) < 0°C.
     message("===== FD - Number of frost days =====")
     Thresholded_ls <- lapply(AnnualRasters_ls$TN, FUN = function(RastIter) {
         sum(Helper.Threshold(Raster = RastIter, Threshold = 273.15, Operator = "<"))
@@ -68,15 +68,15 @@ Metrics.ETCCDI <- function(Rasters) {
     names(Thresholded_ls) <- NULL
     FD_rast <- do.call(c, Thresholded_ls)
 
-    ### Summer Days
+    ### Summer Days; Number of summer days: Annual count of days when TX (daily maximum temperature) > 25°C.
     message("===== SU - Number of summer days =====")
     Thresholded_ls <- lapply(AnnualRasters_ls$TX, FUN = function(RastIter) {
-        sum(Helper.Threshold(Raster = RastIter, Threshold = 273.15 + 25, Operator = ">="))
+        sum(Helper.Threshold(Raster = RastIter, Threshold = 273.15 + 25, Operator = ">"))
     })
     names(Thresholded_ls) <- NULL
     SU_rast <- do.call(c, Thresholded_ls)
 
-    ### Icing Days
+    ### Icing Days; Number of icing days: Annual count of days when TX (daily maximum temperature) < 0°C.
     message("===== ID - Number of icing days =====")
     Thresholded_ls <- lapply(AnnualRasters_ls$TX, FUN = function(RastIter) {
         sum(Helper.Threshold(Raster = RastIter, Threshold = 273.15, Operator = "<"))
@@ -84,13 +84,119 @@ Metrics.ETCCDI <- function(Rasters) {
     names(Thresholded_ls) <- NULL
     ID_rast <- do.call(c, Thresholded_ls)
 
-    ### Tropical Nights
+    ### Tropical Nights; Number of tropical nights: Annual count of days when TN (daily minimum temperature) > 20°C.
     message("===== TR - Number of tropical nights =====")
     Thresholded_ls <- lapply(AnnualRasters_ls$TN, FUN = function(RastIter) {
-        sum(Helper.Threshold(Raster = RastIter, Threshold = 273.15 + 20, Operator = ">"))
+        sum(Helper.Threshold(Raster = RastIter, Threshold = 273.15 + 20, Operator = ">="))
     })
     names(Thresholded_ls) <- NULL
     TR_rast <- do.call(c, Thresholded_ls)
+
+    ### GSL - Growing Season Length: Count the number of days between the first occurrence of at least 6 consecutive days with (TN+TX)/2 > 5°C and the first occurrence after 1st July (Northern Hemisphere) or 1st January (Southern Hemisphere) of at least 6 consecutive days with (TN+TX)/2 < 5°C
+    message("===== GSL - Growing Season Length =====")
+    message("Not implemented yet")
+
+    ### TXx - Monthly Max of Daily Max Temp: Maximum daily maximum temperature in each month.
+    message("===== TXx - Monthly Max of Daily Max Temp =====")
+    TXx_rast <- Temporal.Aggregration(Rasters$TX, TResolution = "month", TStep = 1, FUN = max)
+
+    ### TNx - Monthly Max of Daily Min Temp: Maximum daily minimum temperature in each month.
+    message("===== TNx - Monthly Max of Daily Min Temp =====")
+    TNx_rast <- Temporal.Aggregration(Rasters$TN, TResolution = "month", TStep = 1, FUN = max)
+
+    ### TXn - Monthly Min of Daily Max Temp: Minimum daily maximum temperature in each month.
+    message("===== TXn - Monthly Min of Daily Max Temp =====")
+    TXn_rast <- Temporal.Aggregration(Rasters$TX, TResolution = "month", TStep = 1, FUN = min)
+
+    ### TNn - Monthly Min of Daily Min Temp: Minimum daily minimum temperature in each month.
+    message("===== TNn - Monthly Min of Daily Min Temp =====")
+    TNn_rast <- Temporal.Aggregration(Rasters$TN, TResolution = "month", TStep = 1, FUN = min)
+
+    ### TN10p - Percent Days TN < 10th Percentile: Percent of days, per year, where TN < 10th percentile of base period.
+    message("===== TN10p - Percent Days TN < 10th Percentile =====")
+    message("Not implemented yet")
+
+    ### TX10p - Percent Days TX < 10th Percentile: Percent of days, per year, where TX < 10th percentile of base period.
+    message("===== TX10p - Percent Days TX < 10th Percentile =====")
+    message("Not implemented yet")
+
+    ### TN90p - Percent Days TN > 90th Percentile: Percent of days, per year, where TN > 90th percentile of base period.
+    message("===== TN90p - Percent Days TN > 90th Percentile =====")
+    message("Not implemented yet")
+
+    ### TX90p - Percent Days TX > 90th Percentile: Percent of days, per year, where TX > 90th percentile of base period.
+    message("===== TX90p - Percent Days TX > 90th Percentile =====")
+    message("Not implemented yet")
+
+    ### WSDI - Warm Spell Duration Index: Annual count of days with 6+ consecutive days when TX > 90th percentile of base period.
+    message("===== WSDI - Warm Spell Duration Index =====")
+    message("Not implemented yet")
+
+    ### CSDI - Cold Spell Duration Index: Annual count of days with 6+ consecutive days when TN < 10th percentile of base period.
+    message("===== CSDI - Cold Spell Duration Index =====")
+    message("Not implemented yet")
+
+    ### DTR - Daily Temperature Range: Monthly mean difference between daily max (TX) and min (TN) temperatures.
+    message("===== DTR - Daily Temperature Range =====")
+    DTR_rast <- Temporal.Aggregration(Rasters$TX - Rasters$TN, TResolution = "month", TStep = 1, FUN = mean)
+
+    ### Rx1day - Max 1-day Precipitation per Month: Maximum precipitation in a single day each month.
+    message("===== Rx1day - Max 1-day Precipitation per Month =====")
+    Rx1day_rast <- Temporal.Aggregration(Rasters$RR, TResolution = "month", TStep = 1, FUN = max)
+
+    ### Rx5day - Max 5-day Precipitation per Month: Maximum precipitation over any 5 consecutive days in each month.
+    message("===== Rx5day - Max 5-day Precipitation per Month =====")
+    message("Not implemented yet")
+
+    ### SDII - Simple Precipitation Intensity Index: Mean precipitation amount on wet days (RR ≥ 1mm).
+    message("===== SDII - Simple Precipitation Intensity Index =====")
+    message("Not yet tested")
+    SDII_rast <- Rasters$RR
+    SDII_rast[SDII_rast < 1] <- NA
+    SDII_rast <- Temporal.Aggregration(SDII_rast, TResolution = "month", TStep = 1, FUN = mean)
+
+    ### R10mm - Days with Precip ≥ 10mm: Annual count of days with precipitation ≥ 10mm.
+    message("===== R10mm - Days with Precip ≥ 10mm =====")
+    Thresholded_ls <- lapply(AnnualRasters_ls$RR, FUN = function(RastIter) {
+        sum(Helper.Threshold(Raster = RastIter, Threshold = 10, Operator = ">="))
+    })
+    names(Thresholded_ls) <- NULL
+    R10mm_rast <- do.call(c, Thresholded_ls)
+
+    ### R20mm - Days with Precip ≥ 20mm: Annual count of days with precipitation ≥ 20mm.
+    message("===== R20mm - Days with Precip ≥ 20mm =====")
+    Thresholded_ls <- lapply(AnnualRasters_ls$RR, FUN = function(RastIter) {
+        sum(Helper.Threshold(Raster = RastIter, Threshold = 20, Operator = ">="))
+    })
+    names(Thresholded_ls) <- NULL
+    R20mm_rast <- do.call(c, Thresholded_ls)
+
+    ### Rnnmm - Days with Precip ≥ user-defined threshold: Annual count of days with precipitation ≥ nnmm.
+    message("===== Rnnmm - Days with Precip ≥ user-defined threshold =====")
+    message("Not implemented yet")
+
+    ### CDD - Consecutive Dry Days: Maximum number of consecutive days with RR < 1mm.
+    message("===== CDD - Consecutive Dry Days =====")
+    message("Not implemented yet")
+
+    ### CWD - Consecutive Wet Days: Maximum number of consecutive days with RR ≥ 1mm.
+    message("===== CWD - Consecutive Wet Days =====")
+    message("Not implemented yet")
+
+    ### R95pTOT - Annual Precip from RR > 95th Percentile: Total precipitation from wet days (RR > 95th percentile of base period).
+    message("===== R95pTOT - Annual Precip from RR > 95th Percentile =====")
+    message("Not implemented yet")
+
+    ### R99pTOT - Annual Precip from RR > 99th Percentile: Total precipitation from wet days (RR > 99th percentile of base period).
+    message("===== R99pTOT - Annual Precip from RR > 99th Percentile =====")
+    message("Not implemented yet")
+
+    ### PRCPTOT - Annual Total Precipitation on Wet Days: Sum of precipitation on wet days (RR ≥ 1mm) over a year.
+    message("===== PRCPTOT - Annual Total Precipitation on Wet Days =====")
+    message("Not yet tested")
+    PRCPTOT_rast <- Rasters$RR
+    PRCPTOT_rast[PRCPTOT_rast < 1] <- 0
+    PRCPTOT_rast <- Temporal.Aggregration(PRCPTOT_rast, TResolution = "year", TStep = 1, FUN = sum)
 
     ## return
     ## Fusing objects
@@ -104,9 +210,9 @@ Metrics.ETCCDI <- function(Rasters) {
     ### Ascribing proper Names and Dates
     VarNames_ls <- list(
         FD = list("FD", "Number of frost days"),
-        SU = list("FD", "Number of summer days"),
-        ID = list("FD", "Number of iciing days"),
-        TR = list("FD", "Number of tropical nights")
+        SU = list("SU", "Number of summer days"),
+        ID = list("ID", "Number of icing days"),
+        TR = list("TR", "Number of tropical nights")
     )
 
     Return_ls <- lapply(1:length(Return_ls), FUN = function(Iter) {

@@ -16,7 +16,7 @@
 
 # ClimHub
 
-<img align="right" width="300" src="inst/extdata/CodeBadge.png" />
+<img align="right" width="300" src="inst/figures/CodeBadge.png" />
 
 `ClimHub` is an R Package for downloading and processing a variety of climate data products. The package interfaces with select data products provided by:
 1. The [Climate Data Store (CDS)](https://cds.climate.copernicus.eu/#!/home) hosted by the [Copernicus Climate Change Service (C3S)](https://cds.climate.copernicus.eu/about-c3s) of the [European Centre for Medium-Range Weather Forecasts (ECMWF)](https://www.ecmwf.int/)
@@ -24,7 +24,7 @@
 
 `ClimHub` contains functionality centred on four distinct groups of `R` functions:
 
-<img src="inst/extdata/PackageWorkflow.png" style="width: 100%;" />
+<img src="inst/figures/PackageWorkflow.png" style="width: 100%;" />
 
 1. **Data Discovery.**
    - Indexing and metadata querying of climate data accessible via `ClimHub`

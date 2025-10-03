@@ -55,7 +55,7 @@ I will explain how to make feature requests or report bugs here as soon as I hav
 `ClimHub` is not yet on CRAN, so it needs to be installed as such:
 
 ```{r}
-devtools::install_github("https://github.com/ErikKusch/ClimHub")
+devtools::install_github("https://github.com/Clim-Hub/ClimHub")
 library(ClimHub)
 ```
 To access ECMWF CDS data products, users require personal CDS API-access tokens which can be obtained [here](https://accounts.ecmwf.int/auth/realms/ecmwf/login-actions/registration?client_id=cds&tab_id=VkbipqjwuIQ).

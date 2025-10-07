@@ -19,7 +19,7 @@
 #'
 #' @export
 Meta.Library <- function() {
-    owner <- "ErikKusch"
+    owner <- "Clim-Hub"
     repo <- "ClimHub"
     path <- "product-metadata"
 

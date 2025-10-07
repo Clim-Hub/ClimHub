@@ -16,7 +16,7 @@
 #'
 #' @export
 Meta.Read <- function(dataset = "NULL") {
-    owner <- "ErikKusch"
+    owner <- "Clim-Hub"
     repo <- "ClimHub"
     path <- "product-metadata"
 

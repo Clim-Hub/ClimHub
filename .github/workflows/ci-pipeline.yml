@@ -1,12 +1,19 @@
+# NOTE: If this workflow file was added or modified in the same push/merge that updated master,
+# GitHub will NOT run the workflow for that push. To trigger it:
+#  - push a trivial follow-up commit to master, OR
+#  - use the "Run workflow" button (workflow_dispatch), OR
+#  - ensure Actions are enabled in repository or organization settings.
+# Also check the Actions tab for parsing errors if the workflow is not listed.
+
 name: CI / Release Pipeline
 
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
     branches:
-      - main
+      - master
   workflow_dispatch:
 
 permissions:
@@ -30,10 +37,11 @@ jobs:
 
       - name: Run Git Automatic Semantic Versioning
         id: semver
-        # Run on both push and pull_request, but only create a tag for pushes
+        # Run on both push and pull_request; only create a tag for pushes to master
         uses: bitshifted/git-auto-semver@v2
         with:
-          create_tag: ${{ github.event_name == 'push' }}
+          create_tag: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+          main_branch: master
           initial_version: 0.1.0 # sets first version if no tags exist
 
       - name: Display computed version

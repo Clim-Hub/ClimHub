@@ -1,0 +1,96 @@
+name: CI / Release Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write # required so tags and releases can be pushed
+
+jobs:
+  versioning:
+    name: Automatic Semantic Versioning
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.semver.outputs.version }}
+      tag: ${{ steps.semver.outputs.tag }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # fetch all history and tags
+
+      - name: Run Git Automatic Semantic Versioning
+        id: semver
+        uses: bitshifted/git-auto-semver@v1.1.0
+        with:
+          initial_version: 0.1.0 # sets first version if no tags exist
+
+      - name: Display computed version
+        run: |
+          echo "Computed version: ${{ steps.semver.outputs.version }}"
+          echo "Tag: ${{ steps.semver.outputs.tag }}"
+
+  build:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    needs: versioning
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up environment / dependencies
+        run: |
+          # install dependencies, etc.
+          echo "Doing build setup..."
+
+      - name: Run tests
+        run: |
+          # run your test suite
+          echo "Running tests..."
+
+  release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: versioning
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create GitHub Release
+        if: ${{ needs.versioning.outputs.tag != '' }}
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ needs.versioning.outputs.tag }}
+          release_name: Release ${{ needs.versioning.outputs.version }}
+          body: "Automated release generated from commit messages."
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # Example placeholder for future custom actions or deploy jobs
+  deploy:
+    name: Deploy Server (future)
+    runs-on: ubuntu-latest
+    needs: release
+    if: ${{ needs.versioning.outputs.tag != '' }}
+    steps:
+      - name: Placeholder deploy
+        run: echo "Deploying version ${{ needs.versioning.outputs.version }}..."
+
+  # Placeholder for future custom actions
+  custom-step:
+    name: Custom Action Job
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Run custom action
+        # Replaced an invalid action reference with a safe no-op.
+        # If we later add a real custom action, replace this `run:` with `uses: your-org/your-custom-action@vX`
+        run: |
+          echo "No custom action configured. Skipping."

@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -14,24 +17,28 @@ jobs:
     name: Automatic Semantic Versioning
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.semver.outputs.version }}
+      # git-auto-semver v2 exposes `version-string`
+      version: ${{ steps.semver.outputs.version-string }}
       tag: ${{ steps.semver.outputs.tag }}
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0 # fetch all history and tags
+          fetch-tags: true
 
       - name: Run Git Automatic Semantic Versioning
         id: semver
-        uses: bitshifted/git-auto-semver@v1.1.0
+        # Run on both push and pull_request, but only create a tag for pushes
+        uses: bitshifted/git-auto-semver@v2
         with:
+          create_tag: ${{ github.event_name == 'push' }}
           initial_version: 0.1.0 # sets first version if no tags exist
 
       - name: Display computed version
         run: |
-          echo "Computed version: ${{ steps.semver.outputs.version }}"
+          echo "Computed version: ${{ steps.semver.outputs['version-string'] }}"
           echo "Tag: ${{ steps.semver.outputs.tag }}"
 
   build:
@@ -40,7 +47,10 @@ jobs:
     needs: versioning
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          fetch-tags: true
 
       - name: Set up environment / dependencies
         run: |
@@ -56,20 +66,25 @@ jobs:
     name: Create GitHub Release
     runs-on: ubuntu-latest
     needs: versioning
+    # only create a release on pushes and when a version was produced
+    if: ${{ github.event_name == 'push' && needs.versioning.outputs.version != '' }}
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          fetch-tags: true
 
       - name: Create GitHub Release
-        if: ${{ needs.versioning.outputs.tag != '' }}
-        uses: actions/create-release@v1
+        uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ needs.versioning.outputs.tag }}
-          release_name: Release ${{ needs.versioning.outputs.version }}
-          body: "Automated release generated from commit messages."
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          # prefix 'v' if you want v1.2.3 tags; adjust if your action already includes the v
+          tag_name: v${{ needs.versioning.outputs.version }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
   # Example placeholder for future custom actions or deploy jobs
   deploy:
@@ -88,9 +103,7 @@ jobs:
     needs: build
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
       - name: Run custom action
-        # Replaced an invalid action reference with a safe no-op.
-        # If we later add a real custom action, replace this `run:` with `uses: your-org/your-custom-action@vX`
         run: |
           echo "No custom action configured. Skipping."

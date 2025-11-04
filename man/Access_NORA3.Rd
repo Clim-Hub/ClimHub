@@ -8,7 +8,7 @@ Access_NORA3(
   variable,
   dateStart,
   dateStop,
-  leadTime,
+  leadTimeHour,
   cores = 1,
   fileName,
   compression = NA,
@@ -23,7 +23,7 @@ Access_NORA3(
 
 \item{dateStop}{Character. "YYYY-MM-DD HH" date at which to stop time series of downloaded data. Data is available daily at hours 00, 06, 12, and 18.}
 
-\item{leadTime}{Integer. Lead time of reanalysis. NORA3 leadtimes can be obtained with \code{Discovery_QuickFacts("NORA3")$leadtime}.}
+\item{leadTimeHour}{Integer. Lead time of reanalysis. NORA3 leadtimes can be obtained with \code{Discovery_QuickFacts("NORA3")$leadtime}.}
 
 \item{cores}{Optional, Integer. Number of cores to use for parallel downloads. Default NULL defines no parallelisation.}
 
@@ -51,7 +51,7 @@ Specifically, this function provides access to the NORA3 files contained within 
 NORA3 <- Access_NORA3(
     variable = "TS (Surface temperature)", # which variable
     dateStart = "1961-08-01 00", dateStop = "1961-08-02 18", # time-window
-    leadTime = 3, cores = 1,
+    leadTimeHour = 3, cores = 1,
     fileName = "NORA3.nc", compression = 9, # file storing
     removeTemporary = TRUE
 )

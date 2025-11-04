@@ -1,12 +1,12 @@
 #' @title Access NORA3 3km Norwegian Reanalysis Data
 #'
-#' @description Downloads and processes data from the NORA3 data product hosted through \href{https://thredds.met.no/thredds/projects/nora3.html}{thredds.met.no}. 
+#' @description Downloads and processes data from the NORA3 data product hosted through \href{https://thredds.met.no/thredds/projects/nora3.html}{thredds.met.no}.
 #' Specifically, this function provides access to the NORA3 files contained within \href{https://thredds.met.no/thredds/catalog/nora3/catalog.html}{nora3}.
 #'
 #' @param variable Character. An overview of NORA3 variables can be obtained with `Discovery_Variables(dataSet = "NORA3")`.
 #' @param dateStart Character. "YYYY-MM-DD HH" date at which to start time series of downloaded data. Data is available daily at hours 00, 06, 12, and 18.
 #' @param dateStop Character. "YYYY-MM-DD HH" date at which to stop time series of downloaded data. Data is available daily at hours 00, 06, 12, and 18.
-#' @param leadTime Integer. Lead time of reanalysis. NORA3 leadtimes can be obtained with `Discovery_QuickFacts("NORA3")$leadtime`.
+#' @param leadTimeHour Integer. Lead time of reanalysis. NORA3 leadtimes can be obtained with `Discovery_QuickFacts("NORA3")$leadtime`.
 #' @param cores Optional, Integer. Number of cores to use for parallel downloads. Default NULL defines no parallelisation.
 #' @param fileName Character. A file name for the produced file, including path.
 #' @param compression Optional, Integer. Compression level between 1 to 9 applied to final .nc file. Same as compression argument in terra::writeCDF(). Defaults to NA.
@@ -30,7 +30,7 @@
 #' NORA3 <- Access_NORA3(
 #'     variable = "TS (Surface temperature)", # which variable
 #'     dateStart = "1961-08-01 00", dateStop = "1961-08-02 18", # time-window
-#'     leadTime = 3, cores = 1,
+#'     leadTimeHour = 3, cores = 1,
 #'     fileName = "NORA3.nc", compression = 9, # file storing
 #'     removeTemporary = TRUE
 #' )
@@ -39,7 +39,7 @@
 Access_NORA3 <- function(
     variable, # which variable
     dateStart, dateStop, # time-window
-    leadTime, # NORA3 specific arguments
+    leadTimeHour, # NORA3 specific arguments
     cores = 1,
     fileName, compression = NA, # file storing
     removeTemporary = TRUE,
@@ -71,8 +71,8 @@ Access_NORA3 <- function(
             Allowed = c(QuickFacts_ls$time$extent[1], paste0(format(Sys.time(), "%Y-%m-%d %H"), ":00")), # assuming current day and hour as possible end since dataset is released ongoingly
             Operator = "exceeds"
         ),
-        leadTime = list(
-            Input = leadTime,
+        leadTimeHour = list(
+            Input = leadTimeHour,
             Allowed = QuickFacts_ls$leadtime,
             Operator = "in"
         ),
@@ -107,7 +107,7 @@ Access_NORA3 <- function(
         by = "6 hour"
     )
     Datetimes <- format(Datetimes, "%Y%m%d%H")
-    FNames <- paste0("TEMP_", "fc", Datetimes, "_", stringr::str_pad(leadTime, 3, "left", 0), FilePrefix, ".nc")
+    FNames <- paste0("TEMP_", "fc", Datetimes, "_", stringr::str_pad(leadTimeHour, 3, "left", 0), FilePrefix, ".nc")
 
     ## File Check =========
     FCheck <- Helper_FileCheck(fileName = fileName, loadFun = NC_Read, load = TRUE, verbose = TRUE)

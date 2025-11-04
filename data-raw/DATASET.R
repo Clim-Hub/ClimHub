@@ -105,15 +105,15 @@ x <- lapply(names(datals), function(name) {
     terra::units(x) <- "mm"
   }
   # terra::plot(z[[1]])
-  ret <- WriteRead.NC(
-      NC = z,
-      FName = FNAME,
-      Variable = unique(terra::varnames(x)),
-      LongVar = unique(terra::longnames(x)),
-      Unit = unique(terra::units(x)),
-      Attrs = setNames(terra::metags(x)[, 2], terra::metags(x)[, 1]),
-      Write = TRUE,
-      Compression = 9
+  ret <- WriteRead_NC(
+      nc = z,
+      fileName = FNAME,
+      variable = unique(terra::varnames(x)),
+      longVar = unique(terra::longnames(x)),
+      unit = unique(terra::units(x)),
+      attrs = setNames(terra::metags(x)[, 2], terra::metags(x)[, 1]),
+      write = TRUE,
+      compression = 9
     )
   }
   ret
@@ -131,15 +131,15 @@ percentiles <- app(BASEPeriod, fun = function(x) {
 names(percentiles) <- c("p10", "p90")
 terra::time(percentiles) <- rep(time(BASEPeriod[[1]]), 2)
 
-BASEPeriod_rast <- WriteRead.NC(
-  NC = percentiles / 100,
-  FName = file.path(getwd(), "inst/extdata", "Jotunheimen_BP_TM.nc"),
-  Variable = "Air Temperature Percentiles",
-  LongVar = "Air Temperature Percentiles for 1971-2000",
-  Unit = "K",
-  Attrs = setNames(terra::metags(BASEPeriod_rast)[, 2], terra::metags(BASEPeriod_rast)[, 1]),
-  Write = TRUE,
-  Compression = 9
+BASEPeriod_rast <- WriteRead_NC(
+  nc = percentiles / 100,
+  fileName = file.path(getwd(), "inst/extdata", "Jotunheimen_BP_TM.nc"),
+  variable = "Air Temperature Percentiles",
+  longVar = "Air Temperature Percentiles for 1971-2000",
+  unit = "K",
+  attrs = setNames(terra::metags(BASEPeriod_rast)[, 2], terra::metags(BASEPeriod_rast)[, 1]),
+  write = TRUE,
+  compression = 9
 )
 
 BASEPeriod_rast <- terra::rast("inst/extdata/Jotunheimen_BASEPeriod.nc")

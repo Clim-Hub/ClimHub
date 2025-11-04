@@ -10,15 +10,15 @@
 #' @importFrom terra time
 #'
 #' @return A SpatRaster.
-#' 
+#'
 #' @author Erik Kusch
 #'
 #' @examples
 #' ## load the first 2 days of the KiN temperature data provided with ClimHub to two separate list slots and articifially increase values by 1 for the second list item
 #' ls <- list(
-#'     Base = terra::rast(system.file("extdata", "KiN_AT.nc", package = "ClimHub"))[[1:2]],
-#'     Base1 = terra::rast(system.file("extdata", "KiN_AT.nc", package = "ClimHub"))[[1:2]]+1
-#'     )
+#'     Base = terra::rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))[[1:2]],
+#'     Base1 = terra::rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))[[1:2]] + 1
+#' )
 #' ## calculate difference between each layer in the two list slots
 #' Diff_rast <- Process_ListLayers(ls = ls, fun = diff)
 #' Diff_rast # all values in this 2-layer raster, ought to be 1 or NA
@@ -43,7 +43,9 @@ Process_ListLayers <- function(ls, fun = mean, verbose = TRUE) {
         # Perform the terra::app operation directly without constructing strings
         Fret <- terra::app(rast(lapply(ls, "[[", AppIter)), fun = fun)
         NewLayers[[AppIter]] <- Fret # Append result to list
-        if(verbose){pb$tick(tokens = list(layer = AppIter))}
+        if (verbose) {
+            pb$tick(tokens = list(layer = AppIter))
+        }
     }
     NewLayers <- rast(NewLayers)
 

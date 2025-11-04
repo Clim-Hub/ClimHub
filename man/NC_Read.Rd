@@ -16,7 +16,7 @@ A SpatRaster with metadata
 Read NetCDF files and their metadata attributes. Metadata from the NetCDF file is read and attached to the returned SpatRaster via \code{terra::metags()}.
 }
 \examples{
-Read_ras <- NC_Read(fileName = system.file("extdata", "KiN_rast.nc", package = "ClimHub"), meta = c("Citation"))
+Read_ras <- NC_Read(fileName = system.file("extdata", "KiN_rast.nc", package = "ClimHub"))
 terra::metags(Read_ras)[terra::metags(Read_ras)$name == "Citation", ]
 }
 \author{

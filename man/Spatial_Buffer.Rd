@@ -19,7 +19,7 @@ Allow for drawing of buffer zones around point-location data for downloading and
 }
 \examples{
 data(Nor2K_sf)
-Spatial.Buffer(Nor2K_sf, Buffer = 1e3) # 1km buffer
+Spatial_Buffer(Nor2K_sf, buffer = 1e2) # 100m buffer
 }
 \author{
 Erik Kusch

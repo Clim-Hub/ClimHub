@@ -15,19 +15,19 @@
 #' @importFrom lubridate tz
 #'
 #' @return A SpatRaster
-#' 
+#'
 #' @author Erik Kusch
-#' 
+#'
 #' @examples
 #' Data_rast <- terra::rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))
-#' Temporal_Aggregration(
+#' Temporal_Aggregation(
 #'     spatRaster = Data_rast,
 #'     tResolution = "day",
 #'     tStep = 2,
 #'     fun = mean
 #' )
 #' @export
-Temporal_Aggregration <- function(spatRaster, tResolution, tStep, fun, verbose = TRUE) {
+Temporal_Aggregation <- function(spatRaster, tResolution, tStep, fun, verbose = TRUE) {
     ## formatting
     Form <- substr(tResolution, 1, 1)
     Form <- ifelse(Form %in% c("h", "y"), toupper(Form), Form)
@@ -65,7 +65,7 @@ Temporal_Aggregration <- function(spatRaster, tResolution, tStep, fun, verbose =
     ## Actual Aggregation
     ### make progress bar
     pb <- Helper_Progress(iterLength = length(unique(AggrIndex)), text = "Temporal Aggregation")
-    
+
     ### aggregating data
     Aggregated_rast <- as.list(rep(NA, length(unique(AggrIndex))))
     for (AggrIter in unique(AggrIndex)) {
@@ -73,7 +73,9 @@ Temporal_Aggregration <- function(spatRaster, tResolution, tStep, fun, verbose =
             x = spatRaster[[which(AggrIndex == AggrIter)]],
             fun = fun
         )
-        if(verbose){pb$tick(tokens = list(layer = AggrIter))}
+        if (verbose) {
+            pb$tick(tokens = list(layer = AggrIter))
+        }
     }
     Aggregated_rast <- do.call(c, Aggregated_rast)
 

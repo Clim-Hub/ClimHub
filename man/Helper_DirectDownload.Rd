@@ -30,6 +30,7 @@ Helper_DirectDownload(
     fileName = c("TEMP_fc1961080100_003_sfx.nc", "TEMP_fc1961080106_003_sfx.nc"),
     cores = 2
 )
+unlink(c("TEMP_fc1961080100_003_sfx.nc", "TEMP_fc1961080106_003_sfx.nc"))
 }
 \author{
 Erik Kusch

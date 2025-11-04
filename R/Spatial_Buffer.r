@@ -15,7 +15,7 @@
 #'
 #' @examples
 #' data(Nor2K_sf)
-#' Spatial.Buffer(Nor2K_sf, Buffer = 1e3) # 1km buffer
+#' Spatial_Buffer(Nor2K_sf, buffer = 1e2) # 100m buffer
 #' @export
 Spatial_Buffer <- function(sf, buffer = 1e3) {
     st_as_sf(st_union(st_buffer(sf, buffer, endCapStyle = "SQUARE")))

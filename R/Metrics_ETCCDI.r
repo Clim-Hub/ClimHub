@@ -52,8 +52,8 @@ Metrics_ETCCDI <- function(ls) {
     #  3. time across all inputs in Rasters being the same
     #  4. Check that CRS is EPS:4326
 
-    stop("Add extra checks")
-    stop("do quantile calculations for percentile based ETCCDI")
+    #stop("Add extra checks")
+    #stop("do quantile calculations for percentile based ETCCDI")
 
     ## split into years
     AnnualRasters_ls <- lapply(ls, Helper_TimeSplit, tResolution = "Year")

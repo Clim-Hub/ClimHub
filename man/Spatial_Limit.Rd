@@ -20,7 +20,7 @@ A SpatRaster.
 Cropped and masking the original SpatRaster (\code{spatRaster}) using supplied SpatExtent or shapefile (\code{shape}) and retaining all pixels which are even just partially covered.
 }
 \examples{
-Data_rast <- terra::rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))[[1:31]]
+Data_rast <- terra::rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))
 data(Jotunheimen_sf)
 Data_rast <- Spatial_Reproject(Data_rast, Jotunheimen_sf)
 Spatial_Limit(Data_rast, Jotunheimen_sf)

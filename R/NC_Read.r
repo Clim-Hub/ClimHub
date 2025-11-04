@@ -11,11 +11,11 @@
 #' @importFrom terra metags
 #'
 #' @return A SpatRaster with metadata
-#' 
+#'
 #' @author Erik Kusch
-#' 
+#'
 #' @examples
-#' Read_ras <- NC_Read(fileName = system.file("extdata", "KiN_rast.nc", package = "ClimHub"), meta = c("Citation"))
+#' Read_ras <- NC_Read(fileName = system.file("extdata", "KiN_rast.nc", package = "ClimHub"))
 #' terra::metags(Read_ras)[terra::metags(Read_ras)$name == "Citation", ]
 #' @export
 NC_Read <- function(fileName) {

@@ -20,8 +20,8 @@ Creates a progress bar as defined by the progress package for use in other funct
 \examples{
 Iter_n <- 100
 pb <- Helper_Progress(iterLength = Iter_n, text = "Elapsing")
-for(i in 1:Iter_n){
-    Sys.sleep(0.25)
+for (i in 1:Iter_n) {
+    Sys.sleep(0.05)
     pb$tick(tokens = list(layer = i))
 }
 }

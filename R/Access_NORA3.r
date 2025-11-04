@@ -34,6 +34,7 @@
 #'     fileName = "NORA3.nc", compression = 9, # file storing
 #'     removeTemporary = TRUE
 #' )
+#' unlink("NORA3.nc")
 #' }
 #' @export
 Access_NORA3 <- function(

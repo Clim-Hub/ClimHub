@@ -32,22 +32,22 @@ Stop <- as.POSIXct(paste0(DateStop, "00:00:00"), tz = "UTC")
 inputCheck <- list(
     Variable = list(
         Input = Variable,
-        Allowed = Meta.Variables("KlimaiNorge2100")$name,
+        Allowed = Discovery_Variables("KlimaiNorge2100")$name,
         Operator = "in"
     ),
     Time = list(
         Input = c(Start, Stop),
-        Allowed = Meta.QuickFacts("KlimaiNorge2100")$time$extent,
+        Allowed = Discovery_QuickFacts("KlimaiNorge2100")$time$extent,
         Operator = "exceeds"
     ),
     Models = list(
         Input = Model,
-        Allowed = Meta.QuickFacts("KlimaiNorge2100")$models,
+        Allowed = Discovery_QuickFacts("KlimaiNorge2100")$models,
         Operator = "in"
     ),
     Scenarios = list(
         Input = Scenario,
-        Allowed = Meta.QuickFacts("KlimaiNorge2100")$scenarios,
+        Allowed = Discovery_QuickFacts("KlimaiNorge2100")$scenarios,
         Operator = "in"
     )
 )

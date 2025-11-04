@@ -24,6 +24,7 @@
 #'     fileName = c("TEMP_fc1961080100_003_sfx.nc", "TEMP_fc1961080106_003_sfx.nc"),
 #'     cores = 2
 #' )
+#' unlink(c("TEMP_fc1961080100_003_sfx.nc", "TEMP_fc1961080106_003_sfx.nc"))
 Helper_DirectDownload <- function(url, fileName, cores, verbose = TRUE) {
     ## progress bar
     pb <- Helper_Progress(iterLength = length(fileName), text = "Downloading")

@@ -47,8 +47,6 @@ jobs:
       - name: Display computed version
         run: |
           echo "Computed version: ${{ steps.semver.outputs['version-string'] }}"
-          echo "Tag: ${{ steps.semver.outputs.tag }}"
-
   build:
     name: Build & Test
     runs-on: ubuntu-latest
@@ -76,6 +74,8 @@ jobs:
     needs: versioning
     # only create a release on pushes and when a version was produced
     if: ${{ github.event_name == 'push' && needs.versioning.outputs.version != '' }}
+    permissions:
+      contents: write  # needed to push the DESCRIPTION change
 
     steps:
       - name: Checkout repository
@@ -84,13 +84,35 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
 
+      - name: Update DESCRIPTION file with new version
+        run: |
+          set -euo pipefail
+          VERSION="${{ needs.versioning.outputs.version }}"
+          echo "Target version: ${VERSION}"
+
+          # Replace only line 3 which is the Version field in your file
+          sed -i "3s/^Version: .*/Version: ${VERSION}/" DESCRIPTION
+
+          echo "New DESCRIPTION header:"
+          head -n 5 DESCRIPTION
+
+          # Commit only if it actually changed
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add DESCRIPTION
+          if ! git diff --cached --quiet; then
+            git commit -m "[skip ci] chore: bump DESCRIPTION Version to ${VERSION}"
+            git push
+          else
+            echo "DESCRIPTION already at ${VERSION}; nothing to commit."
+          fi
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           draft: false
           prerelease: false
           generate_release_notes: true
-          # prefix 'v' if you want v1.2.3 tags; adjust if your action already includes the v
           tag_name: v${{ needs.versioning.outputs.version }}
           token: ${{ secrets.GITHUB_TOKEN }}
 

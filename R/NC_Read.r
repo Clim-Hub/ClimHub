@@ -19,9 +19,6 @@
 #' terra::metags(Read_ras)[terra::metags(Read_ras)$name == "Citation", ]
 #' @export
 NC_Read <- function(fileName) {
-  ## remove = signs in meta vector, these break metags assignment
-  meta <- gsub(pattern = "=", replacement = "...", meta)
-
   ## we need to load the file now (read path from fileName)
   nc_obj <- rast(fileName)
   ## Reading metadata and assigning it to returned raster

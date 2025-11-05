@@ -7,17 +7,16 @@ load_all()
 
 
 # Make Klima i Norge raw file ------------------
-KiN_rast <- Download.KlimaiNorge2100(
-  Variable = "Mean Air Temperature",
-  DateStart = "2025-01-01",
-  DateStop = "2025-01-10",
-  Model = "CNRM_CCLM",
-  Scenario = "rcp85",
-  Cores = 1,
-  Dir = file.path(getwd(), "inst/extdata"),
-  FileName = "KiN_rast",
-  Compression = 9,
-  RemoveTemporary = TRUE
+KiN_rast <- Access_KlimaiNorge2100(
+  variable = "Mean Air Temperature",
+  dateStart = "2025-01-01",
+  dateStop = "2025-01-10",
+  model = "CNRM_CCLM",
+  scenario = "rcp85",
+  cores = 1,
+  fileName = file.path(getwd(), "inst/extdata", "KiN_rast.nc"),
+  compression = 9,
+  removeTemporary = TRUE
 )
 # usethis::use_data(KiN_rast)
 
@@ -33,53 +32,53 @@ usethis::use_data(Nor2K_sf, overwrite = TRUE)
 
 # Metrics.ETCCDI objects ------------------
 ## Raw Data -----
-TX_rast <- Download.KlimaiNorge2100(
-  Variable = "Maximum Air Temperature",
-  DateStart = "2050-01-01",
-  DateStop = "2051-12-31", ,
-  Scenario = "rcp85",
-  Model = "CNRM_CCLM",
-  FileName = "KiN_TX",
-  WriteFile = FALSE
+TX_rast <- Access_KlimaiNorge2100(
+  variable = "Maximum Air Temperature",
+  dateStart = "2050-01-01",
+  dateStop = "2051-12-31",
+  scenario = "rcp85",
+  model = "CNRM_CCLM",
+  fileName = file.path(getwd(), "inst/extdata", "KiN_TX.nc"),
+  writeFile = FALSE
 )
 
-TN_rast <- Download.KlimaiNorge2100(
-  Variable = "Minimum Air Temperature",
-  DateStart = "2050-01-01",
-  DateStop = "2051-12-31",
-  Scenario = "rcp85",
-  Model = "CNRM_CCLM",
-  FileName = "KiN_TN",
-  WriteFile = FALSE
+TN_rast <- Access_KlimaiNorge2100(
+  variable = "Minimum Air Temperature",
+  dateStart = "2050-01-01",
+  dateStop = "2051-12-31",
+  scenario = "rcp85",
+  model = "CNRM_CCLM",
+  fileName = file.path(getwd(), "inst/extdata", "KiN_TN.nc"),
+  writeFile = FALSE
 )
 
-BP_TM_rast <- Download.KlimaiNorge2100(
-  Variable = "Mean Air Temperature",
-  DateStart = "1971-01-01",
-  DateStop = "2000-12-31",
-  Model = "CNRM_CCLM",
-  FileName = "KiN_BP_TM",
-  WriteFile = FALSE
+BP_TM_rast <- Access_KlimaiNorge2100(
+  variable = "Mean Air Temperature",
+  dateStart = "1971-01-01",
+  dateStop = "2000-12-31",
+  model = "CNRM_CCLM",
+  fileName = file.path(getwd(), "inst/extdata", "KiN_BP_TM.nc"),
+  writeFile = FALSE
 )
 
-RR_rast <- Download.KlimaiNorge2100(
-  Variable = "Precipitation",
-  DateStart = "2050-01-01",
-  DateStop = "2051-12-31",
-  Scenario = "rcp85",
-  Model = "CNRM_CCLM",
-  FileName = "KiN_RR",
-  WriteFile = FALSE
+RR_rast <- Access_KlimaiNorge2100(
+  variable = "Precipitation",
+  dateStart = "2050-01-01",
+  dateStop = "2051-12-31",
+  scenario = "rcp85",
+  model = "CNRM_CCLM",
+  fileName = file.path(getwd(), "inst/extdata", "KiN_RR.nc"),
+  writeFile = FALSE
 )
 RR_rast <- RR_rast / 10
 
-BP_RR_rast <- Download.KlimaiNorge2100(
-  Variable = "Precipitation",
-  DateStart = "1971-01-01",
-  DateStop = "2000-12-31",
-  Model = "CNRM_CCLM",
-  FileName = "KiN_BP_RR",
-  WriteFile = FALSE
+BP_RR_rast <- Access_KlimaiNorge2100(
+  variable = "Precipitation",
+  dateStart = "1971-01-01",
+  dateStop = "2000-12-31",
+  model = "CNRM_CCLM",
+  fileName = file.path(getwd(), "inst/extdata", "KiN_BP_RR.nc"),
+  writeFile = FALSE
 )
 
 ## Cropping -----
@@ -97,22 +96,21 @@ x <- lapply(names(datals), function(name) {
     ret <- terra::rast(FNAME)
   }else{
     x <- datals[[name]]
-  y <- Spatial.Reproject(x, Jotunheimen_sf)
-  z <- Spatial.CropMask(Rast = y, Shape = Jotunheimen_sf)
+    y <- Spatial_Reproject(x, Jotunheimen_sf)
+    z <- Spatial_CropMask(rast = y, shape = Jotunheimen_sf)
   if(unique(terra::units(x)) == "K"){
     z <- z/100
   }else{
     terra::units(x) <- "mm"
   }
   # terra::plot(z[[1]])
-  ret <- WriteRead_NC(
-      nc = z,
+    ret <- NC_Write(
+      spatRaster = z,
       fileName = FNAME,
-      variable = unique(terra::varnames(x)),
-      longVar = unique(terra::longnames(x)),
+      varName = unique(terra::varnames(x)),
+      longName = unique(terra::longnames(x)),
       unit = unique(terra::units(x)),
-      attrs = setNames(terra::metags(x)[, 2], terra::metags(x)[, 1]),
-      write = TRUE,
+      meta = setNames(terra::metags(x)[, 2], terra::metags(x)[, 1]),
       compression = 9
     )
   }
@@ -131,14 +129,13 @@ percentiles <- app(BASEPeriod, fun = function(x) {
 names(percentiles) <- c("p10", "p90")
 terra::time(percentiles) <- rep(time(BASEPeriod[[1]]), 2)
 
-BASEPeriod_rast <- WriteRead_NC(
-  nc = percentiles / 100,
+BASEPeriod_rast <- NC_Write(
+  spatRaster = percentiles / 100,
   fileName = file.path(getwd(), "inst/extdata", "Jotunheimen_BP_TM.nc"),
-  variable = "Air Temperature Percentiles",
-  longVar = "Air Temperature Percentiles for 1971-2000",
+  varName = "Air Temperature Percentiles",
+  longName = "Air Temperature Percentiles for 1971-2000",
   unit = "K",
-  attrs = setNames(terra::metags(BASEPeriod_rast)[, 2], terra::metags(BASEPeriod_rast)[, 1]),
-  write = TRUE,
+  meta = setNames(terra::metags(BASEPeriod_rast)[, 2], terra::metags(BASEPeriod_rast)[, 1]),
   compression = 9
 )
 
@@ -146,3 +143,12 @@ BASEPeriod_rast <- terra::rast("inst/extdata/Jotunheimen_BASEPeriod.nc")
 
 
 unlink(list.files(pattern = "TEMP_", full.names = TRUE))
+
+### Sufficiently large file for testing of NC_Write ------------------
+NORA3 <- Access_NORA3(
+    variable = "TS (Surface temperature)", # which variable
+    dateStart = "1971-01-01 00", dateStop = "1971-05-31 18", # time-window
+    leadTimeHour = 3, cores = 1,
+    fileName = "NORA3.nc", compression = NA, # file storing
+    removeTemporary = TRUE
+)

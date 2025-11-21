@@ -291,7 +291,7 @@ Access_reanalysis_cerra_single_levels <- function(
             unit = Variables_df[Variables_df$name == variable, ]$unit,
             meta = Meta_vec, compression = compression
         )
-        CDS_rast <- NC_Read(fileName = fileName)
+        CDS_rast <- NC_Read(resource = fileName)
     }
 
     ### unlink temporary files

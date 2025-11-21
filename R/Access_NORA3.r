@@ -156,7 +156,7 @@ Access_NORA3 <- function(
             unit = Unit,
             meta = Meta_vec, compression = compression
         )
-        MetNo_rast <- NC_Read(fileName = fileName)
+        MetNo_rast <- NC_Read(resource = fileName)
     }
 
     ### unlink temporary files

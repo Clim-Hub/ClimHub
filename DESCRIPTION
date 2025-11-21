@@ -23,10 +23,11 @@ Imports:
     terra (>= 1.7.78),
     tools (>= 4.4.0),
     utils (>= 4.4.0),
-    ecmwfr (>= 2.0.3), 
-    httr (>= 1.4.7), 
-    sf (>= 1.0-21), 
-    stringr (>= 1.5.2)
+    ecmwfr (>= 2.0.3),
+    httr (>= 1.4.7),
+    sf (>= 1.0-21),
+    stringr (>= 1.5.2),
+    ncdfCF
 Depends: 
     R (>= 3.5)
 LazyData: true

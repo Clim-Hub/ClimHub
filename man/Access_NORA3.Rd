@@ -55,6 +55,7 @@ NORA3 <- Access_NORA3(
     fileName = "NORA3.nc", compression = 9, # file storing
     removeTemporary = TRUE
 )
+unlink("NORA3.nc")
 }
 }
 \author{

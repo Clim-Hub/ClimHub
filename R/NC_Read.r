@@ -1,33 +1,16 @@
-#' @title Read NetCDF files and their metadata
+#' @title Read a netCDF file
 #'
-#' @description Read NetCDF files and their metadata attributes. Metadata from the NetCDF file is read and attached to the returned SpatRaster via `terra::metags()`.
+#' @description Open and read a netCDF file including its metadata. Data is
+#'   returned as a `ncdfCF` object.
 #'
-#' @param fileName Character. Filename including directory for reading/writing.
+#' @param resource Character. Fully qualified file name for a netCDF file on a
+#'   local file system or the URL to a netCDF resource on a THREDDS server.
 #'
-#' @importFrom terra rast
-#' @importFrom ncdf4 nc_open
-#' @importFrom ncdf4 ncatt_get
-#' @importFrom ncdf4 nc_close
-#' @importFrom terra metags
-#'
-#' @return A SpatRaster with metadata
-#'
-#' @author Erik Kusch
-#'
+#' @return A `ncdfCF` data set instance.
+#' @author Patrick Van Laake
 #' @examples
-#' Read_ras <- NC_Read(fileName = system.file("extdata", "KiN_rast.nc", package = "ClimHub"))
-#' terra::metags(Read_ras)[terra::metags(Read_ras)$name == "Citation", ]
+#' ds <- NC_Read(resource = system.file("extdata", "KiN_rast.nc", package = "ClimHub"))
 #' @export
-NC_Read <- function(fileName) {
-  ## we need to load the file now (read path from fileName)
-  nc_obj <- rast(fileName)
-  ## Reading metadata and assigning it to returned raster
-  nc_handle <- nc_open(fileName)
-  Meta <- ncdf4::ncatt_get(nc_handle, 0)
-  nc_close(nc_handle)
-  Meta_vec <- unlist(Meta)
-  terra::metags(nc_obj) <- Meta_vec
-
-  ## return object
-  return(nc_obj)
+NC_Read <- function(resource) {
+  ncdfCF::open_ncdf(resource)
 }

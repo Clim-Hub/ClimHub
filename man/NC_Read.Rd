@@ -2,23 +2,24 @@
 % Please edit documentation in R/NC_Read.r
 \name{NC_Read}
 \alias{NC_Read}
-\title{Read NetCDF files and their metadata}
+\title{Read a netCDF file}
 \usage{
-NC_Read(fileName)
+NC_Read(resource)
 }
 \arguments{
-\item{fileName}{Character. Filename including directory for reading/writing.}
+\item{resource}{Character. Fully qualified file name for a netCDF file on a
+local file system or the URL to a netCDF resource on a THREDDS server.}
 }
 \value{
-A SpatRaster with metadata
+A \code{ncdfCF} data set instance.
 }
 \description{
-Read NetCDF files and their metadata attributes. Metadata from the NetCDF file is read and attached to the returned SpatRaster via \code{terra::metags()}.
+Open and read a netCDF file including its metadata. Data is
+returned as a \code{ncdfCF} object.
 }
 \examples{
-Read_ras <- NC_Read(fileName = system.file("extdata", "KiN_rast.nc", package = "ClimHub"))
-terra::metags(Read_ras)[terra::metags(Read_ras)$name == "Citation", ]
+ds <- NC_Read(resource = system.file("extdata", "KiN_rast.nc", package = "ClimHub"))
 }
 \author{
-Erik Kusch
+Patrick Van Laake
 }

@@ -1,6 +1,6 @@
 #' @title Download Klima i Norge 2100 data from the Norwegian Meteorological Institute
 #'
-#' @description Downloads and processes data from the \href{https://www.miljodirektoratet.no/publikasjoner/2015/september-2015/klima-i-norge-2100/}{Klima_i_Norge_2100} data product hosted through \href{https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge_2100/catalog.html}{thredds.met.no}. 
+#' @description Downloads and processes data from the \href{https://www.miljodirektoratet.no/publikasjoner/2015/september-2015/klima-i-norge-2100/}{Klima_i_Norge_2100} data product hosted through \href{https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge_2100/catalog.html}{thredds.met.no}.
 #' Specifically, this function provides access to the following datasets:
 #'  1. \href{https://publikasjoner.nve.no/rapport/2016/rapport2016_59.pdf}{Gridded 1 x 1 km climate and hydrological projections for Norway} data contained within \href{https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge_2100/utgave2015/catalog.html}{utgave 2015}.
 #'
@@ -157,7 +157,7 @@ Access_KlimaiNorge2100 <- function(
             unit = Unit,
             meta = Meta_vec, compression = compression
         )
-        MetNo_rast <- NC_Read(fileName = fileName)
+        MetNo_rast <- NC_Read(resource = fileName)
     }
 
     ### unlink temporary files

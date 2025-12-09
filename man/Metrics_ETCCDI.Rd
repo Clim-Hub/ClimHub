@@ -20,6 +20,7 @@ This function calculates \href{https://agupubs.onlinelibrary.wiley.com/doi/full/
 TX_rast <- terra::rast("inst/extdata/Jotunheimen_TX.nc") # terra::rast(system.file("extdata", "Jotunheimen_TX.nc", package = "ClimHub"))
 TN_rast <- terra::rast("inst/extdata/Jotunheimen_TN.nc")
 RR_rast <- terra::rast("inst/extdata/Jotunheimen_RR.nc")
+terra::units(RR_rast) <- "mm"
 # BASEPeriod_rast <- terra::rast("inst/extdata/Jotunheimen_BASEPeriod.nc")
 
 Metrics_ETCCDI(ls = list(TX = TX_rast, TN = TN_rast, RR = RR_rast

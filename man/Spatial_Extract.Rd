@@ -4,7 +4,7 @@
 \alias{Spatial_Extract}
 \title{Extracting data from SpatRaster with a SpatialFeaturesObject}
 \usage{
-Spatial_Extract(spatRaster, sf, fun = mean)
+Spatial_Extract(spatRaster, sf, fun = "mean", ...)
 }
 \arguments{
 \item{spatRaster}{A SpatRaster within which coverage should be identified}
@@ -12,6 +12,8 @@ Spatial_Extract(spatRaster, sf, fun = mean)
 \item{sf}{Either an sf polygon(-collection) or an sf point(-collection).}
 
 \item{fun}{User-defined function by which to aggregate values of cells within a polygon. Supported functions are mean, sum, min, max and table.}
+
+\item{...}{additional arguments passed to \code{fun}, such as na.rm=TRUE}
 }
 \value{
 A data.frame.

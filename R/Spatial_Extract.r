@@ -5,6 +5,7 @@
 #' @param spatRaster A SpatRaster within which coverage should be identified
 #' @param sf Either an sf polygon(-collection) or an sf point(-collection).
 #' @param fun User-defined function by which to aggregate values of cells within a polygon. Supported functions are mean, sum, min, max and table.
+#' @param ... additional arguments passed to `fun`, such as na.rm=TRUE
 #'
 #' @importFrom terra extract
 #' @importFrom terra crs
@@ -29,7 +30,7 @@
 #'     sf = Nor2K_sf
 #' )
 #' @export
-Spatial_Extract <- function(spatRaster, sf, fun = mean) {
+Spatial_Extract <- function(spatRaster, sf, fun = "mean", ...) {
     ## preparing extraction
     if (terra::crs(spatRaster) != st_crs(sf)$wkt) {
         sf <- Spatial_Reproject(sf, spatRaster)
@@ -37,7 +38,7 @@ Spatial_Extract <- function(spatRaster, sf, fun = mean) {
     }
 
     ## actual extraction
-    Extracted_df <- terra::extract(x = spatRaster, y = sf, fun = fun, exact = TRUE, na.rm = TRUE)
+    Extracted_df <- terra::extract(x = spatRaster, y = sf, fun = fun, ..., exact = TRUE)
 
     ## column names as dates/times
     colnames(Extracted_df)[-1] <- as.character(terra::time(spatRaster))

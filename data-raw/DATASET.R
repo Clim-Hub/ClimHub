@@ -5,6 +5,15 @@ document()
 build()
 load_all()
 
+# Make NORA3 raw file ------------------
+NORA3_rast <- Access_NORA3(
+  variable = "Air Temperature 2m (Height = 2)", # which variable
+  dateStart = "1995-01-03 00", dateStop = "1995-01-03 18", # time-window
+  leadTimeHour = 3, cores = 1,
+  fileName = file.path(getwd(), "inst/extdata", "NORA3_rast.nc"), compression = 9, # file storing
+  removeTemporary = TRUE
+)
+# usethis::use_data(NORA3_rast)
 
 # Make Klima i Norge raw file ------------------
 KiN_rast <- Access_KlimaiNorge2100(

@@ -24,10 +24,20 @@ KiN_rast <- Access_KlimaiNorge2100(
   scenario = "rcp85",
   cores = 1,
   fileName = file.path(getwd(), "inst/extdata", "KiN_rast.nc"),
-  compression = 9,
-  removeTemporary = TRUE
+  removeTemporary = FALSE,
+  writeFile = FALSE
 )
-# usethis::use_data(KiN_rast)
+## data is stored multiplied by 10 so needs to be adjusted here
+KiN_rast <- NC_Write(
+  spatRaster = KiN_rast / 10,
+  fileName = file.path(getwd(), "inst/extdata", "KiN_rast.nc"),
+  varName = unique(terra::varnames(KiN_rast)),
+  longName = unique(terra::longnames(KiN_rast)),
+  unit = unique(terra::units(KiN_rast)),
+  meta = setNames(terra::metags(KiN_rast)[, 2], terra::metags(KiN_rast)[, 1]),
+  compression = 9
+)
+unlink(list.files(pattern = "TEMP_"))
 
 # Jotunheimen boundary as spatialfeatureobject ------------------
 Jotunheimen_sf <- sf::st_read("data-raw/Shape/Shape-polygon.shp")

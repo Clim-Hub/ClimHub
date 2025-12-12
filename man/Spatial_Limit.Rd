@@ -20,10 +20,27 @@ A SpatRaster.
 Cropped and masking the original SpatRaster (\code{spatRaster}) using supplied SpatExtent or shapefile (\code{shape}) and retaining all pixels which are even just partially covered.
 }
 \examples{
-Data_rast <- terra::rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))
+# single-layer exaples
+## limit by sf object
+KiN_rast <- terra::rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))[[1]]
 data(Jotunheimen_sf)
-Data_rast <- Spatial_Reproject(Data_rast, Jotunheimen_sf)
-Spatial_Limit(Data_rast, Jotunheimen_sf)
+# Kin_Limited <- Spatial_Limit(KiN_rast, Jotunheimen_sf) # this would throw an error due to different projections of the spatRaster and the sf object
+KiN_rast <- Spatial_Reproject(KiN_rast, Jotunheimen_sf)
+KiN_Limited <- Spatial_Limit(spatRaster = KiN_rast, shape = Jotunheimen_sf)
+# Viz_SpatRast(KiN_Limited)
+
+## limit by SpatExtent
+KiN_rast <- terra::rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))[[1]]
+KiN_Limited <- Spatial_Limit(spatRaster = KiN_rast, shape = terra::ext(-7e4, 3e5, 6.5e6, 7e6))
+# Viz_SpatRast(KiN_Limited)
+
+# multi-layer exaple
+KiN_rast <- terra::rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))
+KiN_Limited <- Spatial_Limit(spatRaster = KiN_rast, shape = terra::ext(-7e4, 3e5, 6.5e6, 7e6))
+# Viz_SpatRast(KiN_Limited, panelColumns = 5)
+}
+\seealso{
+\code{\link{Spatial_Reproject}}.
 }
 \author{
 Erik Kusch

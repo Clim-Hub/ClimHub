@@ -20,13 +20,28 @@ A SpatRaster or SF object reprojected to the same CRS as in ProjTo.
 Reprojecting one spatial data product to match another.
 }
 \examples{
-Data_rast <- terra::rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))[[1]]
-## reprojecting raster
+## reprojecting raster to match specific EPSG
+KiN_rast <- terra::rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))[[1]] # this data is stored in K*10
+SpatRast_repro <- Spatial_Reproject(KiN_rast, 3995)
+# Viz_SpatRast(SpatRast_repro)
+
+## reprojecting raster to match sf
+KiN_rast <- terra::rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))[[1]]
 data(Jotunheimen_sf)
-Spatial_Reproject(Data_rast, Jotunheimen_sf)
-## reprojecting sf
+SpatRast_repro <- Spatial_Reproject(KiN_rast, Jotunheimen_sf)
+# Viz_SpatRast(SpatRast_repro, sfObj = Jotunheimen_sf, sfColour = "white")
+
+## reprojecting raster to match raster
+KiN_rast <- terra::rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))[[1]]
+Nora3_rast <- terra::rast(system.file("extdata", "Nora3_rast.nc", package = "ClimHub"))[[1]]
+SpatRast_repro <- Spatial_Reproject(KiN_rast, Nora3_rast)
+# Viz_SpatRast(SpatRast_repro)
+
+## reprojecting sf to match raster
+KiN_rast <- terra::rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))[[1]]
 data(Nor2K_sf)
-Spatial_Reproject(Nor2K_sf, Data_rast)
+Nor2K_repro <- Spatial_Reproject(Nor2K_sf, KiN_rast)
+# Viz_SpatRast(KiN_rast, sfObj = Nor2K_repro, sfColour = "white", sfFill = "white", sfSize = 2)
 }
 \author{
 Erik Kusch

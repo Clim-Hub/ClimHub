@@ -4,22 +4,25 @@
 \alias{NC_Read}
 \title{Read a netCDF file}
 \usage{
-NC_Read(resource)
+NC_Read(fileName, asTerra = TRUE)
 }
 \arguments{
-\item{resource}{Character. Fully qualified file name for a netCDF file on a
-local file system or the URL to a netCDF resource on a THREDDS server.}
+\item{fileName}{Character. Fully qualified file name for a netCDF file on a local file system or the URL to a netCDF resource on a THREDDS server.}
+
+\item{asTerra}{Logical. If \code{TRUE} (default), the contents of the netCDF file is returned as a \code{SpatRaster} object from the \code{terra} package.}
 }
 \value{
-A \code{ncdfCF} data set instance.
+Either a \code{SpatRaster} object or an \code{ncdfCF} data set instance.
 }
 \description{
-Open and read a netCDF file including its metadata. Data is
-returned as a \code{ncdfCF} object.
+Open and read a netCDF file including its metadata.
 }
 \examples{
-ds <- NC_Read(resource = system.file("extdata", "KiN_rast.nc", package = "ClimHub"))
+## loading as ncdfCF object
+NC_Read(fileName = system.file("extdata", "KiN_rast.nc", package = "ClimHub"), asTerra = FALSE)
+## loading as terra SpatRaster object
+NC_Read(fileName = system.file("extdata", "KiN_rast.nc", package = "ClimHub"))
 }
 \author{
-Patrick Van Laake
+Patrick Van Laake, Erik Kusch
 }

@@ -27,7 +27,7 @@ Imports:
     httr (>= 1.4.7),
     sf (>= 1.0-21),
     stringr (>= 1.5.2),
-    ncdfCF
+    ncdfCF (>= 0.7.0)
 Depends: 
     R (>= 3.5)
 LazyData: true

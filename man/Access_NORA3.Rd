@@ -9,10 +9,9 @@ Access_NORA3(
   dateStart,
   dateStop,
   leadTimeHour,
-  cores = 1,
   fileName,
   compression = NA,
-  removeTemporary = TRUE,
+  downloadData = TRUE,
   writeFile = TRUE
 )
 }
@@ -25,15 +24,13 @@ Access_NORA3(
 
 \item{leadTimeHour}{Integer. Lead time of reanalysis. NORA3 leadtimes can be obtained with \code{Discovery_QuickFacts("NORA3")$leadtime}.}
 
-\item{cores}{Optional, Integer. Number of cores to use for parallel downloads. Default NULL defines no parallelisation.}
-
 \item{fileName}{Character. A file name for the produced file, including path.}
 
 \item{compression}{Optional, Integer. Compression level between 1 to 9 applied to final .nc file. Same as compression argument in terra::writeCDF(). Defaults to NA.}
 
-\item{removeTemporary}{Optional, Logical. Whether to delete temporary files after completion. Defaults to TRUE.}
-
 \item{writeFile}{Optional, Logical. Whether to write final SpatRaster to disk as an .nc or to return information from memory. Setting to FALSE will prohibit removal of temporary files. Defaults to TRUE.}
+
+\item{removeTemporary}{Optional, Logical. Whether to delete temporary files after completion. Defaults to TRUE.}
 }
 \value{
 SpatRaster. Contains the downloaded data and metadata attributes that can be retrieved with terra::metags(...):
@@ -51,9 +48,8 @@ Specifically, this function provides access to the NORA3 files contained within 
 NORA3 <- Access_NORA3(
     variable = "TS (Surface temperature)", # which variable
     dateStart = "1961-08-01 00", dateStop = "1961-08-02 18", # time-window
-    leadTimeHour = 3, cores = 1,
-    fileName = "NORA3.nc", compression = 9, # file storing
-    removeTemporary = TRUE
+    leadTimeHour = 3
+    fileName = "NORA3.nc", compression = 9 # file storing
 )
 unlink("NORA3.nc")
 }

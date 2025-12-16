@@ -1,4 +1,3 @@
-#' Check Validity of User Input
 #' @title Check Validity of User Input
 #' @description Loops over contents of a named list of lists where each sublist contains the pointers Input, Allowed, and Operator.
 #'

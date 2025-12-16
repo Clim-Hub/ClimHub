@@ -7,7 +7,6 @@
 #' @param dateStart Character. "YYYY-MM-DD HH" date at which to start time series of downloaded data. Data is available daily at hours 00, 06, 12, and 18.
 #' @param dateStop Character. "YYYY-MM-DD HH" date at which to stop time series of downloaded data. Data is available daily at hours 00, 06, 12, and 18.
 #' @param leadTimeHour Integer. Lead time of reanalysis. NORA3 leadtimes can be obtained with `Discovery_QuickFacts("NORA3")$leadtime`.
-#' @param cores Optional, Integer. Number of cores to use for parallel downloads. Default NULL defines no parallelisation.
 #' @param fileName Character. A file name for the produced file, including path.
 #' @param compression Optional, Integer. Compression level between 1 to 9 applied to final .nc file. Same as compression argument in terra::writeCDF(). Defaults to NA.
 #' @param removeTemporary Optional, Logical. Whether to delete temporary files after completion. Defaults to TRUE.
@@ -30,9 +29,8 @@
 #' NORA3 <- Access_NORA3(
 #'     variable = "TS (Surface temperature)", # which variable
 #'     dateStart = "1961-08-01 00", dateStop = "1961-08-02 18", # time-window
-#'     leadTimeHour = 3, cores = 1,
-#'     fileName = "NORA3.nc", compression = 9, # file storing
-#'     removeTemporary = TRUE
+#'     leadTimeHour = 3
+#'     fileName = "NORA3.nc", compression = 9 # file storing
 #' )
 #' unlink("NORA3.nc")
 #' }
@@ -41,13 +39,12 @@ Access_NORA3 <- function(
     variable, # which variable
     dateStart, dateStop, # time-window
     leadTimeHour, # NORA3 specific arguments
-    cores = 1,
     fileName, compression = NA, # file storing
-    removeTemporary = TRUE,
+    downloadData = TRUE,
     writeFile = TRUE) {
+
     ## Input Checks ============
     message("###### Checking Request Validity")
-
     ### fileName
     if (missing(fileName)) {
         stop("Please specify a filename.")
@@ -85,15 +82,6 @@ Access_NORA3 <- function(
     )
     Helper_InputChecker(inputCheck = InCheck_ls)
 
-    ## Metadata
-    Citation <- paste0("NORA3 (DOI:", Discovery_DOI(dataSet = "NORA3"), ") data provided by the The Norwegian Meteorological institute obtained on ", Sys.Date())
-    names(Citation) <- "Citation"
-    callargs <- mget(names(formals()), sys.frame(sys.nframe()))
-    callargs[sapply(callargs, is.null)] <- "NULL"
-    callargs[sapply(callargs, class) == "name"] <- ""
-    names(callargs) <- paste("Call", names(callargs), sep = "_")
-    Meta_vec <- c(Citation, unlist(callargs))
-
     ## Data files & extraction varnames =========
     NORA3_df <- Discovery_Variables("NORA3")
     FilePrefix <- NORA3_df$datafile[variable == NORA3_df$name]
@@ -101,8 +89,8 @@ Access_NORA3 <- function(
     Unit <- NORA3_df$unit[variable == NORA3_df$name]
 
     ## Download preparations =========
-    ## temporary files names, we do this in UTC to avoid daylight savings shenanigans
-    TimeAssing <- Datetimes <- seq(
+    ## temporary files names used for URL creation, we do this in UTC to avoid daylight savings shenanigans
+    TimeAssign <- Datetimes <- seq(
         from = Start,
         to = Stop,
         by = "6 hour"
@@ -113,7 +101,7 @@ Access_NORA3 <- function(
     ## File Check =========
     FCheck <- Helper_FileCheck(fileName = fileName, loadFun = NC_Read, load = TRUE, verbose = TRUE)
     if (!is.null(FCheck)) {
-        terra::time(FCheck) <- TimeAssing
+        # terra::time(FCheck) <- TimeAssign # not needed anymore as soon as we switch to CFDataset handling
         return(FCheck)
     }
 
@@ -129,11 +117,19 @@ Access_NORA3 <- function(
             sep = "/"
         )
     })
-    FilestoLoad <- Helper_DirectDownload(url = URLS, fileName = FNames, cores = cores)
+
+    stop("Fails here due to Error in RNetCDF::file.inq.nc(h) : inherits(ncfile, \"NetCDF\") is not TRUE")
+    ncdfCF::open_ncdf("https://thredds.met.no/thredds/fileServer/nora3/1961/08/01/00/fc1961080100_003_sfx.nc")
+
+
+    ncdfCF::open_ncdf(URLS[1])
+
+
+    # FilestoLoad <- Helper_DirectDownload(url = URLS, fileName = FNames) # no longer needed as soon as we switch to CFDataset handling
 
     ## Loading Data =================================
     message("###### Loading Downloaded Data from Disk")
-    MetNo_rast <- Helper_LoadFiles(fileName = FilestoLoad, dates = TimeAssing)
+    MetNo_rast <- Helper_LoadFiles(fileName = FilestoLoad, dates = TimeAssign)
 
     ## Variable Extraction =================================
     message("###### Extracting Requested Variable")
@@ -142,9 +138,12 @@ Access_NORA3 <- function(
 
     ## Exports =================================
     message("###### Data Export & Return")
+    ##! This here needs to be switched to handling CFDatasets
 
-    # ### Assign additional information, handled above now
-    # terra::time(MetNo_rast) <- TimeAssing
+    ## Metadata
+    callargs <- mget(names(formals()), sys.frame(sys.nframe()))
+    Citation <- paste0("NORA3 (DOI:", Discovery_DOI(dataSet = "NORA3"), ") data provided by the The Norwegian Meteorological institute obtained on ", Sys.Date())
+    Meta_vec <- Helper_CallString(callargs = callargs, functionName = "Access_NORA3", citation = Citation)
     terra::metags(MetNo_rast) <- Meta_vec
 
     ### write file

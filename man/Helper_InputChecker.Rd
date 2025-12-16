@@ -16,9 +16,6 @@ Nothing. Only generates an error if a check did not succeed.
 \description{
 Loops over contents of a named list of lists where each sublist contains the pointers Input, Allowed, and Operator.
 }
-\details{
-Check Validity of User Input
-}
 \examples{
 Variable <- "Maximum Air Temperature"
 DateStart <- "1971-01-01"

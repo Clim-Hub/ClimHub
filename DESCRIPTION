@@ -29,7 +29,9 @@ Imports:
     stringr (>= 1.5.2),
     ggplot2 (>= 4.0.1),
     viridis (>= 0.6.5),
-    tidyterra (>= 0.7.2)
+    tidyterra (>= 0.7.2),
+    future.apply (>= 1.15.0),
+    abind (>= 1.4-5)
 Depends: 
     R (>= 3.5)
 LazyData: true

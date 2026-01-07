@@ -149,12 +149,20 @@ Access_NORA3 <- function(
 
     ### write file
     if (writeFile) {
-        NC_Write(
+        #NC_Write(
+        #    spatRaster = MetNo_rast, fileName = fileName,
+        #    varName = variable,
+        #    longName = ExtractVar,
+        #    unit = Unit,
+        #    meta = Meta_vec, compression = compression
+        #)
+        NC_Write_Parallel(
             spatRaster = MetNo_rast, fileName = fileName,
             varName = variable,
             longName = ExtractVar,
             unit = Unit,
-            meta = Meta_vec, compression = compression
+            meta = Meta_vec, compression = compression,
+            chunkSize = 50, verbose = TRUE
         )
         MetNo_rast <- NC_Read(fileName = fileName)
     }

@@ -30,20 +30,21 @@
 #' @importFrom utils packageVersion
 #'
 #' @return A SpatRaster with metadata written to the disk
-#' 
+#'
 #' @author Erik Kusch
-#' 
+#'
 #' @examples
 #' Data_rast <- terra::rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))
 #' Data_rast <- terra::crop(Data_rast, c(0, 7e4, 6.7e6, 6.77e6))
-#' NC_Write(spatRaster = Data_rast, 
-#'         fileName = "temp.nc", 
-#'         compression = NA, 
-#'         varName = terra::varnames(Data_rast), 
-#'         longName = "testvar", 
-#'         unit = "K", 
-#'         meta = c("Citation" = "ClimHub Helper_WriteNC Test")
-#'     )
+#' NC_Write(
+#'     spatRaster = Data_rast,
+#'     fileName = "temp.nc",
+#'     compression = NA,
+#'     varName = terra::varnames(Data_rast),
+#'     longName = "testvar",
+#'     unit = "K",
+#'     meta = c("Citation" = "ClimHub Helper_WriteNC Test")
+#' )
 #' unlink("temp.nc")
 #' @export
 NC_Write <- function(spatRaster, fileName, compression = NA, varName, longName, unit, meta = NULL, verbose = TRUE) {
@@ -156,7 +157,7 @@ NC_Write <- function(spatRaster, fileName, compression = NA, varName, longName, 
 
     # Progress bar
     pb <- Helper_Progress(iterLength = terra::nlyr(spatRaster), text = "Writing Layers to NetCDF")
-    
+
     # Write data layer by layer
     for (WriteIter in 1:terra::nlyr(spatRaster)) {
         # Extract the data for the WriteIter-th layer as a matrix
@@ -171,7 +172,9 @@ NC_Write <- function(spatRaster, fileName, compression = NA, varName, longName, 
         )
 
         # Update progress bar
-        if(verbose){pb$tick(tokens = list(layer = WriteIter))}
+        if (verbose) {
+            pb$tick(tokens = list(layer = WriteIter))
+        }
         Sys.sleep(0.01)
     }
 
@@ -204,4 +207,222 @@ NC_Write <- function(spatRaster, fileName, compression = NA, varName, longName, 
             ncdf4::ncatt_put(nc, varid = 0, attname = name, attval = meta[[name]])
         }
     }
+}
+
+#' @title Write NetCDF files with multicore extraction and best-practice metadata
+#'
+#' @description
+#'   Enhanced NetCDF writer for SpatRaster objects, using multicore extraction, chunked writing, and CF-compliant metadata. Data extraction is parallelized for speed, and metadata is appended according to best practices. Writing to NetCDF remains sequential for file safety.
+#'
+#' @param spatRaster SpatRaster. The raster data to write.
+#' @param fileName Character. Output NetCDF file path.
+#' @param varName Character. Variable name for NetCDF.
+#' @param longName Character. Long variable name.
+#' @param unit Character. Units for the variable.
+#' @param meta Optional, named vector. Additional metadata attributes.
+#' @param compression Optional, integer. Compression level (1-9).
+#' @param chunkSize Optional, integer. Number of layers to write per chunk (default: 10).
+#' @param verbose Optional, logical. Show progress bar (default: TRUE).
+#'
+#' @return Invisibly returns the file name of the written NetCDF file.
+#' @author Erik Kusch, updated by Copilot
+#' @examples
+#' # See NC_Write examples
+#' @seealso NC_Write
+#' @export
+NC_Write_Parallel <- function(spatRaster, fileName, varName, longName, unit, meta = NULL, compression = NA, chunkSize = 10, verbose = TRUE) {
+    # Load required packages
+    if (!requireNamespace("future.apply", quietly = TRUE)) stop("Please install the 'future.apply' package.")
+    if (!requireNamespace("abind", quietly = TRUE)) stop("Please install the 'abind' package.")
+    library(future.apply)
+    library(abind)
+
+    # Input checks
+    if (!inherits(spatRaster, "SpatRaster")) stop("Input must be a SpatRaster object")
+
+    # Process meta parameter (escape equal signs)
+    meta <- gsub(pattern = "=", replacement = "...", meta)
+
+    # Logging setup
+    log_msgs <- list()
+    logit <- function(msg) {
+        log_msgs[[length(log_msgs) + 1]] <<- paste0(Sys.time(), " | ", msg)
+        if (verbose) message(msg)
+    }
+
+    # Set up robust parallel plan for both Windows and Unix
+    oplan <- future::plan()
+    on.exit(
+        {
+            future::plan(oplan)
+            if (length(log_msgs) > 0 && verbose) {
+                message("\n--- NC_Write_Parallel log ---")
+                for (m in log_msgs) message(m)
+                message("--- End log ---\n")
+            }
+        },
+        add = TRUE
+    )
+    os_type <- .Platform$OS.type
+    # Use multicore on Unix, multisession on Windows
+    if (os_type == "windows") {
+        logit("Setting parallel plan: multisession (Windows)")
+        future::plan(future::multisession)
+    } else {
+        ok <- TRUE
+        tryCatch(
+            {
+                future::plan(future::multicore)
+                logit("Setting parallel plan: multicore (Unix)")
+            },
+            error = function(e) {
+                ok <<- FALSE
+                logit("multicore not available, falling back to multisession")
+            }
+        )
+        if (!ok) future::plan(future::multisession)
+    }
+
+    nLayers <- terra::nlyr(spatRaster)
+    nCols <- terra::ncol(spatRaster)
+    nRows <- terra::nrow(spatRaster)
+
+    # Parallel extraction of layers as matrices
+    logit(paste0("Extracting ", nLayers, " layers in parallel..."))
+    layerList <- future.apply::future_lapply(1:nLayers, function(i) as.matrix(spatRaster[[i]]))
+
+    # Prepare NetCDF dimensions and variable definitions (reuse logic from NC_Write)
+    if (terra::is.lonlat(spatRaster, perhaps = TRUE, warn = FALSE)) {
+        xname <- "longitude"
+        yname <- "latitude"
+        xunit <- "degrees_east"
+        yunit <- "degrees_north"
+    } else {
+        xname <- "easting"
+        yname <- "northing"
+        xunit <- "meter"
+        yunit <- "meter"
+    }
+    xdim <- ncdf4::ncdim_def(xname, xunit, terra::xFromCol(spatRaster, 1:nCols))
+    ydim <- ncdf4::ncdim_def(yname, yunit, terra::yFromRow(spatRaster, 1:nRows))
+
+    # Time dimension
+    zname <- "time"
+    if (length(terra::time(spatRaster)) > 0) {
+        zv <- terra::time(spatRaster)
+        cal <- "standard"
+        if (inherits(zv, "Date")) {
+            zv <- as.numeric(zv)
+            zunit <- "days since 1970-01-01"
+        } else if (inherits(zv, "POSIXct") || inherits(zv, "POSIXt")) {
+            zv <- as.numeric(zv)
+            zunit <- "seconds since 1970-01-01"
+        } else if (is.numeric(zv)) {
+            tstep <- attr(zv, "units")
+            if (tstep == "seconds") {
+                zunit <- "seconds since 1970-01-01"
+            } else if (tstep == "days") {
+                zunit <- "days since 1970-01-01"
+            } else if (tstep == "months") {
+                zunit <- "months since 1970"
+            } else if (tstep == "years") {
+                zunit <- "years since 1970"
+                zv <- zv - 1970
+            } else {
+                zunit <- "unknown"
+            }
+        } else {
+            stop("Time values must be numeric or convertible to numeric.")
+        }
+    } else {
+        zv <- 1:nLayers
+        zunit <- "unknown"
+        cal <- NA
+    }
+    zdim <- ncdf4::ncdim_def(zname, zunit, zv, unlim = FALSE, create_dimvar = TRUE, calendar = cal)
+
+    # Data precision and missing value
+    prec <- "float"
+    valid_prec <- c("short", "integer", "float", "double", "byte")
+    miss_vals <- c(-32768, -2147483647, -1.175494e38, -1.7976931348623157e308, 255)
+    missval <- miss_vals[match(prec, valid_prec)]
+
+    # CRS and geotransform
+    crs_def <- ncdf4::ncvar_def(name = "crs", units = "", dim = list(), missval = NULL, prec = "integer")
+    prj <- terra::crs(spatRaster, proj = FALSE)
+    e <- terra::ext(spatRaster)
+    rs <- terra::res(spatRaster)
+    gt <- paste(trimws(formatC(as.vector(c(e$xmin, rs[1], 0, e$ymax, 0, -1 * rs[2])), 22)), collapse = " ")
+
+    # Main variable definition
+    var_def <- ncdf4::ncvar_def(
+        name = varName,
+        longname = longName,
+        units = unit,
+        dim = list(xdim, ydim, zdim),
+        prec = prec,
+        missval = missval,
+        compression = compression
+    )
+
+    # Create NetCDF file
+    nc <- ncdf4::nc_create(fileName, vars = list(var_def, crs_def), force_v4 = TRUE)
+    on.exit(ncdf4::nc_close(nc), add = TRUE)
+
+    # Progress bar setup
+    nChunks <- ceiling(nLayers / chunkSize)
+    if (verbose) pb <- Helper_Progress(iterLength = nChunks, text = "Writing Chunks to NetCDF")
+    logit(paste0("Writing data in ", nChunks, " chunk(s) of up to ", chunkSize, " layer(s) each."))
+
+    # Write data in chunks
+    for (chunkIdx in seq_len(nChunks)) {
+        startIdx <- (chunkIdx - 1) * chunkSize + 1
+        endIdx <- min(chunkIdx * chunkSize, nLayers)
+        chunkLayers <- layerList[startIdx:endIdx]
+        chunkArr <- abind::abind(chunkLayers, along = 3)
+        ncdf4::ncvar_put(nc,
+            varid = var_def,
+            vals = chunkArr,
+            start = c(1, 1, startIdx),
+            count = c(nCols, nRows, endIdx - startIdx + 1)
+        )
+        logit(paste0("Chunk ", chunkIdx, "/", nChunks, " written (layers ", startIdx, "-", endIdx, ")"))
+        if (verbose) pb$tick(tokens = list(chunk = chunkIdx))
+    }
+
+    # Write CRS and geotransform metadata
+    if (prj != "") {
+        ncdf4::ncatt_put(nc, crs_def, "crs_wkt", prj, prec = "text")
+        proj4_string <- terra::crs(spatRaster, proj = TRUE)
+        if (proj4_string != "") {
+            ncdf4::ncatt_put(nc, crs_def, "proj4", proj4_string, prec = "text")
+        }
+        epsg_code <- terra::crs(spatRaster, describe = TRUE)[1, 3]
+        if (!is.na(epsg_code)) {
+            ncdf4::ncatt_put(nc, crs_def, "epsg_code", epsg_code, prec = "text")
+        }
+        ncdf4::ncatt_put(nc, var_def, "grid_mapping", "crs", prec = "text")
+    }
+    ncdf4::ncatt_put(nc, crs_def, "geotransform", gt, prec = "text")
+
+    # Add CF-compliant global attributes
+    ncdf4::ncatt_put(nc, 0, "Conventions", "CF-1.8", prec = "text")
+    ncdf4::ncatt_put(nc, 0, "title", longName, prec = "text")
+    ncdf4::ncatt_put(nc, 0, "created_by", paste("R packages ncdf4, terra, and ClimHub (version ", utils::packageVersion("ClimHub"), ")", sep = ""), prec = "text")
+    ncdf4::ncatt_put(nc, 0, "date_created", format(Sys.time(), "%Y-%m-%d %H:%M:%S"), prec = "text")
+    ncdf4::ncatt_put(nc, 0, "history", paste(Sys.time(), "Created by NC_Write_Parallel"), prec = "text")
+    ncdf4::ncatt_put(nc, 0, "source", "ClimHub R package", prec = "text")
+    ncdf4::ncatt_put(nc, 0, "institution", "", prec = "text")
+    ncdf4::ncatt_put(nc, 0, "references", "", prec = "text")
+
+    # Add user-supplied metadata as global attributes
+    if (!is.null(meta)) {
+        for (name in names(meta)) {
+            ncdf4::ncatt_put(nc, varid = 0, attname = name, attval = meta[[name]])
+        }
+    }
+
+    logit(paste0("NetCDF file written: ", fileName))
+
+    invisible(fileName)
 }

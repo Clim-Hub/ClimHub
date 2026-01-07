@@ -1,10 +1,19 @@
 # Load Package ------------------
-setwd("C:/Users/erikkus/OneDrive - CICERO senter for klimaforskning/Documents/ClimHub/GitHub")
+setwd("C:/Users/erikkus/OneDrive - CICERO senter for klimaforskning/Documents/31569 - ClimHub/CLIMHUB_GitHub")
 
 document()
 build()
 load_all()
 
+# Make NORA3 raw file ------------------
+NORA3_rast <- Access_NORA3(
+  variable = "Air Temperature 2m (Height = 2)", # which variable
+  dateStart = "1995-01-03 00", dateStop = "1995-01-03 18", # time-window
+  leadTimeHour = 3, cores = 1,
+  fileName = file.path(getwd(), "inst/extdata", "NORA3_rast.nc"), compression = 9, # file storing
+  removeTemporary = TRUE
+)
+# usethis::use_data(NORA3_rast)
 
 # Make Klima i Norge raw file ------------------
 KiN_rast <- Access_KlimaiNorge2100(
@@ -15,10 +24,20 @@ KiN_rast <- Access_KlimaiNorge2100(
   scenario = "rcp85",
   cores = 1,
   fileName = file.path(getwd(), "inst/extdata", "KiN_rast.nc"),
-  compression = 9,
-  removeTemporary = TRUE
+  removeTemporary = FALSE,
+  writeFile = FALSE
 )
-# usethis::use_data(KiN_rast)
+## data is stored multiplied by 10 so needs to be adjusted here
+KiN_rast <- NC_Write(
+  spatRaster = KiN_rast / 10,
+  fileName = file.path(getwd(), "inst/extdata", "KiN_rast.nc"),
+  varName = unique(terra::varnames(KiN_rast)),
+  longName = unique(terra::longnames(KiN_rast)),
+  unit = unique(terra::units(KiN_rast)),
+  meta = setNames(terra::metags(KiN_rast)[, 2], terra::metags(KiN_rast)[, 1]),
+  compression = 9
+)
+unlink(list.files(pattern = "TEMP_"))
 
 # Jotunheimen boundary as spatialfeatureobject ------------------
 Jotunheimen_sf <- sf::st_read("data-raw/Shape/Shape-polygon.shp")
@@ -70,7 +89,7 @@ RR_rast <- Access_KlimaiNorge2100(
   fileName = file.path(getwd(), "inst/extdata", "KiN_RR.nc"),
   writeFile = FALSE
 )
-RR_rast <- RR_rast / 10
+# RR_rast <- RR_rast / 10
 
 BP_RR_rast <- Access_KlimaiNorge2100(
   variable = "Precipitation",
@@ -80,30 +99,31 @@ BP_RR_rast <- Access_KlimaiNorge2100(
   fileName = file.path(getwd(), "inst/extdata", "KiN_BP_RR.nc"),
   writeFile = FALSE
 )
+# BP_RR_rast <- BP_RR_rast / 10
 
 ## Cropping -----
-Jotunheimen_sf <- sf::st_read("data-raw/Shape/Shape-polygon.shp")
 datals <- list(
-  TX = TX_rast, TN = TN_rast, RR = RR_rast, 
+  TX = TX_rast, TN = TN_rast, RR = RR_rast,
   BP_TM = BP_TM_rast, BP_RR = BP_RR_rast
 )
 
 x <- lapply(names(datals), function(name) {
-  # name <- "TBP"
+  # name <- "X"
   print(name)
-  FNAME <- file.path(getwd(), "inst/extdata", paste0("Jotunheimen_", name, ".nc"))
-  if(file.exists(FNAME)){
+  FNAME <- file.path(getwd(), "inst/extdata", paste0("Sognefjord_", name, ".nc"))
+  if (file.exists(FNAME)) {
     ret <- terra::rast(FNAME)
-  }else{
+  } else {
     x <- datals[[name]]
-    y <- Spatial_Reproject(x, Jotunheimen_sf)
-    z <- Spatial_CropMask(rast = y, shape = Jotunheimen_sf)
-  if(unique(terra::units(x)) == "K"){
-    z <- z/100
-  }else{
-    terra::units(x) <- "mm"
-  }
-  # terra::plot(z[[1]])
+    # y <- Spatial_Reproject(x, Jotunheimen_sf)
+    z <- Spatial_Limit(spatRaster = x, shape = ext(c(1e4, 1.5e5, 6.76e6, 6.86e+06)))
+    if (unique(terra::units(x)) == "K") {
+      # z <- z / 100
+    } else {
+      z <- z / 10
+      terra::units(z) <- "mm"
+    }
+    # terra::plot(z[[1]])
     ret <- NC_Write(
       spatRaster = z,
       fileName = FNAME,
@@ -116,6 +136,7 @@ x <- lapply(names(datals), function(name) {
   }
   ret
 })
+unlink(list.files(pattern = "TEMP_"))
 
 ## Percentiles -----
 stop("Make percentiles for BASEPeriods")
@@ -146,9 +167,9 @@ unlink(list.files(pattern = "TEMP_", full.names = TRUE))
 
 ### Sufficiently large file for testing of NC_Write ------------------
 NORA3 <- Access_NORA3(
-    variable = "TS (Surface temperature)", # which variable
-    dateStart = "1971-01-01 00", dateStop = "1971-05-31 18", # time-window
-    leadTimeHour = 3, cores = 1,
-    fileName = "NORA3.nc", compression = NA, # file storing
-    removeTemporary = TRUE
+  variable = "TS (Surface temperature)", # which variable
+  dateStart = "1971-01-01 00", dateStop = "1971-05-31 18", # time-window
+  leadTimeHour = 3, cores = 1,
+  fileName = "NORA3.nc", compression = NA, # file storing
+  removeTemporary = TRUE
 )

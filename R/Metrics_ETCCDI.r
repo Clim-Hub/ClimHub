@@ -18,6 +18,7 @@
 #' TX_rast <- terra::rast("inst/extdata/Jotunheimen_TX.nc") # terra::rast(system.file("extdata", "Jotunheimen_TX.nc", package = "ClimHub"))
 #' TN_rast <- terra::rast("inst/extdata/Jotunheimen_TN.nc")
 #' RR_rast <- terra::rast("inst/extdata/Jotunheimen_RR.nc")
+#' terra::units(RR_rast) <- "mm"
 #' # BASEPeriod_rast <- terra::rast("inst/extdata/Jotunheimen_BASEPeriod.nc")
 #'
 #' Metrics_ETCCDI(ls = list(TX = TX_rast, TN = TN_rast, RR = RR_rast
@@ -204,7 +205,9 @@ Metrics_ETCCDI <- function(ls) {
         FD = FD_rast,
         SU = SU_rast,
         ID = ID_rast,
-        TR = TR_rast
+        TR = TR_rast,
+        R10 = R10mm_rast,
+        R20 = R20mm_rast
     )
 
     ### Ascribing proper Names and Dates
@@ -212,7 +215,9 @@ Metrics_ETCCDI <- function(ls) {
         FD = list("FD", "Number of frost days"),
         SU = list("SU", "Number of summer days"),
         ID = list("ID", "Number of icing days"),
-        TR = list("TR", "Number of tropical nights")
+        TR = list("TR", "Number of tropical nights"),
+        R10 = list("R10", "Days with Precip ≥ 10mm"),
+        R20 = list("R20", "Days with Precip ≥ 20mm")
     )
 
     Return_ls <- lapply(1:length(Return_ls), FUN = function(Iter) {

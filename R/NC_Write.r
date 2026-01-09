@@ -225,7 +225,7 @@ NC_Write <- function(spatRaster, fileName, compression = NA, varName, longName, 
 #' @param verbose Optional, logical. Show progress bar (default: TRUE).
 #'
 #' @return Invisibly returns the file name of the written NetCDF file.
-#' @author Erik Kusch, updated by Copilot
+#' @author Taimur Khan, updated by Copilot
 #' @examples
 #' # See NC_Write examples
 #' @seealso NC_Write
@@ -264,9 +264,16 @@ NC_Write_Parallel <- function(spatRaster, fileName, varName, longName, unit, met
         add = TRUE
     )
     os_type <- .Platform$OS.type
-    # Use multicore on Unix, multisession on Windows
-    if (os_type == "windows") {
-        logit("Setting parallel plan: multisession (Windows)")
+    # Check if running in RStudio (which doesn't support multicore)
+    in_rstudio <- Sys.getenv("RSTUDIO") == "1"
+
+    # Use multicore on Unix (but not in RStudio), multisession on Windows or RStudio
+    if (os_type == "windows" || in_rstudio) {
+        if (in_rstudio) {
+            logit("Setting parallel plan: multisession (RStudio detected)")
+        } else {
+            logit("Setting parallel plan: multisession (Windows)")
+        }
         future::plan(future::multisession)
     } else {
         ok <- TRUE

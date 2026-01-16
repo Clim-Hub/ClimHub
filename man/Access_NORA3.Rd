@@ -8,10 +8,10 @@ Access_NORA3(
   variable,
   dateStart,
   dateStop,
+  extent = NULL,
   leadTimeHour,
   fileName,
   compression = NA,
-  downloadData = TRUE,
   writeFile = TRUE
 )
 }
@@ -22,6 +22,8 @@ Access_NORA3(
 
 \item{dateStop}{Character. "YYYY-MM-DD HH" date at which to stop time series of downloaded data. Data is available daily at hours 00, 06, 12, and 18.}
 
+\item{extent}{Optional, SpatExtent. A spatial extent to subset the data to. Defaults to NULL returning full spatial range of data.}
+
 \item{leadTimeHour}{Integer. Lead time of reanalysis. NORA3 leadtimes can be obtained with \code{Discovery_QuickFacts("NORA3")$leadtime}.}
 
 \item{fileName}{Character. A file name for the produced file, including path.}
@@ -29,15 +31,9 @@ Access_NORA3(
 \item{compression}{Optional, Integer. Compression level between 1 to 9 applied to final .nc file. Same as compression argument in terra::writeCDF(). Defaults to NA.}
 
 \item{writeFile}{Optional, Logical. Whether to write final SpatRaster to disk as an .nc or to return information from memory. Setting to FALSE will prohibit removal of temporary files. Defaults to TRUE.}
-
-\item{removeTemporary}{Optional, Logical. Whether to delete temporary files after completion. Defaults to TRUE.}
 }
 \value{
-SpatRaster. Contains the downloaded data and metadata attributes that can be retrieved with terra::metags(...):
-\itemize{
-\item \emph{Citation} - A string for in-line citation of the data product
-\item \emph{Call_} - A set of strings matching arguments supplied to the download function call
-}
+A CFVariable object which contains the downloaded data and relevant metadata attributes. If specified, also writes a NetCDF file to disk.
 }
 \description{
 Downloads and processes data from the NORA3 data product hosted through \href{https://thredds.met.no/thredds/projects/nora3.html}{thredds.met.no}.
@@ -46,9 +42,10 @@ Specifically, this function provides access to the NORA3 files contained within 
 \examples{
 \dontrun{
 NORA3 <- Access_NORA3(
-    variable = "TS (Surface temperature)", # which variable
+    variable = "TS", # which variable
     dateStart = "1961-08-01 00", dateStop = "1961-08-02 18", # time-window
-    leadTimeHour = 3
+    extent = terra::ext(c(0, 40, 50, 60)),
+    leadTimeHour = 3,
     fileName = "NORA3.nc", compression = 9 # file storing
 )
 unlink("NORA3.nc")

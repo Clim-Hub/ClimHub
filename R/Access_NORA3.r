@@ -6,30 +6,26 @@
 #' @param variable Character. An overview of NORA3 variables can be obtained with `Discovery_Variables(dataSet = "NORA3")`.
 #' @param dateStart Character. "YYYY-MM-DD HH" date at which to start time series of downloaded data. Data is available daily at hours 00, 06, 12, and 18.
 #' @param dateStop Character. "YYYY-MM-DD HH" date at which to stop time series of downloaded data. Data is available daily at hours 00, 06, 12, and 18.
+#' @param extent Optional, SpatExtent. A spatial extent to subset the data to. Defaults to NULL returning full spatial range of data.
 #' @param leadTimeHour Integer. Lead time of reanalysis. NORA3 leadtimes can be obtained with `Discovery_QuickFacts("NORA3")$leadtime`.
 #' @param fileName Character. A file name for the produced file, including path.
 #' @param compression Optional, Integer. Compression level between 1 to 9 applied to final .nc file. Same as compression argument in terra::writeCDF(). Defaults to NA.
-#' @param removeTemporary Optional, Logical. Whether to delete temporary files after completion. Defaults to TRUE.
 #' @param writeFile Optional, Logical. Whether to write final SpatRaster to disk as an .nc or to return information from memory. Setting to FALSE will prohibit removal of temporary files. Defaults to TRUE.
 #'
 #' @importFrom tools file_path_sans_ext
-#' @importFrom terra metags
-#' @importFrom terra names
-#' @importFrom terra time
 #' @importFrom stringr str_pad
 #'
-#' @return SpatRaster. Contains the downloaded data and metadata attributes that can be retrieved with terra::metags(...):
-#'  - *Citation* - A string for in-line citation of the data product
-#'  - *Call_* - A set of strings matching arguments supplied to the download function call
+#' @return A CFVariable object which contains the downloaded data and relevant metadata attributes. If specified, also writes a NetCDF file to disk.
 #'
 #' @author Erik Kusch
 #'
 #' @examples
 #' \dontrun{
 #' NORA3 <- Access_NORA3(
-#'     variable = "TS (Surface temperature)", # which variable
+#'     variable = "TS", # which variable
 #'     dateStart = "1961-08-01 00", dateStop = "1961-08-02 18", # time-window
-#'     leadTimeHour = 3
+#'     extent = terra::ext(c(0, 40, 50, 60)),
+#'     leadTimeHour = 3,
 #'     fileName = "NORA3.nc", compression = 9 # file storing
 #' )
 #' unlink("NORA3.nc")
@@ -38,11 +34,10 @@
 Access_NORA3 <- function(
     variable, # which variable
     dateStart, dateStop, # time-window
+    extent = NULL,
     leadTimeHour, # NORA3 specific arguments
     fileName, compression = NA, # file storing
-    downloadData = TRUE,
     writeFile = TRUE) {
-
     ## Input Checks ============
     message("###### Checking Request Validity")
     ### fileName
@@ -85,7 +80,7 @@ Access_NORA3 <- function(
     ## Data files & extraction varnames =========
     NORA3_df <- Discovery_Variables("NORA3")
     FilePrefix <- NORA3_df$datafile[variable == NORA3_df$name]
-    ExtractVar <- NORA3_df$varname[variable == NORA3_df$name]
+    # ExtractVar <- NORA3_df$varname[variable == NORA3_df$name] # no longer needed with new name and long_name specification
     Unit <- NORA3_df$unit[variable == NORA3_df$name]
 
     ## Download preparations =========
@@ -95,11 +90,12 @@ Access_NORA3 <- function(
         to = Stop,
         by = "6 hour"
     )
+    TimeAssign <- TimeAssign + leadTimeHour * 3600 # adjusting for lead time
     Datetimes <- format(Datetimes, "%Y%m%d%H")
     FNames <- paste0("TEMP_", "fc", Datetimes, "_", stringr::str_pad(leadTimeHour, 3, "left", 0), FilePrefix, ".nc")
 
     ## File Check =========
-    FCheck <- Helper_FileCheck(fileName = fileName, loadFun = NC_Read, load = TRUE, verbose = TRUE)
+    FCheck <- Helper_FileCheck(fileName = fileName, loadFun = ncdfCF::open_ncdf, load = TRUE, verbose = TRUE)
     if (!is.null(FCheck)) {
         # terra::time(FCheck) <- TimeAssign # not needed anymore as soon as we switch to CFDataset handling
         return(FCheck)
@@ -112,57 +108,33 @@ Access_NORA3 <- function(
         Month <- substr(FName, 12, 13)
         Day <- substr(FName, 14, 15)
         Hour <- substr(FName, 16, 17)
-        paste("https://thredds.met.no/thredds/fileServer/nora3", Year, Month, Day, Hour,
+        paste("https://thredds.met.no/thredds/dodsC/nora3", Year, Month, Day, Hour,
             gsub(FName, pattern = "TEMP_", replacement = ""),
             sep = "/"
         )
     })
 
-    stop("Fails here due to Error in RNetCDF::file.inq.nc(h) : inherits(ncfile, \"NetCDF\") is not TRUE")
-    ncdfCF::open_ncdf("https://thredds.met.no/thredds/fileServer/nora3/1961/08/01/00/fc1961080100_003_sfx.nc")
-
-
-    ncdfCF::open_ncdf(URLS[1])
-
-
-    # FilestoLoad <- Helper_DirectDownload(url = URLS, fileName = FNames) # no longer needed as soon as we switch to CFDataset handling
-
-    ## Loading Data =================================
-    message("###### Loading Downloaded Data from Disk")
-    MetNo_rast <- Helper_LoadFiles(fileName = FilestoLoad, dates = TimeAssign)
-
-    ## Variable Extraction =================================
-    message("###### Extracting Requested Variable")
-    VarLyr <- which(startsWith(names(MetNo_rast), ExtractVar))
-    MetNo_rast <- MetNo_rast[[VarLyr]]
+    MetNo_cf <- Helper_AccessCF(URLS = URLS, extent = extent, variable = variable)
+    ## making sure we have the right time slices (need to bump the upper end by 1 second as subsetting is exlusive on upper end)
+    MetNo_cf <- MetNo_cf$subset(T = as.character(c(TimeAssign[1], TimeAssign[length(TimeAssign)] + 1)))
 
     ## Exports =================================
     message("###### Data Export & Return")
-    ##! This here needs to be switched to handling CFDatasets
 
     ## Metadata
-    callargs <- mget(names(formals()), sys.frame(sys.nframe()))
+    callargs <- paste0("ClimHub::", deparse(match.call()))
     Citation <- paste0("NORA3 (DOI:", Discovery_DOI(dataSet = "NORA3"), ") data provided by the The Norwegian Meteorological institute obtained on ", Sys.Date())
-    Meta_vec <- Helper_CallString(callargs = callargs, functionName = "Access_NORA3", citation = Citation)
-    terra::metags(MetNo_rast) <- Meta_vec
+    MetNo_cf$set_attribute("source", "NC_CHAR", Citation)
+    MetNo_cf$set_attribute("comment", "NC_CHAR", paste("Created on", Sys.time(), "with the Access_NORA3() function from ClimHub version", packageVersion("ClimHub")))
+    MetNo_cf$set_attribute("provenance", "NC_CHAR", callargs)
 
     ### write file
     if (writeFile) {
-        NC_Write(
-            spatRaster = MetNo_rast, fileName = fileName,
-            varName = variable,
-            longName = ExtractVar,
-            unit = Unit,
-            meta = Meta_vec, compression = compression
-        )
-        MetNo_rast <- NC_Read(fileName = fileName)
-    }
-
-    ### unlink temporary files
-    if (removeTemporary & writeFile) {
-        unlink(FNames)
+        ## writing itself
+        MetNo_cf$save(fileName) # this loses the extra attributes set just above?!
+        MetNo_cf <- open_ncdf(fileName)
     }
 
     ### return object
-    return(MetNo_rast)
+    return(MetNo_cf)
 }

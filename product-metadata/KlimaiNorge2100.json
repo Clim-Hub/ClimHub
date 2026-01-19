@@ -60,7 +60,7 @@
   },
   "variables": [
     {
-      "varname": "minimum_air_temperature",
+      "name": "minimum_air_temperature",
       "longname": "bias-adjusted daily minimum near-surface air temperature",
       "unit": "K",
       "issue": "",
@@ -68,7 +68,7 @@
       "string": "sn2018v2005_rawbc"
     },
     {
-      "varname": "maximum_air_temperature",
+      "name": "maximum_air_temperature",
       "longname": "bias-adjusted daily maximum near-surface air temperature",
       "unit": "K",
       "issue": "",
@@ -76,7 +76,7 @@
       "string": "sn2018v2005_rawbc"
     },
     {
-      "varname": "mean_air_temperature",
+      "name": "mean_air_temperature",
       "longname": "bias-adjusted daily mean near-surface air temperature",
       "unit": "K",
       "issue": "",
@@ -84,7 +84,7 @@
       "string": "sn2018v2005_rawbc"
     },
     {
-      "varname": "surface_total_snow_amount",
+      "name": "surface_total_snow_amount",
       "longname": "daily mean snow water equivalent",
       "unit": "kg m-2",
       "issue": "",
@@ -92,7 +92,7 @@
       "string": "estobs_disthbv"
     },
     {
-      "varname": "wind_speed",
+      "name": "wind_speed",
       "longname": "bias-adjusted daily mean near-surface wind speed",
       "unit": "m s-1",
       "issue": "",
@@ -100,7 +100,7 @@
       "string": "klinogrid1612_rawbc"
     },
     {
-      "varname": "surface_downwelling_shortwave_flux_in_air",
+      "name": "surface_downwelling_shortwave_flux_in_air",
       "longname": "bias-adjusted daily mean surface downwelling shortwave radiation",
       "unit": "W m-2",
       "issue": "",
@@ -108,7 +108,7 @@
       "string": "hysn2018v2005era5_rawbc"
     },
     {
-      "varname": "surface_downwelling_longwave_flux_in_air",
+      "name": "surface_downwelling_longwave_flux_in_air",
       "longname": "bias-adjusted daily mean surface downwelling longwave radiation",
       "unit": "W m-2",
       "issue": "",
@@ -116,7 +116,7 @@
       "string": "hysn2018v2005era5_rawbc"
     },
     {
-      "varname": "surface_air_pressure",
+      "name": "surface_air_pressure",
       "longname": "bias-adjusted daily mean surface air pressure",
       "unit": "Pa",
       "issue": "",
@@ -124,7 +124,7 @@
       "string": "hysn2018v2005era5_rawbc"
     },
     {
-      "varname": "precipitation_flux",
+      "name": "precipitation_flux",
       "longname": "bias-adjusted daily mean precipitation",
       "unit": "kg m-2 s-1",
       "issue": "",
@@ -132,7 +132,7 @@
       "string": "sn2018v2005_rawbc"
     },
     {
-      "varname": "mass_content_of_water_in_soil",
+      "name": "mass_content_of_water_in_soil",
       "longname": "daily mean soil moisture content",
       "unit": "kg m-2",
       "issue": "",
@@ -140,7 +140,7 @@
       "string": "estobs_disthbv"
     },
     {
-      "varname": "runoff_flux",
+      "name": "runoff_flux",
       "longname": "daily mean runoff",
       "unit": "kg m-2 s-1",
       "issue": "",
@@ -148,7 +148,7 @@
       "string": "estobs_disthbv"
     },
     {
-      "varname": "relative_humidity",
+      "name": "relative_humidity",
       "longname": "bias-adjusted daily mean near-surface relative humidity",
       "unit": "%",
       "issue": "",
@@ -156,7 +156,7 @@
       "string": "hysn2018v2005era5_rawbc"
     },
     {
-      "varname": "water_evapotranspiration_flux",
+      "name": "water_evapotranspiration_flux",
       "longname": "daily mean evapotranspiration",
       "unit": "kg m-2 s-1",
       "issue": "",

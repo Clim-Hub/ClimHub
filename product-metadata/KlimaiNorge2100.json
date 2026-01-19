@@ -60,7 +60,7 @@
   },
   "variables": [
     {
-      "varname": "air_temperature",
+      "varname": "minimum air_temperature",
       "longname": "bias-adjusted daily minimum near-surface air temperature",
       "unit": "K",
       "issue": "",
@@ -68,7 +68,7 @@
       "string": "sn2018v2005_rawbc"
     },
     {
-      "varname": "air_temperature",
+      "varname": "maximum air_temperature",
       "longname": "bias-adjusted daily maximum near-surface air temperature",
       "unit": "K",
       "issue": "",
@@ -76,7 +76,7 @@
       "string": "sn2018v2005_rawbc"
     },
     {
-      "varname": "air_temperature",
+      "varname": "mean air_temperature",
       "longname": "bias-adjusted daily mean near-surface air temperature",
       "unit": "K",
       "issue": "",

@@ -9,8 +9,8 @@
 #' @param extent Optional, SpatExtent. A spatial extent to subset the data to. Defaults to NULL returning full spatial range of data.
 #' @param leadTimeHour Integer. Lead time of reanalysis. NORA3 leadtimes can be obtained with `Discovery_QuickFacts("NORA3")$leadtime`.
 #' @param fileName Character. A file name for the produced file, including path.
-#' @param compression Optional, Integer. Compression level between 1 to 9 applied to final .nc file. Same as compression argument in terra::writeCDF(). Defaults to NA.
-#' @param writeFile Optional, Logical. Whether to write final SpatRaster to disk as an .nc or to return information from memory. Setting to FALSE will prohibit removal of temporary files. Defaults to TRUE.
+#' @param compression Optional, Integer. Compression level between 1 to 9 applied to final .nc file. Same as compression argument in terra::writeCDF(). Defaults to NA. Currently not used due to ncdfCF saving scheme.
+#' @param writeFile Optional, Logical. Whether to write final CFVariable to disk as an .nc or to return information from memory. Defaults to TRUE.
 #'
 #' @importFrom tools file_path_sans_ext
 #' @importFrom stringr str_pad

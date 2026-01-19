@@ -28,9 +28,9 @@ Access_NORA3(
 
 \item{fileName}{Character. A file name for the produced file, including path.}
 
-\item{compression}{Optional, Integer. Compression level between 1 to 9 applied to final .nc file. Same as compression argument in terra::writeCDF(). Defaults to NA.}
+\item{compression}{Optional, Integer. Compression level between 1 to 9 applied to final .nc file. Same as compression argument in terra::writeCDF(). Defaults to NA. Currently not used due to ncdfCF saving scheme.}
 
-\item{writeFile}{Optional, Logical. Whether to write final SpatRaster to disk as an .nc or to return information from memory. Setting to FALSE will prohibit removal of temporary files. Defaults to TRUE.}
+\item{writeFile}{Optional, Logical. Whether to write final CFVariable to disk as an .nc or to return information from memory. Defaults to TRUE.}
 }
 \value{
 A CFVariable object which contains the downloaded data and relevant metadata attributes. If specified, also writes a NetCDF file to disk.

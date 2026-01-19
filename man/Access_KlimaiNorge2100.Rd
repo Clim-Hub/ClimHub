@@ -8,12 +8,11 @@ Access_KlimaiNorge2100(
   variable,
   dateStart,
   dateStop,
+  method,
   model,
-  scenario = c("rcp45", "rcp85"),
-  cores = 1,
+  scenario,
   fileName,
   compression = NA,
-  removeTemporary = TRUE,
   writeFile = TRUE
 )
 }
@@ -24,46 +23,45 @@ Access_KlimaiNorge2100(
 
 \item{dateStop}{Character. "YYYY-MM-DD" date at which to stop time series of downloaded data. Data is available daily at hourly intervals.}
 
+\item{method}{Character. An overview of bias-correction methods from which data can be obtained can be obtained with \code{Discovery_QuickFacts("KlimaiNorge2100")$methods}.}
+
 \item{model}{Character. An overview of climate models from which data can be obtained can be obtained with \code{Discovery_QuickFacts("KlimaiNorge2100")$models}.}
 
-\item{scenario}{Character. An overview of climate models from which data can be obtained can be obtained with \code{Discovery_QuickFacts("KlimaiNorge2100")$scenarios}. Note that this choice only affects data post-dating 2005-12-31.}
-
-\item{cores}{Optional, Integer. Number of cores to use for parallel downloads. Default NULL defines no parallelisation.}
+\item{scenario}{Character. An overview of climate models from which data can be obtained can be obtained with \code{Discovery_QuickFacts("KlimaiNorge2100")$scenarios}. Note that this choice only affects data post-dating 2020-12-31.}
 
 \item{fileName}{Character. A file name for the produced file, including path.}
 
-\item{compression}{Optional, Integer. Compression level between 1 to 9 applied to final .nc file. Same as compression argument in terra::writeCDF(). Defaults to NA.}
+\item{compression}{Optional, Integer. Compression level between 1 to 9 applied to final .nc file. Same as compression argument in terra::writeCDF(). Defaults to NA. Currently not used due to ncdfCF saving scheme.}
 
-\item{removeTemporary}{Optional, Logical. Whether to delete temporary files after completion. Defaults to TRUE.}
+\item{writeFile}{Optional, Logical. Whether to write final CFVariable to disk as an .nc or to return information from memory. Defaults to TRUE.}
 
-\item{writeFile}{Optional, Logical. Whether to write final SpatRaster to disk as an .nc or to return information from memory. Setting to FALSE will prohibit removal of temporary files. Defaults to TRUE.}
+\item{extent}{Optional, SpatExtent. A spatial extent to subset the data to. Defaults to NULL returning full spatial range of data.}
 }
 \value{
-SpatRaster. Contains the downloaded data and metadata attributes that can be retrieved with terra::metags(...):
-\itemize{
-\item \emph{Citation} - A string for in-line citation of the data product
-\item \emph{Call_} - A set of strings matching arguments supplied to the download function call
-}
+A CFVariable object which contains the downloaded data and relevant metadata attributes. If specified, also writes a NetCDF file to disk.
 }
 \description{
-Downloads and processes data from the \href{https://www.miljodirektoratet.no/publikasjoner/2015/september-2015/klima-i-norge-2100/}{Klima_i_Norge_2100} data product hosted through \href{https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge_2100/catalog.html}{thredds.met.no}.
+Downloads and processes data from the \href{https://www.met.no/nyhetsarkiv/framtidens-klima-i-norge-flere-oversvommelser-mer-torke-og-mindre-sno/_/attachment/inline/cc1ae8f3-277d-4077-adb9-313e5e28b947:b8073784517edb9392f78c9d82bc5b296db2fc3c/Klima\%20i\%20Norge\%20digital\%20low.pdf}{Klima_i_Norge_2100} data product hosted through \href{https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge/utgave2025/catalog.html}{thredds.met.no}.
 Specifically, this function provides access to the following datasets:
 \enumerate{
-\item \href{https://publikasjoner.nve.no/rapport/2016/rapport2016_59.pdf}{Gridded 1 x 1 km climate and hydrological projections for Norway} data contained within \href{https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge_2100/utgave2015/catalog.html}{utgave 2015}.
+\item Gridded 1 x 1 km climate and hydrological projections for Norway data at daily scales contained within \href{https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge/utgave2025/DailyTimeSeries/catalog.html}{DailyTimeSeries}.
 }
+
+\textbf{Note: not all combinations of variables, models, scenarios, and bias-correction methods are available. If you encounter an error, please first consult whether data is provided for the requested combination at \url{https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge/utgave2025/DailyTimeSeries/catalog.html}. You will likely see an error like: \verb{Error: Error opening netCDF resource}}
 }
 \examples{
 \dontrun{
 Access_KlimaiNorge2100(
-    variable = "Maximum Air Temperature",
-    dateStart = "2004-08-01",
-    dateStop = "2006-09-17",
-    model = "CNRM_CCLM",
-    scenario = "rcp85",
-    cores = 1,
+    variable = "mean_air_temperature",
+    dateStart = "2019-08-01",
+    dateStop = "2022-09-17", ,
+    extent = terra::ext(c(0, 10, 60, 65)),
+    method = "EQM - Empirical Quantile Mapping",
+    model = "noresm-r1i1p1-remo",
+    scenario = "rcp45",
     fileName = "KlimaiNorge2100.nc",
     compression = 9,
-    removeTemporary = TRUE
+    writeFile = TRUE
 )
 }
 }

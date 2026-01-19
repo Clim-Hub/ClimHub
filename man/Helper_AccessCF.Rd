@@ -4,7 +4,7 @@
 \alias{Helper_AccessCF}
 \title{Execute direct download calls with ncdfCF}
 \usage{
-Helper_AccessCF(URLS, variable, extent = NULL, verbose = TRUE)
+Helper_AccessCF(URLS, variable, extent = NULL, time = NULL, verbose = TRUE)
 }
 \arguments{
 \item{URLS}{Character. Vector of URLs for download.}
@@ -12,6 +12,8 @@ Helper_AccessCF(URLS, variable, extent = NULL, verbose = TRUE)
 \item{variable}{Character. Variable name to extract from the NetCDF files.}
 
 \item{extent}{Optional, SpatExtent. A spatial extent to subset the data to. Defaults to NULL returning full spatial range of data.}
+
+\item{time}{Optional, POSIXct vector of length 2. A time extent to subset the data to. Defaults to NULL returning full temporal range of data.}
 
 \item{verbose}{Logical. If progress should be displayed in the console.}
 }
@@ -25,7 +27,7 @@ Loops over all supplied URLs assuming these query NetCDF file from open hosts. T
 Helper_AccessCF(
     URLS = c("https://thredds.met.no/thredds/dodsC/nora3/1961/08/01/00/fc1961080100_003_sfx.nc", "https://thredds.met.no/thredds/dodsC/nora3/1961/08/01/06/fc1961080106_003_sfx.nc", "https://thredds.met.no/thredds/dodsC/nora3/1961/08/01/12/fc1961080112_003_sfx.nc"),
     variable = "T2M",
-    extent <- terra::ext(c(0, 40, 50, 60))
+    extent <- list(names = c("longitude", "latitude"), value = terra::ext(c(0, 20, 60, 70)))
 )
 }
 \author{

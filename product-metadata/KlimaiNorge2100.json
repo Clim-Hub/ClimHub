@@ -9,8 +9,8 @@
   "access_method": "Direct Download",
   "access_function": "Access_KlimaiNorge2100",
   "methods": [
-    "EQM - Empirical Quantile Mapping", // Empirical Quantile Mapping
-    "3DBC - 3-Dimensional Bias-Correction" // 3-Dimensional Bias-Correction
+    "eqm", // Empirical Quantile Mapping
+    "3dbc-eqm" // 3-Dimensional Bias-Correction
   ],
   "scenarios": [
     "ssp370",

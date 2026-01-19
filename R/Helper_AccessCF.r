@@ -5,6 +5,7 @@
 #' @param URLS Character. Vector of URLs for download.
 #' @param variable Character. Variable name to extract from the NetCDF files.
 #' @param extent Optional, SpatExtent. A spatial extent to subset the data to. Defaults to NULL returning full spatial range of data.
+#' @param time Optional, POSIXct vector of length 2. A time extent to subset the data to. Defaults to NULL returning full temporal range of data.
 #' @param verbose Logical. If progress should be displayed in the console.
 #'
 #' @importFrom ncdfCF open_ncdf
@@ -17,9 +18,9 @@
 #' Helper_AccessCF(
 #'     URLS = c("https://thredds.met.no/thredds/dodsC/nora3/1961/08/01/00/fc1961080100_003_sfx.nc", "https://thredds.met.no/thredds/dodsC/nora3/1961/08/01/06/fc1961080106_003_sfx.nc", "https://thredds.met.no/thredds/dodsC/nora3/1961/08/01/12/fc1961080112_003_sfx.nc"),
 #'     variable = "T2M",
-#'     extent <- terra::ext(c(0, 40, 50, 60))
+#'     extent <- list(names = c("longitude", "latitude"), value = terra::ext(c(0, 20, 60, 70)))
 #' )
-Helper_AccessCF <- function(URLS, variable, extent = NULL, verbose = TRUE) {
+Helper_AccessCF <- function(URLS, variable, extent = NULL, time = NULL, verbose = TRUE) {
     ## make progress bar
     pb <- Helper_Progress(iterLength = length(URLS), text = "Downloading Data")
 
@@ -31,9 +32,24 @@ Helper_AccessCF <- function(URLS, variable, extent = NULL, verbose = TRUE) {
         # print(iter_cf)
         iter_cf <- iter_cf[[variable]]
         if (!is.null(extent)) {
+            if ("longitude" %in% iter_cf$auxiliary_names) {
+                iter_cf <- iter_cf$subset(
+                    longitude = c(extent[1], extent[2]),
+                    latitude = c(extent[3], extent[4])
+                )
+            }
+            # this fails for KiN data with: Error: Argument 'resolution' is outside of the permitted range of [0.01 ... 10]
+            if ("lon" %in% iter_cf$auxiliary_names) {
+                iter_cf <- iter_cf$subset(
+                    lon = c(extent[1], extent[2]),
+                    lat = c(extent[3], extent[4])
+                )
+            }
+        }
+
+        if (!is.null(time)) {
             iter_cf <- iter_cf$subset(
-                longitude = c(extent[1], extent[2]),
-                latitude = c(extent[3], extent[4])
+                T = time
             )
         }
 

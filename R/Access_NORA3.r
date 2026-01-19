@@ -79,9 +79,9 @@ Access_NORA3 <- function(
 
     ## Data files & extraction varnames =========
     NORA3_df <- Discovery_Variables("NORA3")
-    FilePrefix <- NORA3_df$datafile[variable == NORA3_df$name]
+    FilePrefix <- NORA3_df$datafile[NORA3_df$name == variable]
     # ExtractVar <- NORA3_df$varname[variable == NORA3_df$name] # no longer needed with new name and long_name specification
-    Unit <- NORA3_df$unit[variable == NORA3_df$name]
+    Unit <- NORA3_df$unit[NORA3_df$name == variable]
 
     ## Download preparations =========
     ## temporary files names used for URL creation, we do this in UTC to avoid daylight savings shenanigans
@@ -114,7 +114,11 @@ Access_NORA3 <- function(
         )
     })
 
-    MetNo_cf <- Helper_AccessCF(URLS = URLS, extent = extent, variable = variable)
+    MetNo_cf <- Helper_AccessCF(
+        URLS = URLS, 
+        extent = extent, 
+        variable = variable
+    )
     ## making sure we have the right time slices (need to bump the upper end by 1 second as subsetting is exlusive on upper end)
     MetNo_cf <- MetNo_cf$subset(T = as.character(c(TimeAssign[1], TimeAssign[length(TimeAssign)] + 1)))
 

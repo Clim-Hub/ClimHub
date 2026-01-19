@@ -40,567 +40,567 @@
     {
       "name": "SIC",
       "long_name": "Sea_ice_fraction",
-      "units": "",
+      "unit": "",
       "datafile": "_sfx",
       "issue": ""
     },
     {
       "name": "SST",
       "long_name": "Sea Surface Temperature (SST)",
-      "units": "K",
+      "unit": "K",
       "datafile": "_sfx",
       "issue": ""
     },
     {
       "name": "TS",
       "long_name": "Surface temperature",
-      "units": "K",
+      "unit": "K",
       "datafile": "_sfx",
       "issue": ""
     },
     {
       "name": "T2M",
       "long_name": "2m_Temperature",
-      "units": "K",
+      "unit": "K",
       "datafile": "_sfx",
       "issue": ""
     },
     {
       "name": "Q2M",
       "long_name": "2m_Specific_Humidity",
-      "units": "kg/kg",
+      "unit": "kg/kg",
       "datafile": "_sfx",
       "issue": ""
     },
     {
       "name": "HU2M",
       "long_name": "2m_Relative_Humidity",
-      "units": "1",
+      "unit": "1",
       "datafile": "_sfx",
       "issue": ""
     },
     {
       "name": "ZON10M",
       "long_name": "10m_Zonal_wind",
-      "units": "m/s",
+      "unit": "m/s",
       "datafile": "_sfx",
       "issue": ""
     },
     {
       "name": "MER10M",
       "long_name": "10m_Meridian_Wind",
-      "units": "m/s",
+      "unit": "m/s",
       "datafile": "_sfx",
       "issue": ""
     },
     {
       "name": "H",
       "long_name": "Averaged_Sensible_Heat_Flux",
-      "units": "W/m2",
+      "unit": "W/m2",
       "datafile": "_sfx",
       "issue": ""
     },
     {
       "name": "LE",
       "long_name": "Averaged_Total_Latent_Heat_Flux",
-      "units": "W/m2",
+      "unit": "W/m2",
       "datafile": "_sfx",
       "issue": ""
     },
     {
       "name": "GFLUX",
       "long_name": "Averaged_Ground_Heat_Flux",
-      "units": "W/m2",
+      "unit": "W/m2",
       "datafile": "_sfx",
       "issue": ""
     },
     {
       "name": "land_area_fraction",
       "long_name": "Land-Sea Mask (LSM)",
-      "units": "1",
+      "unit": "1",
       "datafile": "",
       "issue": ""
     },
     {
       "name": "specific_humidity_ml",
       "long_name": "Specific humidity model levels",
-      "units": "kg/kg",
+      "unit": "kg/kg",
       "datafile": "",
       "issue": ""
     },
     {
       "name": "turbulent_kinetic_energy_ml",
       "long_name": "Turbulent kinetic energy (TKE)",
-      "units": "m^2/s^2",
+      "unit": "m^2/s^2",
       "datafile": "",
       "issue": ""
     },
     {
       "name": "cloud_area_fraction_ml",
       "long_name": "Cloud cover in model levels",
-      "units": "1",
+      "unit": "1",
       "datafile": "",
       "issue": ""
     },
     {
       "name": "toa_net_downward_shortwave_flux",
       "long_name": "Instantanous TOA net downward SW radiation",
-      "units": "W/m^2",
+      "unit": "W/m^2",
       "datafile": "",
       "issue": ""
     },
     {
       "name": "surface_downwelling_shortwave_flux_in_air",
       "long_name": "Instantaneous surface SW downwelling radiation",
-      "units": "W/m^2",
+      "unit": "W/m^2",
       "datafile": "",
       "issue": ""
     },
     {
       "name": "toa_outgoing_longwave_flux",
       "long_name": "Instantanous TOA outgoing LW radiation flux",
-      "units": "W/m^2",
+      "unit": "W/m^2",
       "datafile": "",
       "issue": ""
     },
     {
       "name": "surface_downwelling_longwave_flux_in_air",
       "long_name": "Instantanous surface LW downwelling radiation",
-      "units": "W/m^2",
+      "unit": "W/m^2",
       "datafile": "",
       "issue": ""
     },
     {
       "name": "atmosphere_boundary_layer_thickness",
       "long_name": "Height of the PBL",
-      "units": "m",
+      "unit": "m",
       "datafile": "",
       "issue": ""
     },
     {
       "name": "pressure_departure",
       "long_name": "Nonhydrostatic departure from hydrostatic pressure",
-      "units": "Pa",
+      "unit": "Pa",
       "datafile": "",
       "issue": ""
     },
     {
       "name": "air_temperature_ml",
       "long_name": "Air temperature model levels",
-      "units": "K",
+      "unit": "K",
       "datafile": "",
       "issue": ""
     },
     {
       "name": "surface_geopotential",
       "long_name": "Surface geopotential (fis)",
-      "units": "m^2/s^2",
+      "unit": "m^2/s^2",
       "datafile": "",
       "issue": ""
     },
     {
       "name": "x_wind_ml",
       "long_name": "X-component of wind in model levels",
-      "units": "m/s",
+      "unit": "m/s",
       "datafile": "",
       "issue": ""
     },
     {
       "name": "y_wind_ml",
       "long_name": "Y-component of wind in model levels",
-      "units": "m/s",
+      "unit": "m/s",
       "datafile": "",
       "issue": ""
     },
     {
       "name": "air_pressure_at_sea_level",
       "long_name": "Mean Sea Level Pressure (MSLP)",
-      "units": "Pa",
+      "unit": "Pa",
       "datafile": "",
       "issue": ""
     },
     {
       "name": "precipitation_amount_acc",
       "long_name": "Total precipitation accumulated from start of forecast",
-      "units": "kg/m^2",
+      "unit": "kg/m^2",
       "datafile": "",
       "issue": ""
     },
     {
       "name": "air_temperature_0m",
       "long_name": "Surface temperature (T0M)",
-      "units": "K",
+      "unit": "K",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "surface_geopotential",
       "long_name": "Surface geopotential (fis)",
-      "units": "m^2/s^2",
+      "unit": "m^2/s^2",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "liquid_water_content_of_surface_snow",
       "long_name": "Snow Water Equivivalent (SWE)",
-      "units": "kg/m^2",
+      "unit": "kg/m^2",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "downward_northward_momentum_flux_in_air",
       "long_name": "Momentum flux y-direction",
-      "units": "N/m^2",
+      "unit": "N/m^2",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "downward_eastward_momentum_flux_in_air",
       "long_name": "Momentum flux x-direction",
-      "units": "N/m^2",
+      "unit": "N/m^2",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "integral_of_toa_net_downward_shortwave_flux_wrt_time",
       "long_name": "Accumulated TOA net downward SW radiation",
-      "units": "W s/m^2",
+      "unit": "W s/m^2",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "integral_of_surface_net_downward_shortwave_flux_wrt_time",
       "long_name": "Accumulated net downward surface SW radiation",
-      "units": "W s/m^2",
+      "unit": "W s/m^2",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "integral_of_toa_outgoing_longwave_flux_wrt_time",
       "long_name": "Accumulated TOA outgoing LW radiation flux",
-      "units": "W s/m^2",
+      "unit": "W s/m^2",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "integral_of_surface_net_downward_longwave_flux_wrt_time",
       "long_name": "Accumulated net downward surface LW radiation",
-      "units": "W s/m^2",
+      "unit": "W s/m^2",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "integral_of_surface_downward_latent_heat_evaporation_flux_wrt_time",
       "long_name": "Accumulated latent heat evaporation flux",
-      "units": "W s/m^2",
+      "unit": "W s/m^2",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "integral_of_surface_downward_latent_heat_sublimation_flux_wrt_time",
       "long_name": "Accumulated latent heat sublimation flux at surface",
-      "units": "J/m^2",
+      "unit": "J/m^2",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "water_evaporation_amount",
       "long_name": "Water evaporation amount",
-      "units": "kg/m^2",
+      "unit": "kg/m^2",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "surface_snow_sublimation_amount_acc",
       "long_name": "Accumulated Snow Sublimation",
-      "units": "kg/m^2",
+      "unit": "kg/m^2",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "integral_of_surface_downward_sensible_heat_flux_wrt_time",
       "long_name": "Accumulated downwelling surface sensible heat flux",
-      "units": "W s/m^2",
+      "unit": "W s/m^2",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "integral_of_surface_downwelling_shortwave_flux_in_air_wrt_time",
       "long_name": "Accumulated surface SW downwelling radiation",
-      "units": "W s/m^2",
+      "unit": "W s/m^2",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "integral_of_surface_downwelling_longwave_flux_in_air_wrt_time",
       "long_name": "Accumulated surface LW downwelling radiation",
-      "units": "J/m^2",
+      "unit": "J/m^2",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "air_temperature_2m",
       "long_name": "Screen level temperature (T2M)",
-      "units": "K",
+      "unit": "K",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "relative_humidity_2m",
       "long_name": "Screen level relative humidity (RH2M)",
-      "units": "1",
+      "unit": "1",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "specific_humidity_2m",
       "long_name": "Screen level specific humidity",
-      "units": "kg/kg",
+      "unit": "kg/kg",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "x_wind_10m",
       "long_name": "X-component of 10 metre wind",
-      "units": "m/s",
+      "unit": "m/s",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "y_wind_10m",
       "long_name": "Y-component of 10 metre wind",
-      "units": "m/s",
+      "unit": "m/s",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "cloud_area_fraction",
       "long_name": "Total cloud cover (TCC)",
-      "units": "1",
+      "unit": "1",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "x_wind_gust_10m",
       "long_name": "X-component of 10 metre wind gust",
-      "units": "m/s",
+      "unit": "m/s",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "y_wind_gust_10m",
       "long_name": "Y-component of 10 metre wind gust",
-      "units": "m/s",
+      "unit": "m/s",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "air_temperature_max",
       "long_name": "Max screen level temperature last hour",
-      "units": "K",
+      "unit": "K",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "air_temperature_min",
       "long_name": "Min screen level temperature last hour",
-      "units": "K",
+      "unit": "K",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "convective_cloud_area_fraction",
       "long_name": "Convective cloud cover",
-      "units": "%",
+      "unit": "%",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "high_type_cloud_area_fraction",
       "long_name": "Cloud cover of high clouds (HCC)",
-      "units": "1",
+      "unit": "1",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "medium_type_cloud_area_fraction",
       "long_name": "Cloud cover of medium height clouds (MCC)",
-      "units": "1",
+      "unit": "1",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "low_type_cloud_area_fraction",
       "long_name": "Cloud cover of low clouds (LCC)",
-      "units": "1",
+      "unit": "1",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "atmosphere_boundary_layer_thickness",
       "long_name": "Height of the PBL",
-      "units": "m",
+      "unit": "m",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "hail_diagnostic",
       "long_name": "Hail diagnostic",
-      "units": "%",
+      "unit": "%",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "rainfall_amount",
       "long_name": "Instantanous rainfall at surface",
-      "units": "kg/m^2",
+      "unit": "kg/m^2",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "snowfall_amount",
       "long_name": "Instantaneous snowfall amount at surface",
-      "units": "kg/m^2",
+      "unit": "kg/m^2",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "graupelfall_amount",
       "long_name": "Instantaneous graupel at surface",
-      "units": "kg/m^2",
+      "unit": "kg/m^2",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "x_wind_pl",
       "long_name": "X-component of wind in pressure levels",
-      "units": "m/s",
+      "unit": "m/s",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "y_wind_pl",
       "long_name": "Y-component of wind in pressure levels",
-      "units": "m/s",
+      "unit": "m/s",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "air_temperature_pl",
       "long_name": "Air temperature pressure levels",
-      "units": "K",
+      "unit": "K",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "cloud_area_fraction_pl",
       "long_name": "Total cloud cover (TCC) in pressure levels",
-      "units": "1",
+      "unit": "1",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "geopotential_pl",
       "long_name": "Geopotential pressure levels",
-      "units": "m^2/s^2",
+      "unit": "m^2/s^2",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "relative_humidity_pl",
       "long_name": "Relative humidity pressure levels",
-      "units": "1",
+      "unit": "1",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "upward_air_velocity_pl",
       "long_name": "Vertical vind pressure levels",
-      "units": "m/s",
+      "unit": "m/s",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "air_pressure_at_sea_level",
       "long_name": "Mean Sea Level Pressure (MSLP)",
-      "units": "Pa",
+      "unit": "Pa",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "lwe_thickness_of_atmosphere_mass_content_of_water_vapor",
       "long_name": "Precipitable water",
-      "units": "m",
+      "unit": "m",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "x_wind_z",
       "long_name": "X-component of wind in heights",
-      "units": "m/s",
+      "unit": "m/s",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "y_wind_z",
       "long_name": "Y-component of wind in heights",
-      "units": "m/s",
+      "unit": "m/s",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "surface_air_pressure",
       "long_name": "Surface air pressure",
-      "units": "Pa",
+      "unit": "Pa",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "lifting_condensation_level",
       "long_name": "Atmosphere lifting condensation level wrt surface (LCL)",
-      "units": "m",
+      "unit": "m",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "atmosphere_level_of_free_convection",
       "long_name": "Level of free convection wrt surface (LFC)",
-      "units": "m",
+      "unit": "m",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "atmosphere_level_of_neutral_buoyancy",
       "long_name": "Level of neutral buoyancy (LNB)",
-      "units": "m",
+      "unit": "m",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "wind_direction",
       "long_name": "Wind direction in 10 metre",
-      "units": "degree",
+      "unit": "degree",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "wind_speed",
       "long_name": "Wind speed in 10 metre",
-      "units": "m/s",
+      "unit": "m/s",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "precipitation_amount_acc",
       "long_name": "Total precipitation accumulated from start of forecast",
-      "units": "kg/m^2",
+      "unit": "kg/m^2",
       "datafile": "_fp",
       "issue": ""
     },
     {
       "name": "snowfall_amount_acc",
       "long_name": "Total accumulated solid precipitation (snow+graupel+hail)",
-      "units": "kg/m^2",
+      "unit": "kg/m^2",
       "datafile": "_fp",
       "issue": ""
     }

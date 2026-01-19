@@ -58,7 +58,7 @@
     "unit": "°",
     "crs": "Custom CRS"
   },
-  [
+  "variables": [
     {
       "varname": "air_temperature",
       "longname": "bias-adjusted daily minimum near-surface air temperature",

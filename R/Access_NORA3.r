@@ -75,6 +75,25 @@ Access_NORA3 <- function(
             Operator = "in"
         )
     )
+
+    if (exists("extent")) {
+        InCheck_ls <- c(
+            InCheck_ls,
+            list(
+                Extent_Longitude = list(
+                    Input = extent[1:2],
+                    Allowed = QuickFacts_ls$space$extent[1:2],
+                    Operator = "exceeds"
+                ),
+                Extent_Latitude = list(
+                    Input = extent[3:4],
+                    Allowed = QuickFacts_ls$space$extent[3:4],
+                    Operator = "exceeds"
+                )
+            )
+        )
+    }
+
     Helper_InputChecker(inputCheck = InCheck_ls)
 
     ## Data files & extraction varnames =========
@@ -115,8 +134,11 @@ Access_NORA3 <- function(
     })
 
     MetNo_cf <- Helper_AccessCF(
-        URLS = URLS, 
-        extent = extent, 
+        URLS = URLS,
+        extent = list(
+            names = c("longitude", "latitude"),
+            values = extent
+        ),
         variable = variable
     )
     ## making sure we have the right time slices (need to bump the upper end by 1 second as subsetting is exlusive on upper end)

@@ -28,9 +28,9 @@
 #' Access_KlimaiNorge2100(
 #'     variable = "mean_air_temperature",
 #'     dateStart = "2019-08-01",
-#'     dateStop = "2022-09-17", ,
+#'     dateStop = "2022-09-17",
 #'     extent = terra::ext(c(0, 10, 60, 65)),
-#'     method = "EQM - Empirical Quantile Mapping",
+#'     method = "eqm",
 #'     model = "noresm-r1i1p1-remo",
 #'     scenario = "rcp45",
 #'     fileName = "KlimaiNorge2100.nc",
@@ -88,6 +88,25 @@ Access_KlimaiNorge2100 <- function(
             Operator = "in"
         )
     )
+
+    if (exists("extent")) {
+        InCheck_ls <- c(
+            InCheck_ls,
+            list(
+                Extent_Longitude = list(
+                    Input = extent[1:2],
+                    Allowed = QuickFacts_ls$space$extent[1:2],
+                    Operator = "exceeds"
+                ),
+                Extent_Latitude = list(
+                    Input = extent[3:4],
+                    Allowed = QuickFacts_ls$space$extent[3:4],
+                    Operator = "exceeds"
+                )
+            )
+        )
+    }
+
     Helper_InputChecker(inputCheck = InCheck_ls)
 
     ## Data files & extraction varnames =========
@@ -127,7 +146,10 @@ Access_KlimaiNorge2100 <- function(
 
     MetNo_cf <- Helper_AccessCF(
         URLS = URLS,
-        extent = NULL, #!! does not work for some reason wit extent
+        extent = list(
+            names = c("lon", "lat"),
+            values = extent
+        ),
         time = as.character(c(TimeAssign[1], tail(TimeAssign, 1))),
         variable = FilePrefix
     )

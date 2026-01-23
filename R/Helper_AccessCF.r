@@ -4,7 +4,7 @@
 #'
 #' @param URLS Character. Vector of URLs for download.
 #' @param variable Character. Variable name to extract from the NetCDF files.
-#' @param extent Optional, SpatExtent. A spatial extent to subset the data to. Defaults to NULL returning full spatial range of data.
+#' @param extent Optional, A named list containg the elements `names` (indexing axes in the CFVariable to use for subsetting) and `value` (a SpatExtent to match against the axes in `names`). A spatial extent to subset the data to. Defaults to NULL returning full spatial range of data.
 #' @param time Optional, POSIXct vector of length 2. A time extent to subset the data to. Defaults to NULL returning full temporal range of data.
 #' @param verbose Logical. If progress should be displayed in the console.
 #'
@@ -32,20 +32,14 @@ Helper_AccessCF <- function(URLS, variable, extent = NULL, time = NULL, verbose 
         # print(iter_cf)
         iter_cf <- iter_cf[[variable]]
         if (!is.null(extent)) {
-            if ("longitude" %in% iter_cf$auxiliary_names) {
-                iter_cf <- iter_cf$subset(
-                    longitude = c(extent[1], extent[2]),
-                    latitude = c(extent[3], extent[4])
-                )
+
+            iter_cf <- eval(parse(text = paste0(
+                "iter_cf$subset(",
+                extent$names[1], " = c(", paste(extent$value[1:2], collapse = ","), "), ",
+                extent$names[2], " = c(", paste(extent$value[3:4], collapse = ","), ")",
+                ")"
+            )))
             }
-            # this fails for KiN data with: Error: Argument 'resolution' is outside of the permitted range of [0.01 ... 10]
-            if ("lon" %in% iter_cf$auxiliary_names) {
-                iter_cf <- iter_cf$subset(
-                    lon = c(extent[1], extent[2]),
-                    lat = c(extent[3], extent[4])
-                )
-            }
-        }
 
         if (!is.null(time)) {
             iter_cf <- iter_cf$subset(

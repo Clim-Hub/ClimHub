@@ -11,7 +11,7 @@ Helper_AccessCF(URLS, variable, extent = NULL, time = NULL, verbose = TRUE)
 
 \item{variable}{Character. Variable name to extract from the NetCDF files.}
 
-\item{extent}{Optional, SpatExtent. A spatial extent to subset the data to. Defaults to NULL returning full spatial range of data.}
+\item{extent}{Optional, A named list containg the elements \code{names} (indexing axes in the CFVariable to use for subsetting) and \code{value} (a SpatExtent to match against the axes in \code{names}). A spatial extent to subset the data to. Defaults to NULL returning full spatial range of data.}
 
 \item{time}{Optional, POSIXct vector of length 2. A time extent to subset the data to. Defaults to NULL returning full temporal range of data.}
 

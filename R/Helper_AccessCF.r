@@ -27,19 +27,31 @@ Helper_AccessCF <- function(URLS, variable, extent = NULL, time = NULL, verbose 
     ## loading data
     MetNo_cf <- as.list(rep(NA, length(URLS)))
     for (LoadIter in 1:length(URLS)) {
-        iter_cf <- ncdfCF::open_ncdf(URLS[LoadIter])
+        # print(URLS[LoadIter])
+        tryCatch(
+            {
+                iter_cf <- ncdfCF::open_ncdf(URLS[LoadIter])
+            },
+            error = function(e) {
+                if (grepl("Error opening netCDF resource", e$message)) {
+                    stop(paste0("Failed to open netCDF resource for URL ", URL, ". This is likely due to the query URL being misspecified or an internet connection issue."))
+                } else {
+                    stop(paste0("ncdfCF error accessing URL ", URL, " : ", e$message))
+                }
+            }
+        )
+
         ## extracting relevant variable
         # print(iter_cf)
         iter_cf <- iter_cf[[variable]]
         if (!is.null(extent)) {
-
             iter_cf <- eval(parse(text = paste0(
                 "iter_cf$subset(",
                 extent$names[1], " = c(", paste(extent$value[1:2], collapse = ","), "), ",
                 extent$names[2], " = c(", paste(extent$value[3:4], collapse = ","), ")",
                 ")"
             )))
-            }
+        }
 
         if (!is.null(time)) {
             iter_cf <- iter_cf$subset(

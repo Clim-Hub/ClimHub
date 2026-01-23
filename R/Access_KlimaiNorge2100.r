@@ -4,7 +4,7 @@
 #' Specifically, this function provides access to the following datasets:
 #'  1. Gridded 1 x 1 km climate and hydrological projections for Norway data at daily scales contained within \href{https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge/utgave2025/DailyTimeSeries/catalog.html}{DailyTimeSeries}.
 #'
-#' \textbf{Note: not all combinations of variables, models, scenarios, and bias-correction methods are available. If you encounter an error, please first consult whether data is provided for the requested combination at \url{https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge/utgave2025/DailyTimeSeries/catalog.html}. You will likely see an error like: `Error: Error opening netCDF resource`}
+#' \textbf{Note: not all combinations of variables, models, scenarios, and bias-correction methods are available. If you encounter an error, please first consult whether data is provided for the requested combination at \url{https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge/utgave2025/DailyTimeSeries/catalog.html}. The function is designed to give you informative errors when this happens and you should find the offending URL in your console.}
 #'
 #' @param variable Character. An overview of Klima i Norge variables can be obtained with `Discovery_Variables(dataSet = "KlimaiNorge2100")`.
 #' @param dateStart Character. "YYYY-MM-DD" date at which to start time series of downloaded data. Data is available daily at hourly intervals.
@@ -42,6 +42,7 @@
 Access_KlimaiNorge2100 <- function(
     variable, # which variable
     dateStart, dateStop, # time-window
+    extent,
     method,
     model,
     scenario,
@@ -61,6 +62,7 @@ Access_KlimaiNorge2100 <- function(
     Stop <- as.POSIXct(paste0(dateStop, ":00:00"), tz = "UTC")
 
     ### actual checks
+    QuickFacts_ls <- Discovery_QuickFacts("KlimaiNorge2100")
     InCheck_ls <- list(
         Variable = list(
             Input = variable,
@@ -69,22 +71,22 @@ Access_KlimaiNorge2100 <- function(
         ),
         Time = list(
             Input = c(Start, Stop),
-            Allowed = Discovery_QuickFacts("KlimaiNorge2100")$time$extent,
+            Allowed = QuickFacts_ls$time$extent,
             Operator = "exceeds"
         ),
         Methods = list(
             Input = method,
-            Allowed = Discovery_QuickFacts("KlimaiNorge2100")$methods,
+            Allowed = QuickFacts_ls$methods,
             Operator = "in"
         ),
         Models = list(
             Input = model,
-            Allowed = Discovery_QuickFacts("KlimaiNorge2100")$models,
+            Allowed = QuickFacts_ls$models,
             Operator = "in"
         ),
         Scenarios = list(
             Input = scenario,
-            Allowed = Discovery_QuickFacts("KlimaiNorge2100")$scenarios,
+            Allowed = QuickFacts_ls$scenarios,
             Operator = "in"
         )
     )
@@ -123,7 +125,7 @@ Access_KlimaiNorge2100 <- function(
         by = "1 day"
     )
     Datetimes <- unique(format(Datetimes, "%Y"))
-    FNames <- paste("TEMP", ifelse(Datetimes < 2020, "hist", scenario), model, FilePrefix, "daily", Datetimes, "v4.nc", sep = "_")
+    FNames <- paste("TEMP", ifelse(Datetimes <= 2020, "hist", scenario), model, FilePrefix, "daily", Datetimes, "v4.nc", sep = "_")
 
     ## File Check =========
     FCheck <- Helper_FileCheck(fileName = fileName, loadFun = ncdfCF::open_ncdf, load = TRUE, verbose = TRUE)

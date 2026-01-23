@@ -8,6 +8,7 @@ Access_KlimaiNorge2100(
   variable,
   dateStart,
   dateStop,
+  extent,
   method,
   model,
   scenario,
@@ -23,6 +24,8 @@ Access_KlimaiNorge2100(
 
 \item{dateStop}{Character. "YYYY-MM-DD" date at which to stop time series of downloaded data. Data is available daily at hourly intervals.}
 
+\item{extent}{Optional, SpatExtent. A spatial extent to subset the data to. Defaults to NULL returning full spatial range of data.}
+
 \item{method}{Character. An overview of bias-correction methods from which data can be obtained can be obtained with \code{Discovery_QuickFacts("KlimaiNorge2100")$methods}.}
 
 \item{model}{Character. An overview of climate models from which data can be obtained can be obtained with \code{Discovery_QuickFacts("KlimaiNorge2100")$models}.}
@@ -34,8 +37,6 @@ Access_KlimaiNorge2100(
 \item{compression}{Optional, Integer. Compression level between 1 to 9 applied to final .nc file. Same as compression argument in terra::writeCDF(). Defaults to NA. Currently not used due to ncdfCF saving scheme.}
 
 \item{writeFile}{Optional, Logical. Whether to write final CFVariable to disk as an .nc or to return information from memory. Defaults to TRUE.}
-
-\item{extent}{Optional, SpatExtent. A spatial extent to subset the data to. Defaults to NULL returning full spatial range of data.}
 }
 \value{
 A CFVariable object which contains the downloaded data and relevant metadata attributes. If specified, also writes a NetCDF file to disk.
@@ -47,16 +48,16 @@ Specifically, this function provides access to the following datasets:
 \item Gridded 1 x 1 km climate and hydrological projections for Norway data at daily scales contained within \href{https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge/utgave2025/DailyTimeSeries/catalog.html}{DailyTimeSeries}.
 }
 
-\textbf{Note: not all combinations of variables, models, scenarios, and bias-correction methods are available. If you encounter an error, please first consult whether data is provided for the requested combination at \url{https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge/utgave2025/DailyTimeSeries/catalog.html}. You will likely see an error like: \verb{Error: Error opening netCDF resource}}
+\textbf{Note: not all combinations of variables, models, scenarios, and bias-correction methods are available. If you encounter an error, please first consult whether data is provided for the requested combination at \url{https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge/utgave2025/DailyTimeSeries/catalog.html}. The function is designed to give you informative errors when this happens and you should find the offending URL in your console.}
 }
 \examples{
 \dontrun{
 Access_KlimaiNorge2100(
     variable = "mean_air_temperature",
     dateStart = "2019-08-01",
-    dateStop = "2022-09-17", ,
+    dateStop = "2022-09-17",
     extent = terra::ext(c(0, 10, 60, 65)),
-    method = "EQM - Empirical Quantile Mapping",
+    method = "eqm",
     model = "noresm-r1i1p1-remo",
     scenario = "rcp45",
     fileName = "KlimaiNorge2100.nc",

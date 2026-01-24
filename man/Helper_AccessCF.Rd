@@ -4,16 +4,14 @@
 \alias{Helper_AccessCF}
 \title{Execute direct download calls with ncdfCF}
 \usage{
-Helper_AccessCF(URLS, variable, extent = NULL, time = NULL, verbose = TRUE)
+Helper_AccessCF(URLs, variable, subset = list(), verbose = TRUE)
 }
 \arguments{
-\item{URLS}{Character. Vector of URLs for download.}
+\item{URLs}{Character. Vector of URLs for download.}
 
-\item{variable}{Character. Variable name to extract from the NetCDF files.}
+\item{variable}{Character. Variable name to extract from the netCDF files.}
 
-\item{extent}{Optional, A named list containg the elements \code{names} (indexing axes in the CFVariable to use for subsetting) and \code{value} (a SpatExtent to match against the axes in \code{names}). A spatial extent to subset the data to. Defaults to NULL returning full spatial range of data.}
-
-\item{time}{Optional, POSIXct vector of length 2. A time extent to subset the data to. Defaults to NULL returning full temporal range of data.}
+\item{subset}{List, optional. A list with the ranges along the axes of the data variable to subset.}
 
 \item{verbose}{Logical. If progress should be displayed in the console.}
 }
@@ -21,14 +19,7 @@ Helper_AccessCF(URLS, variable, extent = NULL, time = NULL, verbose = TRUE)
 A CFVariable object containing the requested data.
 }
 \description{
-Loops over all supplied URLs assuming these query NetCDF file from open hosts. These are then registered and subsetted for variable and extent using ncdfCF before being downloaded and appended by the time axis.
-}
-\examples{
-Helper_AccessCF(
-    URLS = c("https://thredds.met.no/thredds/dodsC/nora3/1961/08/01/00/fc1961080100_003_sfx.nc", "https://thredds.met.no/thredds/dodsC/nora3/1961/08/01/06/fc1961080106_003_sfx.nc", "https://thredds.met.no/thredds/dodsC/nora3/1961/08/01/12/fc1961080112_003_sfx.nc"),
-    variable = "T2M",
-    extent <- list(names = c("longitude", "latitude"), value = terra::ext(c(0, 20, 60, 70)))
-)
+Loops over all supplied URLs assuming these query netCDF files from open hosts. These are then registered and subsetted for variable and extent using ncdfCF before being downloaded and appended by the "time" axis.
 }
 \author{
 Erik Kusch

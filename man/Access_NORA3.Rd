@@ -11,8 +11,7 @@ Access_NORA3(
   extent = NULL,
   leadTimeHour,
   fileName,
-  compression = NA,
-  writeFile = TRUE
+  compression = 1
 )
 }
 \arguments{
@@ -22,18 +21,16 @@ Access_NORA3(
 
 \item{dateStop}{Character. "YYYY-MM-DD HH" date at which to stop time series of downloaded data. Data is available daily at hours 00, 06, 12, and 18.}
 
-\item{extent}{Optional, SpatExtent. A spatial extent to subset the data to. Defaults to NULL returning full spatial range of data.}
+\item{extent}{Optional. The extent to subset the data to, in decimal degrees of longitude and latitude. A numeric vector of length 4 with values minimum and maximum longitude and minimum and maximum latitude, in that order. Defaults to \code{NULL}, returning full spatial range of data.}
 
-\item{leadTimeHour}{Integer. Lead time of reanalysis. NORA3 leadtimes can be obtained with \code{Discovery_QuickFacts("NORA3")$leadtime}.}
+\item{leadTimeHour}{Integer. Lead time of reanalysis. NORA3 lead times can be obtained with \code{Discovery_QuickFacts("NORA3")$leadtime}.}
 
 \item{fileName}{Character. A file name for the produced file, including path.}
 
-\item{compression}{Optional, Integer. Compression level between 1 to 9 applied to final .nc file. Same as compression argument in terra::writeCDF(). Defaults to NA. Currently not used due to ncdfCF saving scheme.}
-
-\item{writeFile}{Optional, Logical. Whether to write final CFVariable to disk as an .nc or to return information from memory. Defaults to TRUE.}
+\item{compression}{Optional, integer. Compression level between 1 to 9 applied to final netCDF file. Defaults to 1. Currently not used due to ncdfCF saving scheme.}
 }
 \value{
-A CFVariable object which contains the downloaded data and relevant metadata attributes. If specified, also writes a NetCDF file to disk.
+A \code{CFDataset} object which contains the downloaded data and relevant metadata attributes. If specified, also writes a netCDF file to disk.
 }
 \description{
 Downloads and processes data from the NORA3 data product hosted through \href{https://thredds.met.no/thredds/projects/nora3.html}{thredds.met.no}.
@@ -44,11 +41,10 @@ Specifically, this function provides access to the NORA3 files contained within 
 NORA3 <- Access_NORA3(
     variable = "TS", # which variable
     dateStart = "1961-08-01 00", dateStop = "1961-08-02 18", # time-window
-    extent = terra::ext(c(0, 40, 50, 60)),
+    extent = c(0, 40, 50, 60),
     leadTimeHour = 3,
     fileName = "NORA3.nc", compression = 9 # file storing
 )
-unlink("NORA3.nc")
 }
 }
 \author{

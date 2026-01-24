@@ -13,18 +13,17 @@ Access_KlimaiNorge2100(
   model,
   scenario,
   fileName,
-  compression = NA,
-  writeFile = TRUE
+  compression = NA
 )
 }
 \arguments{
 \item{variable}{Character. An overview of Klima i Norge variables can be obtained with \code{Discovery_Variables(dataSet = "KlimaiNorge2100")}.}
 
-\item{dateStart}{Character. "YYYY-MM-DD" date at which to start time series of downloaded data. Data is available daily at hourly intervals.}
+\item{dateStart}{Character. "YYYY-MM-DD" date at which to start time series of downloaded data. Data is available at daily resolution starting from \code{1971-01-01}.}
 
-\item{dateStop}{Character. "YYYY-MM-DD" date at which to stop time series of downloaded data. Data is available daily at hourly intervals.}
+\item{dateStop}{Character. "YYYY-MM-DD" date at which to stop time series of downloaded data, inclusive of this date. Data is available at daily resolution up to \code{2100-12-31}.}
 
-\item{extent}{Optional, SpatExtent. A spatial extent to subset the data to. Defaults to NULL returning full spatial range of data.}
+\item{extent}{Optional. The extent to subset the data to, in coordinates of the projection or decimal degrees of longitude and latitude. A numeric vector of length 4 with values minimum and maximum X/longitude and minimum and maximum Y/latitude, in that order. Valid ranges for projected X and Y coordinates are \verb{(-74500, 1119500, 6450500, 7999500)}, for longitude/latitude values \verb{(-1.309, 32.515, 57.765, 72.095)}. Defaults to \code{NULL}, returning full spatial range of data.}
 
 \item{method}{Character. An overview of bias-correction methods from which data can be obtained can be obtained with \code{Discovery_QuickFacts("KlimaiNorge2100")$methods}.}
 
@@ -32,14 +31,12 @@ Access_KlimaiNorge2100(
 
 \item{scenario}{Character. An overview of climate models from which data can be obtained can be obtained with \code{Discovery_QuickFacts("KlimaiNorge2100")$scenarios}. Note that this choice only affects data post-dating 2020-12-31.}
 
-\item{fileName}{Character. A file name for the produced file, including path.}
+\item{fileName}{Character, optional. A file name for the produced file, including path. If \code{NULL} or missing, a virtual data set will be returned from this function.}
 
-\item{compression}{Optional, Integer. Compression level between 1 to 9 applied to final .nc file. Same as compression argument in terra::writeCDF(). Defaults to NA. Currently not used due to ncdfCF saving scheme.}
-
-\item{writeFile}{Optional, Logical. Whether to write final CFVariable to disk as an .nc or to return information from memory. Defaults to TRUE.}
+\item{compression}{Optional, integer. Compression level between 1 to 9 applied to final .nc file.}
 }
 \value{
-A CFVariable object which contains the downloaded data and relevant metadata attributes. If specified, also writes a NetCDF file to disk.
+A \code{CFDataset} object which contains the downloaded data and relevant metadata attributes. If specified, also writes a netCDF file to disk.
 }
 \description{
 Downloads and processes data from the \href{https://www.met.no/nyhetsarkiv/framtidens-klima-i-norge-flere-oversvommelser-mer-torke-og-mindre-sno/_/attachment/inline/cc1ae8f3-277d-4077-adb9-313e5e28b947:b8073784517edb9392f78c9d82bc5b296db2fc3c/Klima\%20i\%20Norge\%20digital\%20low.pdf}{Klima_i_Norge_2100} data product hosted through \href{https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge/utgave2025/catalog.html}{thredds.met.no}.
@@ -56,13 +53,12 @@ Access_KlimaiNorge2100(
     variable = "mean_air_temperature",
     dateStart = "2019-08-01",
     dateStop = "2022-09-17",
-    extent = terra::ext(c(0, 10, 60, 65)),
+    extent = c(0, 10, 60, 65),
     method = "eqm",
     model = "noresm-r1i1p1-remo",
     scenario = "rcp45",
     fileName = "KlimaiNorge2100.nc",
-    compression = 9,
-    writeFile = TRUE
+    compression = 9
 )
 }
 }

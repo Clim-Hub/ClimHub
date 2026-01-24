@@ -6,16 +6,11 @@
 #' @param variable Character. An overview of NORA3 variables can be obtained with `Discovery_Variables(dataSet = "NORA3")`.
 #' @param dateStart Character. "YYYY-MM-DD HH" date at which to start time series of downloaded data. Data is available daily at hours 00, 06, 12, and 18.
 #' @param dateStop Character. "YYYY-MM-DD HH" date at which to stop time series of downloaded data. Data is available daily at hours 00, 06, 12, and 18.
-#' @param extent Optional, SpatExtent. A spatial extent to subset the data to. Defaults to NULL returning full spatial range of data.
-#' @param leadTimeHour Integer. Lead time of reanalysis. NORA3 leadtimes can be obtained with `Discovery_QuickFacts("NORA3")$leadtime`.
+#' @param extent Optional. The extent to subset the data to, in decimal degrees of longitude and latitude. A numeric vector of length 4 with values minimum and maximum longitude and minimum and maximum latitude, in that order. Defaults to `NULL`, returning full spatial range of data.
+#' @param leadTimeHour Integer. Lead time of reanalysis. NORA3 lead times can be obtained with `Discovery_QuickFacts("NORA3")$leadtime`.
 #' @param fileName Character. A file name for the produced file, including path.
-#' @param compression Optional, Integer. Compression level between 1 to 9 applied to final .nc file. Same as compression argument in terra::writeCDF(). Defaults to NA. Currently not used due to ncdfCF saving scheme.
-#' @param writeFile Optional, Logical. Whether to write final CFVariable to disk as an .nc or to return information from memory. Defaults to TRUE.
-#'
-#' @importFrom tools file_path_sans_ext
-#' @importFrom stringr str_pad
-#'
-#' @return A CFVariable object which contains the downloaded data and relevant metadata attributes. If specified, also writes a NetCDF file to disk.
+#' @param compression Optional, integer. Compression level between 1 to 9 applied to final netCDF file. Defaults to 1. Currently not used due to ncdfCF saving scheme.
+#' @return A `CFDataset` object which contains the downloaded data and relevant metadata attributes. If specified, also writes a netCDF file to disk.
 #'
 #' @author Erik Kusch
 #'
@@ -24,11 +19,10 @@
 #' NORA3 <- Access_NORA3(
 #'     variable = "TS", # which variable
 #'     dateStart = "1961-08-01 00", dateStop = "1961-08-02 18", # time-window
-#'     extent = terra::ext(c(0, 40, 50, 60)),
+#'     extent = c(0, 40, 50, 60),
 #'     leadTimeHour = 3,
 #'     fileName = "NORA3.nc", compression = 9 # file storing
 #' )
-#' unlink("NORA3.nc")
 #' }
 #' @export
 Access_NORA3 <- function(
@@ -36,14 +30,14 @@ Access_NORA3 <- function(
     dateStart, dateStop, # time-window
     extent = NULL,
     leadTimeHour, # NORA3 specific arguments
-    fileName, compression = NA, # file storing
-    writeFile = TRUE) {
+    fileName, compression = 1 # file storing
+) {
     ## Input Checks ============
     message("###### Checking Request Validity")
-    ### fileName
-    if (missing(fileName)) {
-        stop("Please specify a filename.")
-    }
+  ### fileName
+  if (missing(fileName))
+    fileName <- NULL
+  if (!is.null(fileName))
     fileName <- normalizePath(fileName, mustWork = FALSE)
 
     ### time-window exceeded, we do this in UTC to avoid daylight savings shenanigans
@@ -76,53 +70,60 @@ Access_NORA3 <- function(
         )
     )
 
-    if (exists("extent")) {
-        InCheck_ls <- c(
-            InCheck_ls,
-            list(
-                Extent_Longitude = list(
-                    Input = extent[1:2],
-                    Allowed = QuickFacts_ls$space$extent[1:2],
-                    Operator = "exceeds"
-                ),
-                Extent_Latitude = list(
-                    Input = extent[3:4],
-                    Allowed = QuickFacts_ls$space$extent[3:4],
-                    Operator = "exceeds"
-                )
-            )
-        )
-    }
+    # Commenting this out so you can also subset on x/y coordinates
+    # if (exists("extent")) {
+    #     InCheck_ls <- c(
+    #         InCheck_ls,
+    #         list(
+    #             Extent_Longitude = list(
+    #                 Input = extent[1:2],
+    #                 Allowed = QuickFacts_ls$space$extent[1:2],
+    #                 Operator = "exceeds"
+    #             ),
+    #             Extent_Latitude = list(
+    #                 Input = extent[3:4],
+    #                 Allowed = QuickFacts_ls$space$extent[3:4],
+    #                 Operator = "exceeds"
+    #             )
+    #         )
+    #     )
+    # }
 
     Helper_InputChecker(inputCheck = InCheck_ls)
 
     ## Data files & extraction varnames =========
     NORA3_df <- Discovery_Variables("NORA3")
     FilePrefix <- NORA3_df$datafile[NORA3_df$name == variable]
-    # ExtractVar <- NORA3_df$varname[variable == NORA3_df$name] # no longer needed with new name and long_name specification
-    Unit <- NORA3_df$unit[NORA3_df$name == variable]
 
     ## Download preparations =========
     ## temporary files names used for URL creation, we do this in UTC to avoid daylight savings shenanigans
-    TimeAssign <- Datetimes <- seq(
+    DateTimes <- seq(
         from = Start,
         to = Stop,
         by = "6 hour"
     )
-    TimeAssign <- TimeAssign + leadTimeHour * 3600 # adjusting for lead time
-    Datetimes <- format(Datetimes, "%Y%m%d%H")
+    Datetimes <- format(DateTimes, "%Y%m%d%H")
     FNames <- paste0("TEMP_", "fc", Datetimes, "_", stringr::str_pad(leadTimeHour, 3, "left", 0), FilePrefix, ".nc")
 
     ## File Check =========
-    FCheck <- Helper_FileCheck(fileName = fileName, loadFun = ncdfCF::open_ncdf, load = TRUE, verbose = TRUE)
-    if (!is.null(FCheck)) {
-        # terra::time(FCheck) <- TimeAssign # not needed anymore as soon as we switch to CFDataset handling
-        return(FCheck)
+    if (!is.null(fileName)) {
+      FCheck <- Helper_FileCheck(fileName = fileName, loadFun = ncdfCF::open_ncdf, load = TRUE, verbose = TRUE)
+      if (!is.null(FCheck))
+          return(FCheck)
     }
+
+    ## Subsetting parameters =========
+    subset <- if (!is.null(extent)) {
+      if (all(extent < 1000))  # Differentiate between latitude/longitude and x/y
+        list(longitude = extent[1:2], latitude = extent[3:4])
+      else
+        list(x = extent[1:2], y = extent[3:4])
+    } else list()
+    subset <- c(subset, list(time = c(as.character(Start), as.character(Stop + 21600)))) # Stop date/hour inclusive
 
     ## Download execution =========
     message("###### Data Download")
-    URLS <- sapply(FNames, FUN = function(FName) {
+    URLs <- sapply(FNames, FUN = function(FName) {
         Year <- substr(FName, 8, 11)
         Month <- substr(FName, 12, 13)
         Day <- substr(FName, 14, 15)
@@ -133,34 +134,23 @@ Access_NORA3 <- function(
         )
     })
 
-    MetNo_cf <- Helper_AccessCF(
-        URLS = URLS,
-        extent = list(
-            names = c("longitude", "latitude"),
-            values = extent
-        ),
-        variable = variable
-    )
-    ## making sure we have the right time slices (need to bump the upper end by 1 second as subsetting is exlusive on upper end)
-    MetNo_cf <- MetNo_cf$subset(T = as.character(c(TimeAssign[1], TimeAssign[length(TimeAssign)] + 1)))
+    MetNo_cf <- Helper_AccessCF(URLs = URLs, variable = variable, subset = subset)
 
     ## Exports =================================
     message("###### Data Export & Return")
 
     ## Metadata
-    callargs <- paste0("ClimHub::", deparse(match.call()))
+    callargs <- paste0("ClimHub::", paste(deparse(match.call()), collapse = ", "))
     Citation <- paste0("NORA3 (DOI:", Discovery_DOI(dataSet = "NORA3"), ") data provided by the The Norwegian Meteorological institute obtained on ", Sys.Date())
     MetNo_cf$set_attribute("source", "NC_CHAR", Citation)
     MetNo_cf$set_attribute("comment", "NC_CHAR", paste("Created on", Sys.time(), "with the Access_NORA3() function from ClimHub version", packageVersion("ClimHub")))
     MetNo_cf$set_attribute("provenance", "NC_CHAR", callargs)
 
-    ### write file
-    if (writeFile) {
-        ## writing itself
-        MetNo_cf$save(fileName) # this loses the extra attributes set just above?!
-        MetNo_cf <- open_ncdf(fileName)
-    }
-
-    ### return object
-    return(MetNo_cf)
+    ### Optionally write file and return
+    if (is.null(fileName)) {
+      ds <- ncdfCF::create_ncdf()
+      ds$add_variable(MetNo_cf)
+      ds
+    } else
+      MetNo_cf$save(fileName)
 }

@@ -8,7 +8,7 @@ Access_KlimaiNorge2100(
   variable,
   dateStart,
   dateStop,
-  extent,
+  extent = NULL,
   method,
   model,
   scenario,
@@ -33,7 +33,7 @@ Access_KlimaiNorge2100(
 
 \item{fileName}{Character, optional. A file name for the produced file, including path. If \code{NULL} or missing, a virtual data set will be returned from this function.}
 
-\item{compression}{Optional, integer. Compression level between 1 to 9 applied to final .nc file.}
+\item{compression}{Optional, integer. Compression level between 1 to 9 applied to final netCDF file. Defaults to NA (no compression applied). Currently not used due to ncdfCF saving scheme.}
 }
 \value{
 A \code{CFDataset} object which contains the downloaded data and relevant metadata attributes. If specified, also writes a netCDF file to disk.
@@ -63,5 +63,5 @@ Access_KlimaiNorge2100(
 }
 }
 \author{
-Erik Kusch
+Erik Kusch, Patrick Van Laake
 }

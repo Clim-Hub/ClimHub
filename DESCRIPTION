@@ -30,7 +30,7 @@ Imports:
     ggplot2 (>= 4.0.1),
     viridis (>= 0.6.5),
     tidyterra (>= 0.7.2),
-    ncdfCF (>= 0.7.0.9000)
+    ncdfCF (>= 0.8.0.9000)
 Depends: 
     R (>= 3.5)
 LazyData: true

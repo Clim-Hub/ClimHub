@@ -11,7 +11,7 @@ Access_NORA3(
   extent = NULL,
   leadTimeHour,
   fileName,
-  compression = 1
+  compression = NA
 )
 }
 \arguments{
@@ -27,7 +27,7 @@ Access_NORA3(
 
 \item{fileName}{Character. A file name for the produced file, including path.}
 
-\item{compression}{Optional, integer. Compression level between 1 to 9 applied to final netCDF file. Defaults to 1. Currently not used due to ncdfCF saving scheme.}
+\item{compression}{Optional, integer. Compression level between 1 to 9 applied to final netCDF file. Defaults to NA (no compression applied). Currently not used due to ncdfCF saving scheme.}
 }
 \value{
 A \code{CFDataset} object which contains the downloaded data and relevant metadata attributes. If specified, also writes a netCDF file to disk.
@@ -39,14 +39,14 @@ Specifically, this function provides access to the NORA3 files contained within 
 \examples{
 \dontrun{
 NORA3 <- Access_NORA3(
-    variable = "TS", # which variable
-    dateStart = "1961-08-01 00", dateStop = "1961-08-02 18", # time-window
-    extent = c(0, 40, 50, 60),
-    leadTimeHour = 3,
-    fileName = "NORA3.nc", compression = 9 # file storing
+  variable = "TS", # which variable
+  dateStart = "1961-08-01 00", dateStop = "1961-08-02 18", # time-window
+  extent = c(0, 40, 50, 60),
+  leadTimeHour = 3,
+  fileName = "NORA3.nc", compression = 9 # file storing
 )
 }
 }
 \author{
-Erik Kusch
+Erik Kusch, Patrick Van Laake
 }

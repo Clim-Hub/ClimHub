@@ -8,23 +8,26 @@
 #' @param verbose Logical. If progress should be displayed in the console.
 #' @return A CFVariable object containing the requested data.
 #'
-#' @author Erik Kusch
+#' @author Erik Kusch, Patrick Van Laake
 Helper_AccessCF <- function(URLs, variable, subset = list(), verbose = TRUE) {
   ## make progress bar
-  if (verbose)
+  if (verbose) {
     pb <- Helper_Progress(iterLength = length(URLs), text = "Downloading Data")
+  }
 
   ## loading data
   out <- NULL
   for (LoadIter in seq_along(URLs)) {
     iter_dataset <- NC_Read(fileName = URLs[LoadIter], vars = variable, subset)
     iter_var <- iter_dataset[[variable]]
-    if (verbose)
+    if (verbose) {
       pb$tick(tokens = list(layer = LoadIter))
-    if (is.null(out))
+    }
+    if (is.null(out)) {
       out <- iter_var
-    else
-      out$append(iter_var, "time") # "time" should be an argument to this function
+    } else {
+      out$append(iter_var, "time")
+    } # "time" should be an argument to this function
   }
   out
 }

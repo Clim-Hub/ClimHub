@@ -22,5 +22,5 @@ A CFVariable object containing the requested data.
 Loops over all supplied URLs assuming these query netCDF files from open hosts. These are then registered and subsetted for variable and extent using ncdfCF before being downloaded and appended by the "time" axis.
 }
 \author{
-Erik Kusch
+Erik Kusch, Patrick Van Laake
 }

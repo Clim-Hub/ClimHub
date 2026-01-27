@@ -14,10 +14,10 @@
 #' @param model Character. An overview of climate models from which data can be obtained can be obtained with `Discovery_QuickFacts("KlimaiNorge2100")$models`.
 #' @param scenario Character. An overview of climate models from which data can be obtained can be obtained with `Discovery_QuickFacts("KlimaiNorge2100")$scenarios`. Note that this choice only affects data post-dating 2020-12-31.
 #' @param fileName Character, optional. A file name for the produced file, including path. If `NULL` or missing, a virtual data set will be returned from this function.
-#' @param compression Optional, integer. Compression level between 1 to 9 applied to final .nc file.
+#' @param compression Optional, integer. Compression level between 1 to 9 applied to final netCDF file. Defaults to NA (no compression applied). Currently not used due to ncdfCF saving scheme.
 #' @return A `CFDataset` object which contains the downloaded data and relevant metadata attributes. If specified, also writes a netCDF file to disk.
 #'
-#' @author Erik Kusch
+#' @author Erik Kusch, Patrick Van Laake
 #'
 #' @examples
 #' \dontrun{
@@ -37,20 +37,22 @@
 Access_KlimaiNorge2100 <- function(
     variable, # which variable
     dateStart, dateStop, # time-window
-    extent,
+    extent = NULL,
     method,
     model,
     scenario,
     fileName, compression = NA # file storing
-) {
+    ) {
     ## Input Checks ============
     message("###### Checking Request Validity")
 
     ### fileName
-  if (missing(fileName))
-    fileName <- NULL
-  if (!is.null(fileName))
-    fileName <- normalizePath(fileName, mustWork = FALSE)
+    if (missing(fileName)) {
+        fileName <- NULL
+    }
+    if (!is.null(fileName)) {
+        fileName <- normalizePath(fileName, mustWork = FALSE)
+    }
 
     ### time-window exceeded, we do this in UTC to avoid daylight savings shenanigans
     Start <- as.POSIXct(paste0(dateStart, "T00:00:00"), tz = "UTC")
@@ -124,18 +126,22 @@ Access_KlimaiNorge2100 <- function(
 
     ## File Check =========
     if (!is.null(fileName)) {
-      FCheck <- Helper_FileCheck(fileName = fileName, loadFun = ncdfCF::open_ncdf, load = TRUE, verbose = TRUE)
-      if (!is.null(FCheck))
-          return(FCheck)
+        FCheck <- Helper_FileCheck(fileName = fileName, loadFun = ncdfCF::open_ncdf, load = TRUE, verbose = TRUE)
+        if (!is.null(FCheck)) {
+            return(FCheck)
+        }
     }
 
     ## Subsetting parameters =========
     subset <- if (!is.null(extent)) {
-      if (all(extent < 1000))  # Differentiate between lat/lon and Xc/Yc
-        list(lon = extent[1:2], lat = extent[3:4])
-      else
-        list(Xc = extent[1:2], Yc = extent[3:4])
-    } else list()
+        if (all(extent < 1000)) { # Differentiate between lat/lon and Xc/Yc
+            list(lon = extent[1:2], lat = extent[3:4])
+        } else {
+            list(Xc = extent[1:2], Yc = extent[3:4])
+        }
+    } else {
+        list()
+    }
     subset <- c(subset, list(time = c(as.character(Start), as.character(Stop + 86400)))) # Stop date inclusive
 
     ## Download execution =========
@@ -150,7 +156,7 @@ Access_KlimaiNorge2100 <- function(
         )
     })
 
-    MetNo_cf <- Helper_AccessCF(URLs = URLs, variable = FilePrefix,subset = subset)
+    MetNo_cf <- Helper_AccessCF(URLs = URLs, variable = FilePrefix, subset = subset)
 
     ## Exports =================================
     message("###### Data Export & Return")
@@ -164,9 +170,10 @@ Access_KlimaiNorge2100 <- function(
 
     ### Optionally write file and return
     if (is.null(fileName)) {
-      ds <- ncdfCF::create_ncdf()
-      ds$add_variable(MetNo_cf)
-      ds
-    } else
-      MetNo_cf$save(fileName)
+        ds <- ncdfCF::create_ncdf()
+        ds$add_variable(MetNo_cf)
+        ds
+    } else {
+        MetNo_cf$save(fileName)
+    }
 }

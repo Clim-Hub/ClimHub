@@ -10,10 +10,14 @@
 #' @param forWriting Logical, default is `FALSE`. If `TRUE`, the netCDF resource will be opened for writing. This is typically only allowable on netCDF files on a local file system.
 #' @return A `CFDataset` with the data variables, optionally subsetted.
 #'
-#' @author Patrick Van Laake
+#' @author Patrick Van Laake, Erik Kusch
 #' @export
 #' @examples
-#' NC_Read(fileName = system.file("extdata", "KiN_rast.nc", package = "ClimHub"))
+#' FNAME <- system.file("extdata", "KiN_rast.nc", package = "ClimHub")
+#' ## reading data as a whole
+#' NC_Read(fileName = FNAME)
+#' ## subsetting data as it is being read
+#' NC_Read(fileName = FNAME, vars = "T2M", list(X = c(778360.875, 3442360.75), Y = c(-1270477, 3193523)))
 NC_Read <- function(fileName, vars, ..., forWriting = FALSE) {
   ds <- ncdfCF::open_ncdf(resource = fileName, write = forWriting)
   if (inherits(ds, "CFDataset")) {
@@ -21,29 +25,33 @@ NC_Read <- function(fileName, vars, ..., forWriting = FALSE) {
     if (is.list(subs) && length(subs)) subs <- subs[[1L]]
     if (length(subs)) {
       # Subset the variables
-      if (missing(vars))
+      if (missing(vars)) {
         vars <- ds$var_names
+      }
       ds_new <- ncdfCF::create_ncdf()
       lapply(vars, function(v) {
         var <- ds[[v]]$subset(subs)
-        if (inherits(var, "CFVariable"))
+        if (inherits(var, "CFVariable")) {
           ds_new$add_variable(var)
+        }
       })
       return(ds_new)
     } else {
       # Get the full extent of the data variables
-      if (missing(vars))
+      if (missing(vars)) {
         return(ds)
-      else {
+      } else {
         ds_new <- ncdfCF::create_ncdf()
         lapply(vars, function(v) {
           var <- ds[[v]]
-          if (inherits(var, "CFVariable"))
+          if (inherits(var, "CFVariable")) {
             ds_new$add_variable(var)
+          }
         })
         return(ds_new)
       }
     }
-  } else
-    stop("Could not open the netCDF resource")
+  } else {
+    stop(paste("Could not open the netCDF resource:", fileName))
+  }
 }

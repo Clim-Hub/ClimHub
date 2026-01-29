@@ -11,13 +11,23 @@
 #' @return A `CFDataset` with the data variables, optionally subsetted.
 #'
 #' @author Patrick Van Laake, Erik Kusch
-#' @export
+#'
 #' @examples
-#' FNAME <- system.file("extdata", "KiN_rast.nc", package = "ClimHub")
-#' ## reading data as a whole
+#' FNAME <- system.file("extdata", "NORA3.nc", package = "ClimHub")
+#' # Reading entire CFDataset
 #' NC_Read(fileName = FNAME)
-#' ## subsetting data as it is being read
-#' NC_Read(fileName = FNAME, vars = "T2M", list(X = c(778360.875, 3442360.75), Y = c(-1270477, 3193523)))
+#' # Reading just specific variable
+#' NC_Read(fileName = FNAME, vars = "T2M")
+#' # Read while subsetting; this currently fails for some reason
+#' NC_Read(
+#'   fileName = FNAME,
+#'   vars = "T2M",
+#'   list(
+#'     longitude = c(10, 20),
+#'     latitude = c(55, 65)
+#'   )
+#' )
+#' @export
 NC_Read <- function(fileName, vars, ..., forWriting = FALSE) {
   ds <- ncdfCF::open_ncdf(resource = fileName, write = forWriting)
   if (inherits(ds, "CFDataset")) {

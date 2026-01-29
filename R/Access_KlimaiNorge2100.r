@@ -140,6 +140,9 @@ Access_KlimaiNorge2100 <- function(
             list(Xc = extent[1:2], Yc = extent[3:4])
         }
     } else {
+        if (is.null(fileName)) {
+            stop("For now, there persist some errors when saving a file from a NULL extent call with this function. Please either specify no fileName thus keeping the data in memory or specify an extent.")
+        }
         list()
     }
     subset <- c(subset, list(time = c(as.character(Start), as.character(Stop + 86400)))) # Stop date inclusive

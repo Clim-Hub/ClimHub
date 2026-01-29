@@ -6,7 +6,7 @@
 #' @param variable Character. An overview of NORA3 variables can be obtained with `Discovery_Variables(dataSet = "NORA3")`.
 #' @param dateStart Character. "YYYY-MM-DD HH" date at which to start time series of downloaded data. Data is available daily at hours 00, 06, 12, and 18.
 #' @param dateStop Character. "YYYY-MM-DD HH" date at which to stop time series of downloaded data. Data is available daily at hours 00, 06, 12, and 18.
-#' @param extent Optional. The extent to subset the data to, in decimal degrees of longitude and latitude. A numeric vector of length 4 with values minimum and maximum longitude and minimum and maximum latitude, in that order. Defaults to `NULL`, returning full spatial range of data.
+#' @param extent Optional. The extent to subset the data to, in coordinates of the projection or decimal degrees of longitude and latitude. A numeric vector of length 4 with values minimum and maximum X/longitude and minimum and maximum Y/latitude, in that order. Valid ranges for projected X and Y coordinates are `(778360.875, 3442360.75, -1270477, 3193523)`, for longitude/latitude values `(-30.168  85.793  44.025  84.057)`. Defaults to `NULL`, returning full spatial range of data.
 #' @param leadTimeHour Integer. Lead time of reanalysis. NORA3 lead times can be obtained with `Discovery_QuickFacts("NORA3")$leadtime`.
 #' @param fileName Character. A file name for the produced file, including path.
 #' @param compression Optional, integer. Compression level between 1 to 9 applied to final netCDF file. Defaults to NA (no compression applied). Currently not used due to ncdfCF saving scheme.
@@ -123,6 +123,9 @@ Access_NORA3 <- function(
       list(x = extent[1:2], y = extent[3:4])
     }
   } else {
+    if (is.null(fileName)) {
+      stop("For now, there persist some errors when saving a file from a NULL extent call with this function. Please either specify no fileName thus keeping the data in memory or specify an extent.")
+    }
     list()
   }
   subset <- c(subset, list(time = c(as.character(Start), as.character(Stop + 21600)))) # Stop date/hour inclusive

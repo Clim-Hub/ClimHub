@@ -154,7 +154,7 @@ Access_KlimaiNorge2100 <- function(
         paste("https://thredds.met.no/thredds/dodsC/KSS/Klima_i_Norge/utgave2025/DailyTimeSeries", FilePrefix, method,
             FNameInfo[2], # this is the scenario now
             model,
-            paste0(model, "_", FNameInfo[2], "_eqm-", FileString, "_norway_1km_", FilePrefix, "_daily_", FNameInfo[6], ".nc4"),
+            paste0(model, "_", FNameInfo[2], "_", method, "-", FileString, "_norway_1km_", FilePrefix, "_daily_", FNameInfo[6], ".nc4"),
             sep = "/"
         )
     })

@@ -6,46 +6,10 @@ document()
 load_all()
 
 # Subsetted NORA3 file -----------------
-FNAME <- "Test.nc"
 NORA3 <- Access_NORA3(
   variable = "T2M", dateStart = "2001-08-01 00", dateStop = "2001-08-01 21",
   extent = c(0, 30, 50, 75), leadTimeHour = 3,
-  fileName = FNAME
-)
-NC_Read(fileName = FNAME)[["T2M"]]
-NC_Read(
-  fileName = FNAME,
-  vars = "T2M",
-  list(
-    longitude = c(10, 20),
-    latitude = c(55, 65)
-  )
-)
-
-bar <- Access_KlimaiNorge2100(
-  variable = "precipitation_flux",
-  dateStart = "2041-01-01",
-  dateStop = "2060-12-31",
-  extent = c(19.75, 32, 68.25, 71.5),
-  method = "eqm",
-  model = "noresm-r1i1p1f1-hclim",
-  scenario = "ssp370"
-)
-
-
-
-NC_Read(fileName = FNAME, vars = "T2M", list(X = c(778360.875, 3442360.75), Y = c(-1270477, 3193523))
-
-
-
-
-# Read while subsetting
-NC_Read(
-  fileName = FNAME,
-  vars = "T2M",
-  list(
-    time = c("2001-08-01T03:00:00", "2001-08-01T21:00:00")
-  )
+  fileName = file.path(getwd(), "inst/extdata", "NORA3.nc")
 )
 
 # # Make NORA3 raw file ------------------

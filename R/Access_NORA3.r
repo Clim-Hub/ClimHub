@@ -17,7 +17,7 @@
 #' @examples
 #' \dontrun{
 #' NORA3 <- Access_NORA3(
-#'   variable = "TS", # which variable
+#'   variable = "T2M", # which variable
 #'   dateStart = "1961-08-01 00", dateStop = "1961-08-02 18", # time-window
 #'   extent = c(0, 40, 50, 60),
 #'   leadTimeHour = 3,
@@ -105,7 +105,6 @@ Access_NORA3 <- function(
     by = "6 hour"
   )
   Datetimes <- format(DateTimes, "%Y%m%d%H")
-  FNames <- paste0("TEMP_", "fc", Datetimes, "_", stringr::str_pad(leadTimeHour, 3, "left", 0), FilePrefix, ".nc")
 
   ## File Check =========
   if (!is.null(fileName)) {
@@ -132,17 +131,16 @@ Access_NORA3 <- function(
 
   ## Download execution =========
   message("###### Data Download")
-  URLs <- sapply(FNames, FUN = function(FName) {
-    Year <- substr(FName, 8, 11)
-    Month <- substr(FName, 12, 13)
-    Day <- substr(FName, 14, 15)
-    Hour <- substr(FName, 16, 17)
+  URLs <- sapply(Datetimes, FUN = function(Datetime) {
+    Year <- substr(Datetime, 1, 4)
+    Month <- substr(Datetime, 5, 6)
+    Day <- substr(Datetime, 7, 8)
+    Hour <- substr(Datetime, 9, 10)
     paste("https://thredds.met.no/thredds/dodsC/nora3", Year, Month, Day, Hour,
-      gsub(FName, pattern = "TEMP_", replacement = ""),
+      paste0("fc", Datetime, "_", stringr::str_pad(leadTimeHour, 3, "left", 0), FilePrefix, ".nc"),
       sep = "/"
     )
   })
-
   MetNo_cf <- Helper_AccessCF(URLs = URLs, variable = variable, subset = subset)
 
   ## Exports =================================

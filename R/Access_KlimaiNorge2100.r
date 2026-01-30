@@ -115,14 +115,12 @@ Access_KlimaiNorge2100 <- function(
     FileString <- KlimaiNorge2100_df$string[KlimaiNorge2100_df$name == variable]
 
     ## Download preparations =========
-    ## temporary files names, we do this in UTC to avoid daylight savings shenanigans
     DateTimes <- seq(
         from = Start,
         to = Stop,
         by = "1 day"
     )
     Datetimes <- unique(format(DateTimes, "%Y"))
-    FNames <- paste("TEMP", ifelse(Datetimes <= 2020, "hist", scenario), model, FilePrefix, "daily", Datetimes, "v4.nc", sep = "_")
 
     ## File Check =========
     if (!is.null(fileName)) {
@@ -149,16 +147,14 @@ Access_KlimaiNorge2100 <- function(
 
     ## Download execution =========
     message("###### Data Download")
-    URLs <- sapply(FNames, FUN = function(FName) {
-        FNameInfo <- unlist(strsplit(FName, split = "_"))
+    URLs <- sapply(Datetimes, FUN = function(Datetime) {
         paste("https://thredds.met.no/thredds/dodsC/KSS/Klima_i_Norge/utgave2025/DailyTimeSeries", FilePrefix, method,
-            FNameInfo[2], # this is the scenario now
+            ifelse(Datetime <= 2020, "hist", scenario),
             model,
-            paste0(model, "_", FNameInfo[2], "_", method, "-", FileString, "_norway_1km_", FilePrefix, "_daily_", FNameInfo[6], ".nc4"),
+            paste0(model, "_", ifelse(Datetime <= 2020, "hist", scenario), "_", method, "-", FileString, "_norway_1km_", FilePrefix, "_daily_", Datetime, ".nc4"),
             sep = "/"
         )
     })
-
     MetNo_cf <- Helper_AccessCF(URLs = URLs, variable = FilePrefix, subset = subset)
 
     ## Exports =================================

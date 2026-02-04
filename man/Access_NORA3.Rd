@@ -39,7 +39,7 @@ Specifically, this function provides access to the NORA3 files contained within 
 \examples{
 \dontrun{
 NORA3 <- Access_NORA3(
-  variable = "TS", # which variable
+  variable = "T2M", # which variable
   dateStart = "1961-08-01 00", dateStop = "1961-08-02 18", # time-window
   extent = c(0, 40, 50, 60),
   leadTimeHour = 3,

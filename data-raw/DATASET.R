@@ -12,16 +12,13 @@ NORA3 <- Access_NORA3(
   fileName = file.path(getwd(), "inst/extdata", "NORA3.nc")
 )
 
-# # Make NORA3 raw file ------------------
-# NORA3_rast <- Access_NORA3(
-#   variable = "T2M",
-#   dateStart = "1995-01-03 00",
-#   dateStop = "1995-01-03 18",
-#   leadTimeHour = 3,
-#   fileName = file.path(getwd(), "inst/extdata", "NORA3_rast.nc"),
-#   compression = 9
-# )
-# # usethis::use_data(NORA3_rast)
+# Make NORA3 raw file ------------------
+NORA3_rast <- Access_NORA3(
+  variable = "T2M", dateStart = "2001-08-01 00", dateStop = "2001-08-01 00",
+  leadTimeHour = 3,
+  fileName = file.path(getwd(), "inst/extdata", "NORA3_FULL.nc")
+)
+# usethis::use_data(NORA3_rast)
 
 # # Make Klima i Norge raw file ------------------
 # KiN_rast <- Access_KlimaiNorge2100(

@@ -29,13 +29,14 @@ FNAME <- system.file("extdata", "NORA3.nc", package = "ClimHub")
 NC_Read(fileName = FNAME)
 # Reading just specific variable
 NC_Read(fileName = FNAME, vars = "T2M")
-# Read while subsetting; this currently fails for some reason
+# Read while subsetting
 NC_Read(
   fileName = FNAME,
   vars = "T2M",
   list(
     longitude = c(10, 20),
-    latitude = c(55, 65)
+    latitude = c(55, 65),
+    time = "2001-08-01T06:00:00"
   )
 )
 }

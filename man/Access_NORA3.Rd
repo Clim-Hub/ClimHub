@@ -8,12 +8,10 @@ Access_NORA3(
   variable,
   dateStart,
   dateStop,
+  extent = NULL,
   leadTimeHour,
-  cores = 1,
   fileName,
-  compression = NA,
-  removeTemporary = TRUE,
-  writeFile = TRUE
+  compression = NA
 )
 }
 \arguments{
@@ -23,24 +21,16 @@ Access_NORA3(
 
 \item{dateStop}{Character. "YYYY-MM-DD HH" date at which to stop time series of downloaded data. Data is available daily at hours 00, 06, 12, and 18.}
 
-\item{leadTimeHour}{Integer. Lead time of reanalysis. NORA3 leadtimes can be obtained with \code{Discovery_QuickFacts("NORA3")$leadtime}.}
+\item{extent}{Optional. The extent to subset the data to, in coordinates of the projection or decimal degrees of longitude and latitude. A numeric vector of length 4 with values minimum and maximum X/longitude and minimum and maximum Y/latitude, in that order. Valid ranges for projected X and Y coordinates are \verb{(778360.875, 3442360.75, -1270477, 3193523)}, for longitude/latitude values \verb{(-30.168  85.793  44.025  84.057)}. Defaults to \code{NULL}, returning full spatial range of data.}
 
-\item{cores}{Optional, Integer. Number of cores to use for parallel downloads. Default NULL defines no parallelisation.}
+\item{leadTimeHour}{Integer. Lead time of reanalysis. NORA3 lead times can be obtained with \code{Discovery_QuickFacts("NORA3")$leadtime}.}
 
 \item{fileName}{Character. A file name for the produced file, including path.}
 
-\item{compression}{Optional, Integer. Compression level between 1 to 9 applied to final .nc file. Same as compression argument in terra::writeCDF(). Defaults to NA.}
-
-\item{removeTemporary}{Optional, Logical. Whether to delete temporary files after completion. Defaults to TRUE.}
-
-\item{writeFile}{Optional, Logical. Whether to write final SpatRaster to disk as an .nc or to return information from memory. Setting to FALSE will prohibit removal of temporary files. Defaults to TRUE.}
+\item{compression}{Optional, integer. Compression level between 1 to 9 applied to final netCDF file. Defaults to NA (no compression applied). Currently not used due to ncdfCF saving scheme.}
 }
 \value{
-SpatRaster. Contains the downloaded data and metadata attributes that can be retrieved with terra::metags(...):
-\itemize{
-\item \emph{Citation} - A string for in-line citation of the data product
-\item \emph{Call_} - A set of strings matching arguments supplied to the download function call
-}
+A \code{CFDataset} object which contains the downloaded data and relevant metadata attributes. If specified, also writes a netCDF file to disk.
 }
 \description{
 Downloads and processes data from the NORA3 data product hosted through \href{https://thredds.met.no/thredds/projects/nora3.html}{thredds.met.no}.
@@ -49,15 +39,14 @@ Specifically, this function provides access to the NORA3 files contained within 
 \examples{
 \dontrun{
 NORA3 <- Access_NORA3(
-    variable = "TS (Surface temperature)", # which variable
-    dateStart = "1961-08-01 00", dateStop = "1961-08-02 18", # time-window
-    leadTimeHour = 3, cores = 1,
-    fileName = "NORA3.nc", compression = 9, # file storing
-    removeTemporary = TRUE
+  variable = "T2M", # which variable
+  dateStart = "1961-08-01 00", dateStop = "1961-08-02 18", # time-window
+  extent = c(0, 40, 50, 60),
+  leadTimeHour = 3,
+  fileName = "NORA3.nc", compression = 9 # file storing
 )
-unlink("NORA3.nc")
 }
 }
 \author{
-Erik Kusch
+Erik Kusch, Patrick Van Laake
 }

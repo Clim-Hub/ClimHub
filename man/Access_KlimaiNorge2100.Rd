@@ -8,65 +8,60 @@ Access_KlimaiNorge2100(
   variable,
   dateStart,
   dateStop,
+  extent = NULL,
+  method,
   model,
-  scenario = c("rcp45", "rcp85"),
-  cores = 1,
+  scenario,
   fileName,
-  compression = NA,
-  removeTemporary = TRUE,
-  writeFile = TRUE
+  compression = NA
 )
 }
 \arguments{
 \item{variable}{Character. An overview of Klima i Norge variables can be obtained with \code{Discovery_Variables(dataSet = "KlimaiNorge2100")}.}
 
-\item{dateStart}{Character. "YYYY-MM-DD" date at which to start time series of downloaded data. Data is available daily at hourly intervals.}
+\item{dateStart}{Character. "YYYY-MM-DD" date at which to start time series of downloaded data. Data is available at daily resolution starting from \code{1971-01-01}.}
 
-\item{dateStop}{Character. "YYYY-MM-DD" date at which to stop time series of downloaded data. Data is available daily at hourly intervals.}
+\item{dateStop}{Character. "YYYY-MM-DD" date at which to stop time series of downloaded data, inclusive of this date. Data is available at daily resolution up to \code{2100-12-31}.}
+
+\item{extent}{Optional. The extent to subset the data to, in coordinates of the projection or decimal degrees of longitude and latitude. A numeric vector of length 4 with values minimum and maximum X/longitude and minimum and maximum Y/latitude, in that order. Valid ranges for projected X and Y coordinates are \verb{(-74500, 1119500, 6450500, 7999500)}, for longitude/latitude values \verb{(-1.309, 32.515, 57.765, 72.095)}. Defaults to \code{NULL}, returning full spatial range of data.}
+
+\item{method}{Character. An overview of bias-correction methods from which data can be obtained can be obtained with \code{Discovery_QuickFacts("KlimaiNorge2100")$methods}.}
 
 \item{model}{Character. An overview of climate models from which data can be obtained can be obtained with \code{Discovery_QuickFacts("KlimaiNorge2100")$models}.}
 
-\item{scenario}{Character. An overview of climate models from which data can be obtained can be obtained with \code{Discovery_QuickFacts("KlimaiNorge2100")$scenarios}. Note that this choice only affects data post-dating 2005-12-31.}
+\item{scenario}{Character. An overview of climate models from which data can be obtained can be obtained with \code{Discovery_QuickFacts("KlimaiNorge2100")$scenarios}. Note that this choice only affects data post-dating 2020-12-31.}
 
-\item{cores}{Optional, Integer. Number of cores to use for parallel downloads. Default NULL defines no parallelisation.}
+\item{fileName}{Character, optional. A file name for the produced file, including path. If \code{NULL} or missing, a virtual data set will be returned from this function.}
 
-\item{fileName}{Character. A file name for the produced file, including path.}
-
-\item{compression}{Optional, Integer. Compression level between 1 to 9 applied to final .nc file. Same as compression argument in terra::writeCDF(). Defaults to NA.}
-
-\item{removeTemporary}{Optional, Logical. Whether to delete temporary files after completion. Defaults to TRUE.}
-
-\item{writeFile}{Optional, Logical. Whether to write final SpatRaster to disk as an .nc or to return information from memory. Setting to FALSE will prohibit removal of temporary files. Defaults to TRUE.}
+\item{compression}{Optional, integer. Compression level between 1 to 9 applied to final netCDF file. Defaults to NA (no compression applied). Currently not used due to ncdfCF saving scheme.}
 }
 \value{
-SpatRaster. Contains the downloaded data and metadata attributes that can be retrieved with terra::metags(...):
-\itemize{
-\item \emph{Citation} - A string for in-line citation of the data product
-\item \emph{Call_} - A set of strings matching arguments supplied to the download function call
-}
+A \code{CFDataset} object which contains the downloaded data and relevant metadata attributes. If specified, also writes a netCDF file to disk.
 }
 \description{
-Downloads and processes data from the \href{https://www.miljodirektoratet.no/publikasjoner/2015/september-2015/klima-i-norge-2100/}{Klima_i_Norge_2100} data product hosted through \href{https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge_2100/catalog.html}{thredds.met.no}.
+Downloads and processes data from the \href{https://www.met.no/nyhetsarkiv/framtidens-klima-i-norge-flere-oversvommelser-mer-torke-og-mindre-sno/_/attachment/inline/cc1ae8f3-277d-4077-adb9-313e5e28b947:b8073784517edb9392f78c9d82bc5b296db2fc3c/Klima\%20i\%20Norge\%20digital\%20low.pdf}{Klima_i_Norge_2100} data product hosted through \href{https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge/utgave2025/catalog.html}{thredds.met.no}.
 Specifically, this function provides access to the following datasets:
 \enumerate{
-\item \href{https://publikasjoner.nve.no/rapport/2016/rapport2016_59.pdf}{Gridded 1 x 1 km climate and hydrological projections for Norway} data contained within \href{https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge_2100/utgave2015/catalog.html}{utgave 2015}.
+\item Gridded 1 x 1 km climate and hydrological projections for Norway data at daily scales contained within \href{https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge/utgave2025/DailyTimeSeries/catalog.html}{DailyTimeSeries}.
 }
+
+\textbf{Note: not all combinations of variables, models, scenarios, and bias-correction methods are available. If you encounter an error, please first consult whether data is provided for the requested combination at \url{https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge/utgave2025/DailyTimeSeries/catalog.html}. The function is designed to give you informative errors when this happens and you should find the offending URL in your console.}
 }
 \examples{
 \dontrun{
 Access_KlimaiNorge2100(
-    variable = "Maximum Air Temperature",
-    dateStart = "2004-08-01",
-    dateStop = "2006-09-17",
-    model = "CNRM_CCLM",
-    scenario = "rcp85",
-    cores = 1,
+    variable = "mean_air_temperature",
+    dateStart = "2019-08-01",
+    dateStop = "2022-09-17",
+    extent = c(0, 10, 60, 65),
+    method = "eqm",
+    model = "noresm-r1i1p1-remo",
+    scenario = "rcp45",
     fileName = "KlimaiNorge2100.nc",
-    compression = 9,
-    removeTemporary = TRUE
+    compression = 9
 )
 }
 }
 \author{
-Erik Kusch
+Erik Kusch, Patrick Van Laake
 }

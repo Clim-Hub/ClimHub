@@ -2,23 +2,44 @@
 % Please edit documentation in R/NC_Read.r
 \name{NC_Read}
 \alias{NC_Read}
-\title{Read NetCDF files and their metadata}
+\title{Read netCDF files}
 \usage{
-NC_Read(fileName)
+NC_Read(fileName, vars, ..., forWriting = FALSE)
 }
 \arguments{
-\item{fileName}{Character. Filename including directory for reading/writing.}
+\item{fileName}{Character. Fully qualified name of the netCDF resource. This may be on a local file system or on a THREDDS server.}
+
+\item{vars}{Character vector, optional. If supplied, only the indicated data variables are read from the netCDF resource.}
+
+\item{...}{Optional. Arguments for subsetting the data variables. When supplied, these must be of the form \code{axis_name = c(0, 90)}, naming an axis of the data variables and the extreme values of the range to extract. There may be multiple such entries, or they can alternatively be supplied in a named list.}
+
+\item{forWriting}{Logical, default is \code{FALSE}. If \code{TRUE}, the netCDF resource will be opened for writing. This is typically only allowable on netCDF files on a local file system.}
 }
 \value{
-A SpatRaster with metadata
+A \code{CFDataset} with the data variables, optionally subsetted.
 }
 \description{
-Read NetCDF files and their metadata attributes. Metadata from the NetCDF file is read and attached to the returned SpatRaster via \code{terra::metags()}.
+Read netCDF files and their metadata. Specific data variables may be extracted and optionally subsetted over the dimensions of the data variable.
+
+In the returned \code{CFDataset}, the data array of individual data variables need not have been loaded into memory.
 }
 \examples{
-Read_ras <- NC_Read(fileName = system.file("extdata", "KiN_rast.nc", package = "ClimHub"))
-terra::metags(Read_ras)[terra::metags(Read_ras)$name == "Citation", ]
+FNAME <- system.file("extdata", "NORA3.nc", package = "ClimHub")
+# Reading entire CFDataset
+NC_Read(fileName = FNAME)
+# Reading just specific variable
+NC_Read(fileName = FNAME, vars = "T2M")
+# Read while subsetting
+NC_Read(
+  fileName = FNAME,
+  vars = "T2M",
+  list(
+    longitude = c(10, 20),
+    latitude = c(55, 65),
+    time = "2001-08-01T06:00:00"
+  )
+)
 }
 \author{
-Erik Kusch
+Patrick Van Laake, Erik Kusch
 }

@@ -7,7 +7,7 @@
 #' @importFrom jsonlite fromJSON
 #'
 #' @return Throws an error message if user-provided dataSet string is not recognised in metadata library.
-#' 
+#'
 #' @author Erik Kusch
 #'
 #' @seealso \code{\link{Discovery_Library}}, \code{\link{Discovery_Variables}}, \code{\link{Discovery_DOI}}, \code{\link{Discovery_QuickFacts}}.
@@ -38,7 +38,7 @@ Discovery_DataSet.Check <- function(dataSet) {
 #' @importFrom jsonlite fromJSON
 #'
 #' @return List. Contains information of data set, type, variables, resolution, citation, etc.
-#' 
+#'
 #' @author Erik Kusch
 #'
 #' @seealso \code{\link{Discovery_Library}}, \code{\link{Discovery_Variables}}, \code{\link{Discovery_DOI}}, \code{\link{Discovery_QuickFacts}}, \code{\link{Discovery_Citation}}.
@@ -50,12 +50,13 @@ Discovery_DataSet.Check <- function(dataSet) {
 Discovery_Read <- function(dataSet = "NULL") {
     owner <- "Clim-Hub"
     repo <- "ClimHub"
+    branch <- "refs/heads/18-access_-functions-using-thredds-servers" # master
     path <- "product-metadata"
 
     Discovery_DataSet.Check(dataSet)
 
     # URL of the raw JSON file
-    URL <- paste0("https://raw.githubusercontent.com/", owner, "/", repo, "/master/", path, "/", paste0(dataSet, ".json"))
+    URL <- paste0("https://raw.githubusercontent.com/", owner, "/", repo, "/", branch, "/", path, "/", paste0(dataSet, ".json"))
 
     # Read JSON content
     json_data <- jsonlite::fromJSON(URL)

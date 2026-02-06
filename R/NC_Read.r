@@ -1,33 +1,68 @@
-#' @title Read NetCDF files and their metadata
+#' @title Read netCDF files
 #'
-#' @description Read NetCDF files and their metadata attributes. Metadata from the NetCDF file is read and attached to the returned SpatRaster via `terra::metags()`.
+#' @description Read netCDF files and their metadata. Specific data variables may be extracted and optionally subsetted over the dimensions of the data variable.
 #'
-#' @param fileName Character. Filename including directory for reading/writing.
+#' In the returned `CFDataset`, the data array of individual data variables need not have been loaded into memory.
 #'
-#' @importFrom terra rast
-#' @importFrom ncdf4 nc_open
-#' @importFrom ncdf4 ncatt_get
-#' @importFrom ncdf4 nc_close
-#' @importFrom terra metags
+#' @param fileName Character. Fully qualified name of the netCDF resource. This may be on a local file system or on a THREDDS server.
+#' @param vars Character vector, optional. If supplied, only the indicated data variables are read from the netCDF resource.
+#' @param ... Optional. Arguments for subsetting the data variables. When supplied, these must be of the form `axis_name = c(0, 90)`, naming an axis of the data variables and the extreme values of the range to extract. There may be multiple such entries, or they can alternatively be supplied in a named list.
+#' @param forWriting Logical, default is `FALSE`. If `TRUE`, the netCDF resource will be opened for writing. This is typically only allowable on netCDF files on a local file system.
+#' @return A `CFDataset` with the data variables, optionally subsetted.
 #'
-#' @return A SpatRaster with metadata
-#'
-#' @author Erik Kusch
+#' @author Patrick Van Laake, Erik Kusch
 #'
 #' @examples
-#' Read_ras <- NC_Read(fileName = system.file("extdata", "KiN_rast.nc", package = "ClimHub"))
-#' terra::metags(Read_ras)[terra::metags(Read_ras)$name == "Citation", ]
+#' FNAME <- system.file("extdata", "NORA3.nc", package = "ClimHub")
+#' # Reading entire CFDataset
+#' NC_Read(fileName = FNAME)
+#' # Reading just specific variable
+#' NC_Read(fileName = FNAME, vars = "T2M")
+#' # Read while subsetting
+#' NC_Read(
+#'   fileName = FNAME,
+#'   vars = "T2M",
+#'   list(
+#'     longitude = c(10, 20),
+#'     latitude = c(55, 65),
+#'     time = "2001-08-01T06:00:00"
+#'   )
+#' )
 #' @export
-NC_Read <- function(fileName) {
-  ## we need to load the file now (read path from fileName)
-  nc_obj <- rast(fileName)
-  ## Reading metadata and assigning it to returned raster
-  nc_handle <- nc_open(fileName)
-  Meta <- ncdf4::ncatt_get(nc_handle, 0)
-  nc_close(nc_handle)
-  Meta_vec <- unlist(Meta)
-  terra::metags(nc_obj) <- Meta_vec
-
-  ## return object
-  return(nc_obj)
+NC_Read <- function(fileName, vars, ..., forWriting = FALSE) {
+  ds <- ncdfCF::open_ncdf(resource = fileName, write = forWriting)
+  if (inherits(ds, "CFDataset")) {
+    subs <- list(...)
+    if (is.list(subs) && length(subs)) subs <- subs[[1L]]
+    if (length(subs)) {
+      # Subset the variables
+      if (missing(vars)) {
+        vars <- ds$var_names
+      }
+      ds_new <- ncdfCF::create_ncdf()
+      lapply(vars, function(v) {
+        var <- ds[[v]]$subset(subs)
+        if (inherits(var, "CFVariable")) {
+          ds_new$add_variable(var)
+        }
+      })
+      return(ds_new)
+    } else {
+      # Get the full extent of the data variables
+      if (missing(vars)) {
+        return(ds)
+      } else {
+        ds_new <- ncdfCF::create_ncdf()
+        lapply(vars, function(v) {
+          var <- ds[[v]]
+          if (inherits(var, "CFVariable")) {
+            ds_new$add_variable(var)
+          }
+        })
+        return(ds_new)
+      }
+    }
+  } else {
+    stop(paste("Could not open the netCDF resource:", fileName))
+  }
 }

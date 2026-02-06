@@ -1,28 +1,43 @@
 {
   "name": "Klima i Norge 2100",
-  "url": "https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge_2100/utgave2015/catalog.html",
+  "url": "https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge/utgave2025/DailyTimeSeries/catalog.html",
   "license": "CC-BY-4.0 and NLOD 2.0",
   "citation": "Klima i Norge 2100 Data from The Norwegian Meteorological Institute (MET Norway)",
-  "doi": "",
-  "issn": "",
-  "isbn": "978-82-410-1512-0",
+  "doi": "10.21343/0k90-6w67",
+  "issn": "2704-1018",
+  "isbn": "",
   "access_method": "Direct Download",
-  "access_function": "Download.KlimaiNorge2100",
+  "access_function": "Access_KlimaiNorge2100",
+  "methods": [
+    "eqm", // Empirical Quantile Mapping
+    "3dbc-eqm" // 3-Dimensional Bias-Correction
+  ],
   "scenarios": [
-    "rcp85",
-    "rcp45"
+    "ssp370",
+    "rcp45",
+    "rcp26"
   ],
   "models": [
-    "CNRM_CCLM",
-    "CNRM_RCA",
-    "EC-EARTH_CCLM",
-    "EC-EARTH_HIRHAM",
-    "EC-EARTH_RACMO",
-    "EC-EARTH_RCA",
-    "HADGEM_RCA",
-    "IPSL_RCA",
-    "MPI_CCLM",
-    "MPI_RCA"
+    "noresm-r1i1p1f1-hclim",
+    "noresm-r1i1p1-remo",
+    "noresm-r1i1p1-rca",
+    "mpi-r2i1p1-remo",
+    "mpi-r1i1p1f1-racmo",
+    "mpi-r1i1p1f1-icon",
+    "mpi-r1i1p1f1-hclim",
+    "mpi-r1i1p1-cclm",
+    "miroc-r1i1p1f1-icon",
+    "hadgem-r1i1p1-remo",
+    "hadgem-r1i1p1-rca",
+    "ecearthveg-r1i1p1f1-hclim",
+    "ecearthveg-r1i1p1f1-cclm",
+    "ecearth-r3i1p1-hirham",
+    "ecearth-r1i1p1f1-racmo",
+    "ecearth-r12i1p1-rca",
+    "ecearth-r12i1p1-cclm",
+    "cnrm-r1i1p1f2-racmo",
+    "cnrm-r1i1p1f2-hclim",
+    "cnrm-r1i1p1-aladin"
   ],
   "time": {
     "extent": [
@@ -34,10 +49,10 @@
   },
   "space": {
     "extent": [
-      -1.3264,
-      32.5377,
-      57.7604,
-      72.0981
+      -1.309,
+      32.515,
+      57.765,
+      72.095
     ],
     "resolution": 0.0154,
     "unit": "°",
@@ -45,52 +60,108 @@
   },
   "variables": [
     {
-      "name": "Maximum Air Temperature",
+      "name": "minimum_air_temperature",
+      "longname": "bias-adjusted daily minimum near-surface air temperature",
       "unit": "K",
-      "prefix": "TX",
-      "issues": ""
+      "issue": "",
+      "datafile": "tasmin",
+      "string": "sn2018v2005_rawbc"
     },
     {
-      "name": "Minimum Air Temperature",
+      "name": "maximum_air_temperature",
+      "longname": "bias-adjusted daily maximum near-surface air temperature",
       "unit": "K",
-      "prefix": "TN",
-      "issues": ""
+      "issue": "",
+      "datafile": "tasmax",
+      "string": "sn2018v2005_rawbc"
     },
     {
-      "name": "Mean Air Temperature",
+      "name": "mean_air_temperature",
+      "longname": "bias-adjusted daily mean near-surface air temperature",
       "unit": "K",
-      "prefix": "TM",
-      "issues": "Values recorded *10"
+      "issue": "",
+      "datafile": "tas",
+      "string": "sn2018v2005_rawbc"
     },
     {
-      "name": "Snow Water Equivalent",
-      "unit": "kg/m^2",
-      "prefix": "SWE",
-      "issues": ""
+      "name": "surface_total_snow_amount",
+      "longname": "daily mean snow water equivalent",
+      "unit": "kg m-2",
+      "issue": "",
+      "datafile": "swe",
+      "string": "estobs_disthbv"
     },
     {
-      "name": "Soil Moisture Deficit",
-      "unit": "kg/m^2",
-      "prefix": "SMD",
-      "issues": "Values recorded *10"
+      "name": "wind_speed",
+      "longname": "bias-adjusted daily mean near-surface wind speed",
+      "unit": "m s-1",
+      "issue": "",
+      "datafile": "sfcWind",
+      "string": "klinogrid1612_rawbc"
     },
     {
-      "name": "Runoff",
-      "unit": "kg/m^2",
-      "prefix": "RUN",
-      "issues": "Values recorded *10"
+      "name": "surface_downwelling_shortwave_flux_in_air",
+      "longname": "bias-adjusted daily mean surface downwelling shortwave radiation",
+      "unit": "W m-2",
+      "issue": "",
+      "datafile": "rsds",
+      "string": "hysn2018v2005era5_rawbc"
     },
     {
-      "name": "Precipitation",
-      "unit": "kg/m^2",
-      "prefix": "RR",
-      "issues": "Values recorded *10"
+      "name": "surface_downwelling_longwave_flux_in_air",
+      "longname": "bias-adjusted daily mean surface downwelling longwave radiation",
+      "unit": "W m-2",
+      "issue": "",
+      "datafile": "rlds",
+      "string": "hysn2018v2005era5_rawbc"
     },
     {
-      "name": "Groundwater",
-      "unit": "kg/m^2",
-      "prefix": "GRW",
-      "issues": ""
+      "name": "surface_air_pressure",
+      "longname": "bias-adjusted daily mean surface air pressure",
+      "unit": "Pa",
+      "issue": "",
+      "datafile": "ps",
+      "string": "hysn2018v2005era5_rawbc"
+    },
+    {
+      "name": "precipitation_flux",
+      "longname": "bias-adjusted daily mean precipitation",
+      "unit": "kg m-2 s-1",
+      "issue": "",
+      "datafile": "pr",
+      "string": "sn2018v2005_rawbc"
+    },
+    {
+      "name": "mass_content_of_water_in_soil",
+      "longname": "daily mean soil moisture content",
+      "unit": "kg m-2",
+      "issue": "",
+      "datafile": "mrso",
+      "string": "estobs_disthbv"
+    },
+    {
+      "name": "runoff_flux",
+      "longname": "daily mean runoff",
+      "unit": "kg m-2 s-1",
+      "issue": "",
+      "datafile": "mrro",
+      "string": "estobs_disthbv"
+    },
+    {
+      "name": "relative_humidity",
+      "longname": "bias-adjusted daily mean near-surface relative humidity",
+      "unit": "%",
+      "issue": "",
+      "datafile": "hurs",
+      "string": "hysn2018v2005era5_rawbc"
+    },
+    {
+      "name": "water_evapotranspiration_flux",
+      "longname": "daily mean evapotranspiration",
+      "unit": "kg m-2 s-1",
+      "issue": "",
+      "datafile": "evap",
+      "string": "estobs_disthbv"
     }
   ]
 }

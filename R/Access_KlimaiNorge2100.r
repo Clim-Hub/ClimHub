@@ -1,68 +1,65 @@
 #' @title Download Klima i Norge 2100 data from the Norwegian Meteorological Institute
 #'
-#' @description Downloads and processes data from the \href{https://www.miljodirektoratet.no/publikasjoner/2015/september-2015/klima-i-norge-2100/}{Klima_i_Norge_2100} data product hosted through \href{https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge_2100/catalog.html}{thredds.met.no}. 
+#' @description Downloads and processes data from the \href{https://www.met.no/nyhetsarkiv/framtidens-klima-i-norge-flere-oversvommelser-mer-torke-og-mindre-sno/_/attachment/inline/cc1ae8f3-277d-4077-adb9-313e5e28b947:b8073784517edb9392f78c9d82bc5b296db2fc3c/Klima%20i%20Norge%20digital%20low.pdf}{Klima_i_Norge_2100} data product hosted through \href{https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge/utgave2025/catalog.html}{thredds.met.no}.
 #' Specifically, this function provides access to the following datasets:
-#'  1. \href{https://publikasjoner.nve.no/rapport/2016/rapport2016_59.pdf}{Gridded 1 x 1 km climate and hydrological projections for Norway} data contained within \href{https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge_2100/utgave2015/catalog.html}{utgave 2015}.
+#'  1. Gridded 1 x 1 km climate and hydrological projections for Norway data at daily scales contained within \href{https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge/utgave2025/DailyTimeSeries/catalog.html}{DailyTimeSeries}.
+#'
+#' \textbf{Note: not all combinations of variables, models, scenarios, and bias-correction methods are available. If you encounter an error, please first consult whether data is provided for the requested combination at \url{https://thredds.met.no/thredds/catalog/KSS/Klima_i_Norge/utgave2025/DailyTimeSeries/catalog.html}. The function is designed to give you informative errors when this happens and you should find the offending URL in your console.}
 #'
 #' @param variable Character. An overview of Klima i Norge variables can be obtained with `Discovery_Variables(dataSet = "KlimaiNorge2100")`.
-#' @param dateStart Character. "YYYY-MM-DD" date at which to start time series of downloaded data. Data is available daily at hourly intervals.
-#' @param dateStop Character. "YYYY-MM-DD" date at which to stop time series of downloaded data. Data is available daily at hourly intervals.
+#' @param dateStart Character. "YYYY-MM-DD" date at which to start time series of downloaded data. Data is available at daily resolution starting from `1971-01-01`.
+#' @param dateStop Character. "YYYY-MM-DD" date at which to stop time series of downloaded data, inclusive of this date. Data is available at daily resolution up to `2100-12-31`.
+#' @param extent Optional. The extent to subset the data to, in coordinates of the projection or decimal degrees of longitude and latitude. A numeric vector of length 4 with values minimum and maximum X/longitude and minimum and maximum Y/latitude, in that order. Valid ranges for projected X and Y coordinates are `(-74500, 1119500, 6450500, 7999500)`, for longitude/latitude values `(-1.309, 32.515, 57.765, 72.095)`. Defaults to `NULL`, returning full spatial range of data.
+#' @param method Character. An overview of bias-correction methods from which data can be obtained can be obtained with `Discovery_QuickFacts("KlimaiNorge2100")$methods`.
 #' @param model Character. An overview of climate models from which data can be obtained can be obtained with `Discovery_QuickFacts("KlimaiNorge2100")$models`.
-#' @param scenario Character. An overview of climate models from which data can be obtained can be obtained with `Discovery_QuickFacts("KlimaiNorge2100")$scenarios`. Note that this choice only affects data post-dating 2005-12-31.
-#' @param cores Optional, Integer. Number of cores to use for parallel downloads. Default NULL defines no parallelisation.
-#' @param fileName Character. A file name for the produced file, including path.
-#' @param compression Optional, Integer. Compression level between 1 to 9 applied to final .nc file. Same as compression argument in terra::writeCDF(). Defaults to NA.
-#' @param removeTemporary Optional, Logical. Whether to delete temporary files after completion. Defaults to TRUE.
-#' @param writeFile Optional, Logical. Whether to write final SpatRaster to disk as an .nc or to return information from memory. Setting to FALSE will prohibit removal of temporary files. Defaults to TRUE.
+#' @param scenario Character. An overview of climate models from which data can be obtained can be obtained with `Discovery_QuickFacts("KlimaiNorge2100")$scenarios`. Note that this choice only affects data post-dating 2020-12-31.
+#' @param fileName Character, optional. A file name for the produced file, including path. If `NULL` or missing, a virtual data set will be returned from this function.
+#' @param compression Optional, integer. Compression level between 1 to 9 applied to final netCDF file. Defaults to NA (no compression applied). Currently not used due to ncdfCF saving scheme.
+#' @return A `CFDataset` object which contains the downloaded data and relevant metadata attributes. If specified, also writes a netCDF file to disk.
 #'
-#' @importFrom tools file_path_sans_ext
-#' @importFrom terra metags
-#' @importFrom terra time
-#'
-#' @return SpatRaster. Contains the downloaded data and metadata attributes that can be retrieved with terra::metags(...):
-#'  - *Citation* - A string for in-line citation of the data product
-#'  - *Call_* - A set of strings matching arguments supplied to the download function call
-#'
-#' @author Erik Kusch
+#' @author Erik Kusch, Patrick Van Laake
 #'
 #' @examples
 #' \dontrun{
 #' Access_KlimaiNorge2100(
-#'     variable = "Maximum Air Temperature",
-#'     dateStart = "2004-08-01",
-#'     dateStop = "2006-09-17",
-#'     model = "CNRM_CCLM",
-#'     scenario = "rcp85",
-#'     cores = 1,
+#'     variable = "mean_air_temperature",
+#'     dateStart = "2019-08-01",
+#'     dateStop = "2022-09-17",
+#'     extent = c(0, 10, 60, 65),
+#'     method = "eqm",
+#'     model = "noresm-r1i1p1-remo",
+#'     scenario = "rcp45",
 #'     fileName = "KlimaiNorge2100.nc",
-#'     compression = 9,
-#'     removeTemporary = TRUE
+#'     compression = 9
 #' )
 #' }
 #' @export
 Access_KlimaiNorge2100 <- function(
     variable, # which variable
     dateStart, dateStop, # time-window
+    extent = NULL,
+    method,
     model,
-    scenario = c("rcp45", "rcp85"), # Klima i Norge 2100 specific arguments
-    cores = 1,
-    fileName, compression = NA, # file storing
-    removeTemporary = TRUE,
-    writeFile = TRUE) {
+    scenario,
+    fileName, compression = NA # file storing
+    ) {
     ## Input Checks ============
     message("###### Checking Request Validity")
 
     ### fileName
     if (missing(fileName)) {
-        stop("Please specify a filename.")
+        fileName <- NULL
     }
-    fileName <- normalizePath(fileName, mustWork = FALSE)
+    if (!is.null(fileName)) {
+        fileName <- normalizePath(fileName, mustWork = FALSE)
+    }
 
     ### time-window exceeded, we do this in UTC to avoid daylight savings shenanigans
-    Start <- as.POSIXct(paste0(dateStart, ":00:00"), tz = "UTC")
-    Stop <- as.POSIXct(paste0(dateStop, ":00:00"), tz = "UTC")
+    Start <- as.POSIXct(paste0(dateStart, "T00:00:00"), tz = "UTC")
+    Stop <- as.POSIXct(paste0(dateStop, "T00:00:00"), tz = "UTC")
 
     ### actual checks
+    QuickFacts_ls <- Discovery_QuickFacts("KlimaiNorge2100")
     InCheck_ls <- list(
         Variable = list(
             Input = variable,
@@ -71,100 +68,111 @@ Access_KlimaiNorge2100 <- function(
         ),
         Time = list(
             Input = c(Start, Stop),
-            Allowed = Discovery_QuickFacts("KlimaiNorge2100")$time$extent,
+            Allowed = QuickFacts_ls$time$extent,
             Operator = "exceeds"
+        ),
+        Methods = list(
+            Input = method,
+            Allowed = QuickFacts_ls$methods,
+            Operator = "in"
         ),
         Models = list(
             Input = model,
-            Allowed = Discovery_QuickFacts("KlimaiNorge2100")$models,
+            Allowed = QuickFacts_ls$models,
             Operator = "in"
         ),
         Scenarios = list(
             Input = scenario,
-            Allowed = Discovery_QuickFacts("KlimaiNorge2100")$scenarios,
+            Allowed = QuickFacts_ls$scenarios,
             Operator = "in"
         )
     )
-    Helper_InputChecker(inputCheck = InCheck_ls)
 
-    ## Metadata
-    Citation <- paste0("Klima i Norge 2100 (ISBN:", Discovery_QuickFacts(dataSet = "KlimaiNorge2100")$isbn, ") data provided by the The Norwegian Meteorological institute obtained on ", Sys.Date())
-    names(Citation) <- "Citation"
-    callargs <- mget(names(formals()), sys.frame(sys.nframe()))
-    callargs[sapply(callargs, is.null)] <- "NULL"
-    callargs[sapply(callargs, class) == "name"] <- ""
-    names(callargs) <- paste("Call", names(callargs), sep = "_")
-    Meta_vec <- c(Citation, unlist(callargs))
+    # Commenting this out so you can also subset on Xc/Yc coordinates
+    # if (exists("extent")) {
+    #     InCheck_ls <- c(
+    #         InCheck_ls,
+    #         list(
+    #             Extent_Longitude = list(
+    #                 Input = extent[1:2],
+    #                 Allowed = QuickFacts_ls$space$extent[1:2],
+    #                 Operator = "exceeds"
+    #             ),
+    #             Extent_Latitude = list(
+    #                 Input = extent[3:4],
+    #                 Allowed = QuickFacts_ls$space$extent[3:4],
+    #                 Operator = "exceeds"
+    #             )
+    #         )
+    #     )
+    # }
+
+    Helper_InputChecker(inputCheck = InCheck_ls)
 
     ## Data files & extraction varnames =========
     KlimaiNorge2100_df <- Discovery_Variables("KlimaiNorge2100")
-    FilePrefix <- KlimaiNorge2100_df$prefix[variable == KlimaiNorge2100_df$name]
-    Unit <- KlimaiNorge2100_df$unit[variable == KlimaiNorge2100_df$name]
+    FilePrefix <- KlimaiNorge2100_df$datafile[KlimaiNorge2100_df$name == variable]
+    FileString <- KlimaiNorge2100_df$string[KlimaiNorge2100_df$name == variable]
 
     ## Download preparations =========
-    ## temporary files names, we do this in UTC to avoid daylight savings shenanigans
-    TimeAssing <- Datetimes <- seq(
+    DateTimes <- seq(
         from = Start,
         to = Stop,
         by = "1 day"
     )
-    Datetimes <- unique(format(Datetimes, "%Y"))
-    FNames <- paste("TEMP", ifelse(Datetimes < 2006, "hist", scenario), model, FilePrefix, "daily", Datetimes, "v4.nc", sep = "_")
+    Datetimes <- unique(format(DateTimes, "%Y"))
 
     ## File Check =========
-    FCheck <- Helper_FileCheck(fileName = fileName, loadFun = NC_Read, load = TRUE, verbose = TRUE)
-    if (!is.null(FCheck)) {
-        terra::time(FCheck) <- TimeAssing
-        return(FCheck)
+    if (!is.null(fileName)) {
+        FCheck <- Helper_FileCheck(fileName = fileName, loadFun = ncdfCF::open_ncdf, load = TRUE, verbose = TRUE)
+        if (!is.null(FCheck)) {
+            return(FCheck)
+        }
     }
+
+    ## Subsetting parameters =========
+    subset <- if (!is.null(extent)) {
+        if (all(extent < 1000)) { # Differentiate between lat/lon and Xc/Yc
+            list(lon = extent[1:2], lat = extent[3:4])
+        } else {
+            list(Xc = extent[1:2], Yc = extent[3:4])
+        }
+    } else {
+        if (is.null(fileName)) {
+            stop("For now, there persist some errors when saving a file from a NULL extent call with this function. Please either specify no fileName thus keeping the data in memory or specify an extent.")
+        }
+        list()
+    }
+    subset <- c(subset, list(time = c(as.character(Start), as.character(Stop + 86400)))) # Stop date inclusive
 
     ## Download execution =========
     message("###### Data Download")
-    URLS <- sapply(FNames, FUN = function(FName) {
-        FNameInfo <- unlist(strsplit(FName, split = "_"))
-        paste("https://thredds.met.no/thredds/fileServer/KSS/Klima_i_Norge_2100/utgave2015", FilePrefix, model, FNameInfo[2],
-            gsub(FName, pattern = "TEMP_", replacement = ""),
+    URLs <- sapply(Datetimes, FUN = function(Datetime) {
+        paste("https://thredds.met.no/thredds/dodsC/KSS/Klima_i_Norge/utgave2025/DailyTimeSeries", FilePrefix, method,
+            ifelse(Datetime <= 2020, "hist", scenario),
+            model,
+            paste0(model, "_", ifelse(Datetime <= 2020, "hist", scenario), "_", method, "-", FileString, "_norway_1km_", FilePrefix, "_daily_", Datetime, ".nc4"),
             sep = "/"
         )
     })
-    FilestoLoad <- Helper_DirectDownload(url = URLS, fileName = FNames, cores = cores, verbose = TRUE)
-
-    ## Loading Data =================================
-    message("###### Loading Downloaded Data from Disk")
-    MetNo_rast <- Helper_LoadFiles(fileName = FilestoLoad)
-
-    ## Time-Window Extraction =================================
-    message("###### Extracting Requested Time-Period")
-    TimeLyr <- which(
-        as.POSIXct(time(MetNo_rast), tz = "UTC") >= Start &
-            as.POSIXct(time(MetNo_rast), tz = "UTC") <= Stop
-    )
-    MetNo_rast <- MetNo_rast[[TimeLyr]]
+    MetNo_cf <- Helper_AccessCF(URLs = URLs, variable = FilePrefix, subset = subset)
 
     ## Exports =================================
     message("###### Data Export & Return")
 
-    ### Assign additional information
-    terra::time(MetNo_rast) <- TimeAssing
-    terra::metags(MetNo_rast) <- Meta_vec
+    ## Metadata
+    callargs <- paste0("ClimHub::", paste(deparse(match.call()), collapse = ", "))
+    Citation <- paste0("Klima i Norge (DOI:", Discovery_DOI(dataSet = "KlimaiNorge2100"), ") data provided by the The Norwegian Meteorological institute obtained on ", Sys.Date())
+    MetNo_cf$set_attribute("source", "NC_CHAR", Citation)
+    MetNo_cf$set_attribute("comment", "NC_CHAR", paste("Created on", Sys.time(), "with the Access_KlimaiNorge2100() function from ClimHub version", packageVersion("ClimHub")))
+    MetNo_cf$set_attribute("provenance", "NC_CHAR", callargs)
 
-    ### write file
-    if (writeFile) {
-        NC_Write(
-            spatRaster = MetNo_rast, fileName = fileName,
-            varName = variable,
-            longName = gsub(pattern = " ", replacement = "_", tolower(variable)),
-            unit = Unit,
-            meta = Meta_vec, compression = compression
-        )
-        MetNo_rast <- NC_Read(fileName = fileName)
+    ### Optionally write file and return
+    if (is.null(fileName)) {
+        ds <- ncdfCF::create_ncdf()
+        ds$add_variable(MetNo_cf)
+        ds
+    } else {
+        MetNo_cf$save(fileName)
     }
-
-    ### unlink temporary files
-    if (removeTemporary & writeFile) {
-        unlink(FNames)
-    }
-
-    ### return object
-    return(MetNo_rast)
 }

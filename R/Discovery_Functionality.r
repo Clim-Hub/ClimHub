@@ -50,7 +50,7 @@ Discovery_DataSet.Check <- function(dataSet) {
 Discovery_Read <- function(dataSet = "NULL") {
     owner <- "Clim-Hub"
     repo <- "ClimHub"
-    branch <- "refs/heads/18-access_-functions-using-thredds-servers" # master
+    branch <- "master"
     path <- "product-metadata"
 
     Discovery_DataSet.Check(dataSet)

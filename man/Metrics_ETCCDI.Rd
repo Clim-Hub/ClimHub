@@ -4,28 +4,25 @@
 \alias{Metrics_ETCCDI}
 \title{Calculate ETCCDI Indices from List Input}
 \usage{
-Metrics_ETCCDI(ls)
+Metrics_ETCCDI(projectionList)
 }
 \arguments{
-\item{ls}{Optional, list. List of SpatRasters. Names of elements must be "TX" and "TN", holding maximum and minimum daily air temperature respectively.}
+\item{projectionList}{List. List of \code{CFVariable} objects. Names of elements must be "TX", "TN", and "RR", holding maximum and minimum daily air temperature and daily total precipitation, respectively. Note that these data must be recorded in "K", "K", and "mm", respectively.}
 }
 \value{
-A named list of SpatRasters with each element corresponding to an ETCCDI.
+A named list of \code{CFVariable} objects with each element corresponding to an ETCCDI.
 }
 \description{
-This function calculates \href{https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/jgrd.50203}{ETCCDIs} from a named list of SpatRaster objects. Currently, only the first four ETCCDI are supported.
+This function calculates \href{https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/jgrd.50203}{ETCCDIs} from a named list of CFVariable objects. Currently, only some ETCCDI are supported.
 }
 \examples{
 \dontrun{
-TX_rast <- terra::rast("inst/extdata/Jotunheimen_TX.nc") # terra::rast(system.file("extdata", "Jotunheimen_TX.nc", package = "ClimHub"))
-TN_rast <- terra::rast("inst/extdata/Jotunheimen_TN.nc")
-RR_rast <- terra::rast("inst/extdata/Jotunheimen_RR.nc")
-terra::units(RR_rast) <- "mm"
-# BASEPeriod_rast <- terra::rast("inst/extdata/Jotunheimen_BASEPeriod.nc")
+TX_CF <- NC_Read("inst/extdata/KiN_tx_2050.nc")[["tasmax"]]
+TN_CF <- NC_Read("inst/extdata/KiN_tn_2050.nc")[["tasmin"]]
+RR_CF <- NC_Read("inst/extdata/KiN_prc_2050.nc")[["pr"]] * 86400 # to get from mm/day to kg m-2 s-1
+RR_CF$set_attribute("units", "NC_CHAR", "mm")
 
-Metrics_ETCCDI(ls = list(TX = TX_rast, TN = TN_rast, RR = RR_rast
-# , BASEPeriod = BASEPeriod_rast)
-)
+Metrics_ETCCDI(projectionList = list(TX = TX_CF, TN = TN_CF, RR = RR_CF))
 }
 
 }

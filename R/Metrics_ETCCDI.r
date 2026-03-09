@@ -3,6 +3,7 @@
 #' @description This function calculates \href{https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/jgrd.50203}{ETCCDIs} from a named list of CFVariable objects. Currently, only some ETCCDI are supported.
 #'
 #' @param projectionList List. List of `CFVariable` objects. Names of elements must be "TX", "TN", and "RR", holding maximum and minimum daily air temperature and daily total precipitation, respectively. Note that these data must be recorded in "K", "K", and "mm", respectively.
+#' @param TResolution Character. Temporal resolution for calculation of ETCCDI. Supports "year" (default), "month" and "season".
 #'
 #' @return A named list of `CFVariable` objects with each element corresponding to an ETCCDI.
 #'
@@ -15,11 +16,13 @@
 #' RR_CF <- NC_Read("inst/extdata/KiN_prc_2050.nc")[["pr"]] * 86400 # to get from mm/day to kg m-2 s-1
 #' RR_CF$set_attribute("units", "NC_CHAR", "mm")
 #'
-#' Metrics_ETCCDI(projectionList = list(TX = TX_CF, TN = TN_CF, RR = RR_CF))
+#' Metrics_ETCCDI(projectionList = list(TX = TX_CF, TN = TN_CF, RR = RR_CF), TResolution = "year")
+#' Metrics_ETCCDI(projectionList = list(TX = TX_CF, TN = TN_CF, RR = RR_CF), TResolution = "month")
+#' Metrics_ETCCDI(projectionList = list(TX = TX_CF, TN = TN_CF, RR = RR_CF), TResolution = "season")
 #' }
 #'
 #' @export
-Metrics_ETCCDI <- function(projectionList) {
+Metrics_ETCCDI <- function(projectionList, TResolution = "year") {
     ## get list contents
     list2env(projectionList, env = environment())
 
@@ -63,7 +66,8 @@ Metrics_ETCCDI <- function(projectionList) {
         operator = "<",
         threshold = 273.15,
         returnValues = FALSE,
-        returnSummary = sum
+        returnSummary = sum,
+        returnTResolution = TResolution
     )
 
     ### Summer Days; Number of summer days: Annual count of days when TX (daily maximum temperature) > 25°C.
@@ -73,7 +77,8 @@ Metrics_ETCCDI <- function(projectionList) {
         operator = ">",
         threshold = 273.15 + 25,
         returnValues = FALSE,
-        returnSummary = sum
+        returnSummary = sum,
+        returnTResolution = TResolution
     )
 
     ### Icing Days; Number of icing days: Annual count of days when TX (daily maximum temperature) < 0°C.
@@ -83,7 +88,8 @@ Metrics_ETCCDI <- function(projectionList) {
         operator = "<",
         threshold = 273.15,
         returnValues = FALSE,
-        returnSummary = sum
+        returnSummary = sum,
+        returnTResolution = TResolution
     )
 
     ### Tropical Nights; Number of tropical nights: Annual count of days when TN (daily minimum temperature) > 20°C.
@@ -93,7 +99,8 @@ Metrics_ETCCDI <- function(projectionList) {
         operator = ">",
         threshold = 273.15 + 20,
         returnValues = FALSE,
-        returnSummary = sum
+        returnSummary = sum,
+        returnTResolution = TResolution
     )
 
     ### GSL - Growing Season Length: Count the number of days between the first occurrence of at least 6 consecutive days with (TN+TX)/2 > 5°C and the first occurrence after 1st July (Northern Hemisphere) or 1st January (Southern Hemisphere) of at least 6 consecutive days with (TN+TX)/2 < 5°C
@@ -102,20 +109,35 @@ Metrics_ETCCDI <- function(projectionList) {
 
     ### TXx - Monthly Max of Daily Max Temp: Maximum daily maximum temperature in each month.
     message("===== TXx - Monthly Max of Daily Max Temp =====")
-    print("Not implemented yet")
-    # TXx_rast <- Temporal_Aggregation(spatRaster = ls$TX, tResolution = "month", tStep = 1, fun = max)
+    TXx <- TX$summarise(
+        "Tresholded",
+        max,
+        "month"
+    )
 
     ### TNx - Monthly Max of Daily Min Temp: Maximum daily minimum temperature in each month.
     message("===== TNx - Monthly Max of Daily Min Temp =====")
-    print("Not implemented yet")
+    TNx <- TN$summarise(
+        "Tresholded",
+        max,
+        "month"
+    )
 
     ### TXn - Monthly Min of Daily Max Temp: Minimum daily maximum temperature in each month.
     message("===== TXn - Monthly Min of Daily Max Temp =====")
-    print("Not implemented yet")
+    TXn <- TX$summarise(
+        "Tresholded",
+        min,
+        "month"
+    )
 
     ### TNn - Monthly Min of Daily Min Temp: Minimum daily minimum temperature in each month.
     message("===== TNn - Monthly Min of Daily Min Temp =====")
-    print("Not implemented yet")
+    TNn <- TN$summarise(
+        "Tresholded",
+        min,
+        "month"
+    )
 
     ### TN10p - Percent Days TN < 10th Percentile: Percent of days, per year, where TN < 10th percentile of base period.
     message("===== TN10p - Percent Days TN < 10th Percentile =====")
@@ -143,7 +165,12 @@ Metrics_ETCCDI <- function(projectionList) {
 
     ### DTR - Daily Temperature Range: Monthly mean difference between daily max (TX) and min (TN) temperatures.
     message("===== DTR - Daily Temperature Range =====")
-    print("Not implemented yet")
+    TR <- TX - TN # create daily range
+    DTR <- TR$summarise(
+        "Tresholded",
+        mean,
+        "month"
+    )
 
     ### Rx1day - Max 1-day Precipitation per Month: Maximum precipitation in a single day each month.
     message("===== Rx1day - Max 1-day Precipitation per Month =====")
@@ -160,7 +187,8 @@ Metrics_ETCCDI <- function(projectionList) {
         operator = ">=",
         threshold = 1,
         returnValues = TRUE,
-        returnSummary = mean
+        returnSummary = mean,
+        returnTResolution = TResolution
     )
 
     ### R10mm - Days with Precip ≥ 10mm: Annual count of days with precipitation ≥ 10mm.
@@ -170,7 +198,8 @@ Metrics_ETCCDI <- function(projectionList) {
         operator = ">=",
         threshold = 10,
         returnValues = FALSE,
-        returnSummary = sum
+        returnSummary = sum,
+        returnTResolution = TResolution
     )
 
     ### R20mm - Days with Precip ≥ 20mm: Annual count of days with precipitation ≥ 20mm.
@@ -180,7 +209,8 @@ Metrics_ETCCDI <- function(projectionList) {
         operator = ">=",
         threshold = 20,
         returnValues = FALSE,
-        returnSummary = sum
+        returnSummary = sum,
+        returnTResolution = TResolution
     )
 
     ### Rnnmm - Days with Precip ≥ user-defined threshold: Annual count of days with precipitation ≥ nnmm.
@@ -210,7 +240,8 @@ Metrics_ETCCDI <- function(projectionList) {
         operator = ">=",
         threshold = 1,
         returnValues = TRUE,
-        returnSummary = sum
+        returnSummary = sum,
+        returnTResolution = TResolution
     )
 
     ## return

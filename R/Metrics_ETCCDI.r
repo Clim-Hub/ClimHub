@@ -4,6 +4,7 @@
 #'
 #' @param projectionList List. List of `CFVariable` objects. Names of elements must be "TX", "TN", and "RR", holding maximum and minimum daily air temperature and daily total precipitation, respectively. Note that these data must be recorded in "K", "K", and "mm", respectively.
 #' @param TResolution Character. Temporal resolution for calculation of ETCCDI. Supports "year" (default), "month" and "season".
+#' @param RRThreshold Numeric. Custom threshold for daily precipiation in mm for calculation of Rnnmm. Defaults to 42.
 #'
 #' @return A named list of `CFVariable` objects with each element corresponding to an ETCCDI.
 #'
@@ -22,7 +23,7 @@
 #' }
 #'
 #' @export
-Metrics_ETCCDI <- function(projectionList, TResolution = "year") {
+Metrics_ETCCDI <- function(projectionList, TResolution = "year", RRThreshold = 42) {
     ## get list contents
     list2env(projectionList, env = environment())
 
@@ -174,7 +175,11 @@ Metrics_ETCCDI <- function(projectionList, TResolution = "year") {
 
     ### Rx1day - Max 1-day Precipitation per Month: Maximum precipitation in a single day each month.
     message("===== Rx1day - Max 1-day Precipitation per Month =====")
-    print("Not implemented yet")
+    Rx1day <- RR$summarise(
+        "Tresholded",
+        max,
+        "month"
+    )
 
     ### Rx5day - Max 5-day Precipitation per Month: Maximum precipitation over any 5 consecutive days in each month.
     message("===== Rx5day - Max 5-day Precipitation per Month =====")
@@ -215,7 +220,14 @@ Metrics_ETCCDI <- function(projectionList, TResolution = "year") {
 
     ### Rnnmm - Days with Precip ≥ user-defined threshold: Annual count of days with precipitation ≥ nnmm.
     message("===== Rnnmm - Days with Precip ≥ user-defined threshold =====")
-    print("Not implemented yet")
+    Rnnmm <- Helper_Threshold(
+        RR,
+        operator = ">=",
+        threshold = RRThreshold,
+        returnValues = FALSE,
+        returnSummary = sum,
+        returnTResolution = TResolution
+    )
 
     ### CDD - Consecutive Dry Days: Maximum number of consecutive days with RR < 1mm.
     message("===== CDD - Consecutive Dry Days =====")
@@ -251,29 +263,30 @@ Metrics_ETCCDI <- function(projectionList, TResolution = "year") {
         SU = SU,
         ID = ID,
         TR = TR,
+        # GSL = GSL,
+        TXx = TXx,
+        TNx = TNx,
+        TXn = TXn,
+        TNn = TNn,
+        # TN10p = TN10p,
+        # TX10p = TX10p,
+        # TN90p = TN90p,
+        # TX90p = TX90p,
+        # WSDI = WSDI,
+        # CSDI = CSDI,
+        DTR = DTR,
+        Rx1day = Rx1day,
+        # Rx5day = Rx5day,
         SDII = SDII,
         R10 = R10mm,
         R20 = R20mm,
+        Rnnmm = Rnnmm,
+        # CDD = CDD,
+        # CWD = CWD,
+        # R95pTOT = R95pTOT,
+        # R99pTOT = R99pTOT,
         RCPTOT = RCPTOT
     )
-
-    # ### Ascribing proper Names and Dates
-    # VarNames_ls <- list(
-    #     FD = list("FD", "Number of frost days"),
-    #     SU = list("SU", "Number of summer days"),
-    #     ID = list("ID", "Number of icing days"),
-    #     TR = list("TR", "Number of tropical nights"),
-    #     R10 = list("R10", "Days with Precip ≥ 10mm"),
-    #     R20 = list("R20", "Days with Precip ≥ 20mm")
-    # )
-
-    # Return_ls <- lapply(1:length(Return_ls), FUN = function(Iter) {
-    #     terra::varnames(Return_ls[[Iter]]) <- VarNames_ls[[Iter]][[1]]
-    #     terra::longnames(Return_ls[[Iter]]) <- VarNames_ls[[Iter]][[2]]
-    #     terra::time(Return_ls[[Iter]]) <- Dates
-    #     Return_ls[[Iter]]
-    # })
-    # names(Return_ls) <- names(VarNames_ls)
 
     return(Return_ls)
 }

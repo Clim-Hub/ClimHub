@@ -4,12 +4,14 @@
 \alias{Metrics_ETCCDI}
 \title{Calculate ETCCDI Indices from List Input}
 \usage{
-Metrics_ETCCDI(projectionList, TResolution = "year")
+Metrics_ETCCDI(projectionList, TResolution = "year", RRThreshold = 42)
 }
 \arguments{
 \item{projectionList}{List. List of \code{CFVariable} objects. Names of elements must be "TX", "TN", and "RR", holding maximum and minimum daily air temperature and daily total precipitation, respectively. Note that these data must be recorded in "K", "K", and "mm", respectively.}
 
 \item{TResolution}{Character. Temporal resolution for calculation of ETCCDI. Supports "year" (default), "month" and "season".}
+
+\item{RRThreshold}{Numeric. Custom threshold for daily precipiation in mm for calculation of Rnnmm. Defaults to 42.}
 }
 \value{
 A named list of \code{CFVariable} objects with each element corresponding to an ETCCDI.

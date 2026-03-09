@@ -50,7 +50,7 @@ Discovery_DataSet.Check <- function(dataSet) {
 Discovery_Read <- function(dataSet = "NULL") {
     owner <- "Clim-Hub"
     repo <- "ClimHub"
-    branch <- "refs/heads/18-access_-functions-using-thredds-servers" # master
+    branch <- "master"
     path <- "product-metadata"
 
     Discovery_DataSet.Check(dataSet)
@@ -147,7 +147,7 @@ Discovery_Library <- function() {
         jsonlite::fromJSON(simplifyVector = FALSE) # Parse JSON metadata
 
     # Navigate to the relevant "tree" section
-    tree_items <- raw_metadata$payload$tree$items
+    tree_items <- raw_metadata$payload$codeViewFileTreeLayoutRoute$fileTree$`product-metadata`$items
 
     # make into vector of names of files
     tree_items <- unlist(lapply(tree_items, "[[", "name"))

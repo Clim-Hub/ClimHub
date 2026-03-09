@@ -38,7 +38,7 @@ Helper_Threshold <- function(CFVariable, operator, threshold, returnValues = FAL
     Thresh_CF <- eval(parse(text = expr))
 
     if (returnValues) {
-        Thresh_CF <- Data_CF / Thresh_CF
+        Thresh_CF <- CFVariable / Thresh_CF
     }
 
     ## return summary

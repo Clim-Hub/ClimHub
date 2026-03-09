@@ -2,45 +2,49 @@
 % Please edit documentation in R/Helper_Threshold.r
 \name{Helper_Threshold}
 \alias{Helper_Threshold}
-\title{Apply tresholding to raster layers}
+\title{Apply tresholding to CFVariable contents}
 \usage{
 Helper_Threshold(
-  spatRaster,
+  CFVariable,
   operator,
   threshold,
   returnValues = FALSE,
-  verbose = TRUE
+  returnSummary = sum,
+  returnTResolution = "year"
 )
 }
 \arguments{
-\item{spatRaster}{A SpatRaster within which thresholding should be applied}
+\item{CFVariable}{A CFVariable within which thresholding should be applied}
 
-\item{operator}{Character. One of ">", "<", ">=", "<=", "==", "!=" to evaluate spatRaster cells against threshold value.}
+\item{operator}{Character. One of ">", "<", ">=", "<=", "==", "!=" to evaluate CFVariable cells against threshold value.}
 
-\item{threshold}{Numeric or Character. threshold to evaluate spatRaster cells against using operator value.}
+\item{threshold}{Numeric or Character. threshold to evaluate CFVariable cells against using operator value.}
 
-\item{returnValues}{Logical. Whether to return spatRaster of values matching thresholding (TRUE) or only logical raster indicating where thresholding is matched (FALSE).}
+\item{returnValues}{Logical. Whether to return CFVariable of values matching thresholding (TRUE) or only logical raster indicating where thresholding is matched (FALSE).}
 
-\item{verbose}{Logical. If progress should be displayed in the console.}
+\item{returnSummary}{Function. Summary function for tresholded CFVariable.}
+
+\item{returnTResolution}{Character. Temporal resolution of summary of tresholded CFVariable.}
 }
 \value{
-A SpatRaster.
+A CFVariable.
 }
 \description{
-Loops over layers in a SpatRaster object and evaluates threshold criteria defined by user.
+Evaluates threshold criteria defined by user against a CFVariable and reports summaries through the \verb{$summarise} method of \code{ncdfCF}.
 }
 \examples{
-Data_rast <- terra::rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))[[1:31]]
+Data_CF <- NC_Read("inst/extdata/KiN_tas.nc")[["tas"]]
 Helper_Threshold(
-    spatRaster = Data_rast,
+    CFVariable = Data_CF,
     operator = "<",
-    threshold = 2650
+    threshold = 273.15
 )
 Helper_Threshold(
-    spatRaster = Data_rast,
+    CFVariable = Data_CF,
     operator = "<",
-    threshold = 2650,
-    returnValues = TRUE
+    threshold = 273.15,
+    returnValues = TRUE,
+    returnSummary = mean
 )
 }
 \author{

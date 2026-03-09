@@ -1,56 +1,50 @@
-#' @title Apply tresholding to raster layers
+#' @title Apply tresholding to CFVariable contents
 #'
-#' @description Loops over layers in a SpatRaster object and evaluates threshold criteria defined by user.
+#' @description Evaluates threshold criteria defined by user against a CFVariable and reports summaries through the `$summarise` method of `ncdfCF`.
 #'
-#' @param spatRaster A SpatRaster within which thresholding should be applied
-#' @param operator Character. One of ">", "<", ">=", "<=", "==", "!=" to evaluate spatRaster cells against threshold value.
-#' @param threshold Numeric or Character. threshold to evaluate spatRaster cells against using operator value.
-#' @param returnValues Logical. Whether to return spatRaster of values matching thresholding (TRUE) or only logical raster indicating where thresholding is matched (FALSE).
-#' @param verbose Logical. If progress should be displayed in the console.
+#' @param CFVariable A CFVariable within which thresholding should be applied
+#' @param operator Character. One of ">", "<", ">=", "<=", "==", "!=" to evaluate CFVariable cells against threshold value.
+#' @param threshold Numeric or Character. threshold to evaluate CFVariable cells against using operator value.
+#' @param returnValues Logical. Whether to return CFVariable of values matching thresholding (TRUE) or only logical raster indicating where thresholding is matched (FALSE).
+#' @param returnSummary Function. Summary function for tresholded CFVariable.
+#' @param returnTResolution Character. Temporal resolution of summary of tresholded CFVariable.
 #'
-#' @importFrom terra nlyr
+#' @return A CFVariable.
 #'
-#' @return A SpatRaster.
-#' 
 #' @author Erik Kusch
 #'
 #' @examples
-#' Data_rast <- terra::rast(system.file("extdata", "KiN_rast.nc", package = "ClimHub"))[[1:31]]
+#' Data_CF <- NC_Read("inst/extdata/KiN_tas.nc")[["tas"]]
 #' Helper_Threshold(
-#'     spatRaster = Data_rast,
+#'     CFVariable = Data_CF,
 #'     operator = "<",
-#'     threshold = 2650
+#'     threshold = 273.15
 #' )
 #' Helper_Threshold(
-#'     spatRaster = Data_rast,
+#'     CFVariable = Data_CF,
 #'     operator = "<",
-#'     threshold = 2650,
-#'     returnValues = TRUE
+#'     threshold = 273.15,
+#'     returnValues = TRUE,
+#'     returnSummary = mean
 #' )
-Helper_Threshold <- function(spatRaster, operator, threshold, returnValues = FALSE, verbose = TRUE) {
+Helper_Threshold <- function(CFVariable, operator, threshold, returnValues = FALSE, returnSummary = sum, returnTResolution = "year") {
     ## input check, needs rwriting to Helper.InputChecker
     if (!operator %in% c(">", "<", ">=", "<=", "==", "!=")) {
         stop("operator must be one of: '>', '<', '>=', '<=', '==', '!='")
     }
 
-    ## progress bar
-    pb <- Helper_Progress(iterLength = nlyr(spatRaster), text = "Applying Thresholding")
+    ## apply thresholding
+    expr <- paste0("CFVariable ", operator, " ", threshold)
+    Thresh_CF <- eval(parse(text = expr))
 
-    ## going layer by layer to avoid error reported in https://github.com/rspatial/terra/issues/1556
-    ThresholdedLayers_ls <- lapply(1:nlyr(spatRaster), FUN = function(Iter) {
-        expr <- paste0("spatRaster[[Iter]] ", operator, " ", threshold)
-        ret_rast <- eval(parse(text = expr))
-        if (verbose) {
-            pb$tick(tokens = list(layer = Iter))
-        }
-        if (returnValues) {
-            ret_rast2 <- spatRaster[[Iter]]
-            ret_rast2[!ret_rast] <- NA
-            ret_rast <- ret_rast2
-        }
-        ret_rast
-    })
+    if (returnValues) {
+        Thresh_CF <- Data_CF / Thresh_CF
+    }
 
-    ## return fused layers as SpatRaster
-    do.call(c, ThresholdedLayers_ls)
+    ## return summary
+    Thresh_CF$summarise(
+        "Tresholded",
+        function(x) returnSummary(x[is.finite(x)]),
+        returnTResolution
+    )
 }

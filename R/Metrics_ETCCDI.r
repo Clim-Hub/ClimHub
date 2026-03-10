@@ -24,6 +24,27 @@
 #'
 #' @export
 Metrics_ETCCDI <- function(projectionList, TResolution = "year", RRThreshold = 42) {
+    ## summary functions
+    ### count maximum run of 1s (value 1 represents a value exceeding a given threshold supplied to and evaluated by Helper_Threshold)
+    max_run_of_ones <- function(x) {
+        x[is.na(x)] <- 0 # convert NAs to 0s as NAs break the computation
+        if (length(x) == 0) {
+            return(NA_real_)
+        }
+        r <- rle(x == 1) # run‑length encode logical test
+        if (any(r$values)) { # any runs of 1
+            max(r$lengths[r$values])
+        } else {
+            0
+        } # length of longest TRUE run
+    }
+
+    ## regular functions ignoring NAs
+    sum_non_na <- function(x) sum(x, na.rm = TRUE)
+    mean_non_na <- function(x) mean(x, na.rm = TRUE)
+    max_non_na <- function(x) max(x, na.rm = TRUE)
+    min_non_na <- function(x) min(x, na.rm = TRUE)
+
     ## get list contents
     list2env(projectionList, env = environment())
 
@@ -55,10 +76,6 @@ Metrics_ETCCDI <- function(projectionList, TResolution = "year", RRThreshold = 4
     # stop("Add extra checks")
     # stop("do quantile calculations for percentile based ETCCDI")
 
-    ## split into years
-    # AnnualRasters_ls <- lapply(ls, Helper_TimeSplit, tResolution = "Year")
-    # Dates <- as.POSIXct(paste0(unique(names(AnnualRasters_ls[[1]])), "-01-01"), tz = "UTC") ## merging lists into SpatRaster does not like numeric names of list elements
-
     ## ETCCDI
     ### Frost Days; Number of frost days: Annual count of days when TN (daily minimum temperature) < 0°C.
     message("===== FD - Number of frost days =====")
@@ -67,7 +84,7 @@ Metrics_ETCCDI <- function(projectionList, TResolution = "year", RRThreshold = 4
         operator = "<",
         threshold = 273.15,
         returnValues = FALSE,
-        returnSummary = sum,
+        returnSummary = sum_non_na,
         returnTResolution = TResolution
     )
 
@@ -78,7 +95,7 @@ Metrics_ETCCDI <- function(projectionList, TResolution = "year", RRThreshold = 4
         operator = ">",
         threshold = 273.15 + 25,
         returnValues = FALSE,
-        returnSummary = sum,
+        returnSummary = sum_non_na,
         returnTResolution = TResolution
     )
 
@@ -89,7 +106,7 @@ Metrics_ETCCDI <- function(projectionList, TResolution = "year", RRThreshold = 4
         operator = "<",
         threshold = 273.15,
         returnValues = FALSE,
-        returnSummary = sum,
+        returnSummary = sum_non_na,
         returnTResolution = TResolution
     )
 
@@ -100,7 +117,7 @@ Metrics_ETCCDI <- function(projectionList, TResolution = "year", RRThreshold = 4
         operator = ">",
         threshold = 273.15 + 20,
         returnValues = FALSE,
-        returnSummary = sum,
+        returnSummary = sum_non_na,
         returnTResolution = TResolution
     )
 
@@ -112,32 +129,32 @@ Metrics_ETCCDI <- function(projectionList, TResolution = "year", RRThreshold = 4
     message("===== TXx - Monthly Max of Daily Max Temp =====")
     TXx <- TX$summarise(
         "Tresholded",
-        max,
-        "month"
+        max_non_na,
+        TResolution
     )
 
     ### TNx - Monthly Max of Daily Min Temp: Maximum daily minimum temperature in each month.
     message("===== TNx - Monthly Max of Daily Min Temp =====")
     TNx <- TN$summarise(
         "Tresholded",
-        max,
-        "month"
+        max_non_na,
+        TResolution
     )
 
     ### TXn - Monthly Min of Daily Max Temp: Minimum daily maximum temperature in each month.
     message("===== TXn - Monthly Min of Daily Max Temp =====")
     TXn <- TX$summarise(
         "Tresholded",
-        min,
-        "month"
+        min_non_na,
+        TResolution
     )
 
     ### TNn - Monthly Min of Daily Min Temp: Minimum daily minimum temperature in each month.
     message("===== TNn - Monthly Min of Daily Min Temp =====")
     TNn <- TN$summarise(
         "Tresholded",
-        min,
-        "month"
+        min_non_na,
+        TResolution
     )
 
     ### TN10p - Percent Days TN < 10th Percentile: Percent of days, per year, where TN < 10th percentile of base period.
@@ -158,6 +175,7 @@ Metrics_ETCCDI <- function(projectionList, TResolution = "year", RRThreshold = 4
 
     ### WSDI - Warm Spell Duration Index: Annual count of days with 6+ consecutive days when TX > 90th percentile of base period.
     message("===== WSDI - Warm Spell Duration Index =====")
+    # TX_array <- TX$raw()
     print("Not implemented yet")
 
     ### CSDI - Cold Spell Duration Index: Annual count of days with 6+ consecutive days when TN < 10th percentile of base period.
@@ -169,21 +187,23 @@ Metrics_ETCCDI <- function(projectionList, TResolution = "year", RRThreshold = 4
     TR <- TX - TN # create daily range
     DTR <- TR$summarise(
         "Tresholded",
-        mean,
-        "month"
+        mean_non_na,
+        TResolution
     )
 
     ### Rx1day - Max 1-day Precipitation per Month: Maximum precipitation in a single day each month.
     message("===== Rx1day - Max 1-day Precipitation per Month =====")
     Rx1day <- RR$summarise(
         "Tresholded",
-        max,
-        "month"
+        max_non_na,
+        TResolution
     )
 
     ### Rx5day - Max 5-day Precipitation per Month: Maximum precipitation over any 5 consecutive days in each month.
     message("===== Rx5day - Max 5-day Precipitation per Month =====")
     print("Not implemented yet")
+    RR_array <- RR$raw()
+
 
     ### SDII - Simple Precipitation Intensity Index: Mean precipitation amount on wet days (RR ≥ 1mm).
     message("===== SDII - Simple Precipitation Intensity Index =====")
@@ -192,7 +212,7 @@ Metrics_ETCCDI <- function(projectionList, TResolution = "year", RRThreshold = 4
         operator = ">=",
         threshold = 1,
         returnValues = TRUE,
-        returnSummary = mean,
+        returnSummary = mean_non_na,
         returnTResolution = TResolution
     )
 
@@ -203,7 +223,7 @@ Metrics_ETCCDI <- function(projectionList, TResolution = "year", RRThreshold = 4
         operator = ">=",
         threshold = 10,
         returnValues = FALSE,
-        returnSummary = sum,
+        returnSummary = sum_non_na,
         returnTResolution = TResolution
     )
 
@@ -214,7 +234,7 @@ Metrics_ETCCDI <- function(projectionList, TResolution = "year", RRThreshold = 4
         operator = ">=",
         threshold = 20,
         returnValues = FALSE,
-        returnSummary = sum,
+        returnSummary = sum_non_na,
         returnTResolution = TResolution
     )
 
@@ -225,17 +245,31 @@ Metrics_ETCCDI <- function(projectionList, TResolution = "year", RRThreshold = 4
         operator = ">=",
         threshold = RRThreshold,
         returnValues = FALSE,
-        returnSummary = sum,
+        returnSummary = sum_non_na,
         returnTResolution = TResolution
     )
 
     ### CDD - Consecutive Dry Days: Maximum number of consecutive days with RR < 1mm.
     message("===== CDD - Consecutive Dry Days =====")
-    print("Not implemented yet")
+    CDD <- Helper_Threshold(
+        RR,
+        operator = "<",
+        threshold = 1,
+        returnValues = FALSE,
+        returnSummary = max_run_of_ones,
+        returnTResolution = TResolution
+    )
 
     ### CWD - Consecutive Wet Days: Maximum number of consecutive days with RR ≥ 1mm.
     message("===== CWD - Consecutive Wet Days =====")
-    print("Not implemented yet")
+    CWD <- Helper_Threshold(
+        RR,
+        operator = ">=",
+        threshold = 1,
+        returnValues = FALSE,
+        returnSummary = max_run_of_ones,
+        returnTResolution = TResolution
+    )
 
     ### R95pTOT - Annual Precip from RR > 95th Percentile: Total precipitation from wet days (RR > 95th percentile of base period).
     message("===== R95pTOT - Annual Precip from RR > 95th Percentile =====")
@@ -252,7 +286,7 @@ Metrics_ETCCDI <- function(projectionList, TResolution = "year", RRThreshold = 4
         operator = ">=",
         threshold = 1,
         returnValues = TRUE,
-        returnSummary = sum,
+        returnSummary = sum_non_na,
         returnTResolution = TResolution
     )
 
@@ -281,8 +315,8 @@ Metrics_ETCCDI <- function(projectionList, TResolution = "year", RRThreshold = 4
         R10 = R10mm,
         R20 = R20mm,
         Rnnmm = Rnnmm,
-        # CDD = CDD,
-        # CWD = CWD,
+        CDD = CDD,
+        CWD = CWD,
         # R95pTOT = R95pTOT,
         # R99pTOT = R99pTOT,
         RCPTOT = RCPTOT

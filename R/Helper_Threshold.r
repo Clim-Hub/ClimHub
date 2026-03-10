@@ -42,9 +42,13 @@ Helper_Threshold <- function(CFVariable, operator, threshold, returnValues = FAL
     }
 
     ## return summary
+    # when thresholding creates Inf values (e.g. dividing by the logical mask) we want to treat them as missing rather than drop them silently.
     Thresh_CF$summarise(
         "Tresholded",
-        function(x) returnSummary(x[is.finite(x)]),
+        function(x) {
+            x[!is.finite(x)] <- NA_real_
+            returnSummary(x)
+        },
         returnTResolution
     )
 }

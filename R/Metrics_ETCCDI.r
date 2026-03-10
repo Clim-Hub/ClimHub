@@ -39,6 +39,20 @@ Metrics_ETCCDI <- function(projectionList, TResolution = "year", RRThreshold = 4
         } # length of longest TRUE run
     }
 
+    ### compute maximum of 5 day intervals
+    max_sum_over_5 <- function(x) {
+        x[is.na(x)] <- 0 # keep the NA‑to‑0 convention if you like
+        n <- length(x)
+        if (n < 5) {
+            return(NA_real_)
+        }
+        best <- -Inf
+        for (i in seq_len(n - 5 + 1)) {
+            best <- max(best, sum(x[i:(i + 4)], na.rm = TRUE))
+        }
+        best
+    }
+
     ## regular functions ignoring NAs
     sum_non_na <- function(x) sum(x, na.rm = TRUE)
     mean_non_na <- function(x) mean(x, na.rm = TRUE)
@@ -202,8 +216,11 @@ Metrics_ETCCDI <- function(projectionList, TResolution = "year", RRThreshold = 4
     ### Rx5day - Max 5-day Precipitation per Month: Maximum precipitation over any 5 consecutive days in each month.
     message("===== Rx5day - Max 5-day Precipitation per Month =====")
     print("Not implemented yet")
-    RR_array <- RR$raw()
-
+    Rx5day <- RR$summarise(
+        "Tresholded",
+        max_sum_over_5,
+        TResolution
+    )
 
     ### SDII - Simple Precipitation Intensity Index: Mean precipitation amount on wet days (RR ≥ 1mm).
     message("===== SDII - Simple Precipitation Intensity Index =====")
@@ -310,7 +327,7 @@ Metrics_ETCCDI <- function(projectionList, TResolution = "year", RRThreshold = 4
         # CSDI = CSDI,
         DTR = DTR,
         Rx1day = Rx1day,
-        # Rx5day = Rx5day,
+        Rx5day = Rx5day,
         SDII = SDII,
         R10 = R10mm,
         R20 = R20mm,

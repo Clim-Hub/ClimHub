@@ -1,36 +1,70 @@
 # Load Package ------------------
-setwd("C:/Users/erikkus/OneDrive - CICERO senter for klimaforskning/Documents/31569 - ClimHub/CLIMHUB_GitHub")
-
-document()
-# build()
-load_all()
+# document()
+# # build()
+# load_all()
 
 # Subsetted NORA3 file -----------------
 NORA3 <- Access_NORA3(
-  variable = "T2M", dateStart = "2001-08-01 00", dateStop = "2001-08-01 21",
-  extent = c(0, 30, 50, 75), leadTimeHour = 3,
-  fileName = file.path(getwd(), "inst/extdata", "NORA3.nc")
+  variable = "T2M", dateStart = "2001-08-01 00", dateStop = "2001-08-31 21",
+  extent = c(20, 30, 55, 65), leadTimeHour = 3,
+  fileName = file.path(getwd(), "inst/extdata", "NORA3_SubSet.nc")
 )
 
 # Make NORA3 raw file ------------------
 NORA3_rast <- Access_NORA3(
   variable = "T2M", dateStart = "2001-08-01 00", dateStop = "2001-08-01 00",
   leadTimeHour = 3,
-  fileName = file.path(getwd(), "inst/extdata", "NORA3_FULL.nc")
+  fileName = file.path(getwd(), "inst/extdata", "NORA3.nc")
 )
-# usethis::use_data(NORA3_rast)
 
-# # Make Klima i Norge raw file ------------------
-# KiN_rast <- Access_KlimaiNorge2100(
-#   variable = "mean_air_temperature",
-#   dateStart = "1995-01-01",
-#   dateStop = "1995-01-10",
-#   model = "noresm-r1i1p1f1-hclim",
-#   method = "eqm",
-#   scenario = "ssp370",
-#   fileName = file.path(getwd(), "inst/extdata", "KiN_rast.nc")
-# )
+# Make Klima i Norge files ------------------
+vars <- c("mean_air_temperature", "minimum_air_temperature", "maximum_air_temperature", "precipitation_flux")
+names(vars) <- c("tas", "tn", "tx", "pr")
 
+for (i in seq_along(vars)) {
+  print(as.character(vars[i]))
+  ## these need to be made into quantiles to define base-period for ETCCDI calculation
+  KiN_Base <- Access_KlimaiNorge2100(
+    variable = as.character(vars[i]),
+    dateStart = "1971-01-01", # note that the standard base period starts 1961, but KiN does start in 1971
+    dateStop = "1990-12-31",
+    extent = c(9, 11, 59, 61),
+    model = "noresm-r1i1p1f1-hclim",
+    method = "eqm",
+    scenario = "ssp370",
+    fileName = file.path(getwd(), "inst/extdata", paste0("KiN_", names(vars)[i], ".nc"))
+  )
+
+  ## these are the files for calculation of ETCCDI metrics in future
+  KiN_2050 <- Access_KlimaiNorge2100(
+    variable = as.character(vars[i]),
+    dateStart = "2050-01-01",
+    dateStop = "2059-12-31",
+    extent = c(9, 11, 59, 61),
+    model = "noresm-r1i1p1f1-hclim",
+    method = "eqm",
+    scenario = "ssp370",
+    fileName = file.path(getwd(), "inst/extdata", paste0("KiN_", names(vars)[i], "_2050.nc"))
+  )
+
+  QuantF <- file.path(getwd(), "inst/extdata", paste0("KiN_", names(vars)[i], "_BaseLineQuantiles.nc"))
+  if(!file.exists(QuantF)){
+    if(names(vars)[i] == "pr"){
+      probs_vec <- c(0.95, 0.99)
+    }else{
+      probs_vec  <- c(0.1, 0.9)
+    }
+    Quant <- Metrics_BootstrapQuantiles(
+      CFVariable = KiN_Base[[names(vars)[i]]], 
+      probs = probs_vec, 
+      bootstrapWindow = 5
+    )
+    Quant$save(QuantF)
+  }else{
+    Quant <- NC_Read(QuantF)
+  }
+  
+}
 
 # # Jotunheimen boundary as spatialfeatureobject ------------------
 # Jotunheimen_sf <- sf::st_read("data-raw/Shape/Shape-polygon.shp")

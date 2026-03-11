@@ -14,7 +14,7 @@
 #' \dontrun{
 #' TX_CF <- NC_Read("inst/extdata/KiN_tx_2050.nc")[["tasmax"]]
 #' TN_CF <- NC_Read("inst/extdata/KiN_tn_2050.nc")[["tasmin"]]
-#' RR_CF <- NC_Read("inst/extdata/KiN_prc_2050.nc")[["pr"]] * 86400 # to get from mm/day to kg m-2 s-1
+#' RR_CF <- NC_Read("inst/extdata/KiN_pr_2050.nc")[["pr"]] * 86400 # to get from mm/day to kg m-2 s-1
 #' RR_CF$set_attribute("units", "NC_CHAR", "mm")
 #'
 #' Metrics_ETCCDI(projectionList = list(TX = TX_CF, TN = TN_CF, RR = RR_CF), TResolution = "year")
@@ -34,6 +34,20 @@ Metrics_ETCCDI <- function(projectionList, TResolution = "year", RRThreshold = 4
         r <- rle(x == 1) # run‑length encode logical test
         if (any(r$values)) { # any runs of 1
             max(r$lengths[r$values])
+        } else {
+            0
+        } # length of longest TRUE run
+    }
+
+    ### sum number of days in runs exceeding certain threshold of length
+    sum_run_of_ones <- function(x, thresh = 6) {
+        x[is.na(x)] <- 0 # convert NAs to 0s as NAs break the computation
+        if (length(x) == 0) {
+            return(NA_real_)
+        }
+        r <- rle(x == 1) # run‑length encode logical test
+        if (any(r$values)) { # any runs of 1
+            sum(r$lengths[r$values][r$lengths[r$values] > 6])
         } else {
             0
         } # length of longest TRUE run
@@ -138,6 +152,7 @@ Metrics_ETCCDI <- function(projectionList, TResolution = "year", RRThreshold = 4
     ### GSL - Growing Season Length: Count the number of days between the first occurrence of at least 6 consecutive days with (TN+TX)/2 > 5°C and the first occurrence after 1st July (Northern Hemisphere) or 1st January (Southern Hemisphere) of at least 6 consecutive days with (TN+TX)/2 < 5°C
     message("===== GSL - Growing Season Length =====")
     print("Not implemented yet")
+    # TM <- (TN+TX)/2
 
     ### TXx - Monthly Max of Daily Max Temp: Maximum daily maximum temperature in each month.
     message("===== TXx - Monthly Max of Daily Max Temp =====")
@@ -173,28 +188,43 @@ Metrics_ETCCDI <- function(projectionList, TResolution = "year", RRThreshold = 4
 
     ### TN10p - Percent Days TN < 10th Percentile: Percent of days, per year, where TN < 10th percentile of base period.
     message("===== TN10p - Percent Days TN < 10th Percentile =====")
-    print("Not implemented yet")
+    print("needs masking by percentiles")
 
     ### TX10p - Percent Days TX < 10th Percentile: Percent of days, per year, where TX < 10th percentile of base period.
     message("===== TX10p - Percent Days TX < 10th Percentile =====")
-    print("Not implemented yet")
+    print("needs masking by percentiles")
 
     ### TN90p - Percent Days TN > 90th Percentile: Percent of days, per year, where TN > 90th percentile of base period.
     message("===== TN90p - Percent Days TN > 90th Percentile =====")
-    print("Not implemented yet")
+    print("needs masking by percentiles")
 
     ### TX90p - Percent Days TX > 90th Percentile: Percent of days, per year, where TX > 90th percentile of base period.
     message("===== TX90p - Percent Days TX > 90th Percentile =====")
-    print("Not implemented yet")
+    print("needs masking by percentiles")
 
     ### WSDI - Warm Spell Duration Index: Annual count of days with 6+ consecutive days when TX > 90th percentile of base period.
     message("===== WSDI - Warm Spell Duration Index =====")
-    # TX_array <- TX$raw()
-    print("Not implemented yet")
+    print("needs masking by percentiles")
+    # WSDI <- Helper_Threshold(
+    #     TX,
+    #     operator = ">",
+    #     threshold = 1,
+    #     returnValues = TRUE,
+    #     returnSummary = sum_run_of_ones,
+    #     returnTResolution = TResolution
+    # )
 
     ### CSDI - Cold Spell Duration Index: Annual count of days with 6+ consecutive days when TN < 10th percentile of base period.
     message("===== CSDI - Cold Spell Duration Index =====")
-    print("Not implemented yet")
+    print("needs masking by percentiles")
+    # CSDI <- Helper_Threshold(
+    #     TN,
+    #     operator = "<",
+    #     threshold = 1,
+    #     returnValues = TRUE,
+    #     returnSummary = sum_run_of_ones,
+    #     returnTResolution = TResolution
+    # )
 
     ### DTR - Daily Temperature Range: Monthly mean difference between daily max (TX) and min (TN) temperatures.
     message("===== DTR - Daily Temperature Range =====")
@@ -290,11 +320,11 @@ Metrics_ETCCDI <- function(projectionList, TResolution = "year", RRThreshold = 4
 
     ### R95pTOT - Annual Precip from RR > 95th Percentile: Total precipitation from wet days (RR > 95th percentile of base period).
     message("===== R95pTOT - Annual Precip from RR > 95th Percentile =====")
-    print("Not implemented yet")
+    print("needs masking by percentiles")
 
     ### R99pTOT - Annual Precip from RR > 99th Percentile: Total precipitation from wet days (RR > 99th percentile of base period).
     message("===== R99pTOT - Annual Precip from RR > 99th Percentile =====")
-    print("Not implemented yet")
+    print("needs masking by percentiles")
 
     ### PRCPTOT - Annual Total Precipitation on Wet Days: Sum of precipitation on wet days (RR ≥ 1mm) over a year.
     message("===== PRCPTOT - Annual Total Precipitation on Wet Days =====")

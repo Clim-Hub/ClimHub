@@ -23,7 +23,7 @@ This function calculates \href{https://agupubs.onlinelibrary.wiley.com/doi/full/
 \dontrun{
 TX_CF <- NC_Read("inst/extdata/KiN_tx_2050.nc")[["tasmax"]]
 TN_CF <- NC_Read("inst/extdata/KiN_tn_2050.nc")[["tasmin"]]
-RR_CF <- NC_Read("inst/extdata/KiN_prc_2050.nc")[["pr"]] * 86400 # to get from mm/day to kg m-2 s-1
+RR_CF <- NC_Read("inst/extdata/KiN_pr_2050.nc")[["pr"]] * 86400 # to get from mm/day to kg m-2 s-1
 RR_CF$set_attribute("units", "NC_CHAR", "mm")
 
 Metrics_ETCCDI(projectionList = list(TX = TX_CF, TN = TN_CF, RR = RR_CF), TResolution = "year")

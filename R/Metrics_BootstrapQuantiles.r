@@ -17,7 +17,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' TX <- NC_Read("inst/extdata/KiN_tx.nc")[["tasmax"]]
+#' TX <- NC_Read("inst/extdata/KiN_tasmax.nc")[["tasmax"]]
 #' TX_Quant <- Metrics_BootstrapQuantiles(CFVariable = TX, probs = c(0.1, 0.9), bootstrapWindow = 5)
 #' TX_Quant
 #' }
@@ -119,7 +119,7 @@ Metrics_BootstrapQuantiles <- function(
 
         # copy attributes
         apply(atts, 1, function(a) new_var$set_attribute(a$name, a$type, a$value))
-        
+
         ## add data
         ds$add_variable(new_var)
     }

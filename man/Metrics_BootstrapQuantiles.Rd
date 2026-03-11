@@ -27,7 +27,7 @@ This is primarily used by the ETCCDI metric code to obtain base period threshold
 }
 \examples{
 \dontrun{
-TX <- NC_Read("inst/extdata/KiN_tx.nc")[["tasmax"]]
+TX <- NC_Read("inst/extdata/KiN_tasmax.nc")[["tasmax"]]
 TX_Quant <- Metrics_BootstrapQuantiles(CFVariable = TX, probs = c(0.1, 0.9), bootstrapWindow = 5)
 TX_Quant
 }

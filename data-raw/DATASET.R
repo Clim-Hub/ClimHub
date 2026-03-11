@@ -19,7 +19,7 @@ NORA3_rast <- Access_NORA3(
 
 # Make Klima i Norge files ------------------
 vars <- c("mean_air_temperature", "minimum_air_temperature", "maximum_air_temperature", "precipitation_flux")
-names(vars) <- c("tas", "tn", "tx", "pr")
+names(vars) <- c("tas", "tasmin", "tasmax", "pr")
 
 for (i in seq_along(vars)) {
   print(as.character(vars[i]))

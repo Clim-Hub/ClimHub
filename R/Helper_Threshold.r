@@ -34,21 +34,33 @@ Helper_Threshold <- function(CFVariable, operator, threshold, returnValues = FAL
     }
 
     ## apply thresholding
-    expr <- paste0("CFVariable ", operator, " ", threshold)
-    Thresh_CF <- eval(parse(text = expr))
+    # Get the raw data array
+    raw_array <- CFVariable$raw()
+    # array_dims <- dimnames(raw_array)
 
-    if (returnValues) {
-        Thresh_CF <- CFVariable / Thresh_CF
+    # Apply the logical filter over the entire array at once
+    expr <- paste0("raw_array[raw_array", operator, threshold, "] <- NA")
+    eval(parse(text = expr))
+
+    if (!returnValues) {
+        raw_array <- (!is.na(raw_array)) * 1
     }
+    # dimnames(raw_array) <- array_dims
+
+    # Create a new CFVariable from the filtered data
+    Thresh_CF <- as_CF("Thresholded", raw_array)
+
+    # The original attributes - drop "actual_range" because it is no longer accurate
+    atts <- CFVariable$attributes[CFVariable$attributes$name != "actual_range", ]
+
+    # Loop over the attributes and set them in the new CFVariable
+    apply(atts, 1, function(a) Thresh_CF$set_attribute(a$name, a$type, a$value))
 
     ## return summary
     # when thresholding creates Inf values (e.g. dividing by the logical mask) we want to treat them as missing rather than drop them silently.
     Thresh_CF$summarise(
         "Tresholded",
-        function(x) {
-            x[!is.finite(x)] <- NA_real_
-            returnSummary(x)
-        },
+        returnSummary,
         returnTResolution
     )
 }

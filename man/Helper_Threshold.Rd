@@ -8,8 +8,9 @@ Helper_Threshold(
   CFVariable,
   operator,
   threshold,
+  threshMode = NULL,
   returnValues = FALSE,
-  returnSummary = sum,
+  returnSummary,
   returnTResolution = "year"
 )
 }
@@ -19,6 +20,8 @@ Helper_Threshold(
 \item{operator}{Character. One of ">", "<", ">=", "<=", "==", "!=" to evaluate CFVariable cells against threshold value.}
 
 \item{threshold}{Numeric or Character. threshold to evaluate CFVariable cells against using operator value.}
+
+\item{threshMode}{Character, optional. If supplying a CFVariable containing baseline quantiles for ETCCDI calculation, setting \code{threshMode = "ETCCDIQuantiles"} will internally apply location and day-of-year specific thresholds to \code{CFVariable} input. Default is \code{NULL} avoiding this behaviour.}
 
 \item{returnValues}{Logical. Whether to return CFVariable of values matching thresholding (TRUE) or only logical raster indicating where thresholding is matched (FALSE).}
 

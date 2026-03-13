@@ -65,11 +65,12 @@ Helper_Threshold <- function(CFVariable, operator, threshold, threshMode = NULL,
         expr <- paste0("raw_array", operator, threshold)
     }
     mask <- eval(parse(text = expr))
-    raw_array[!mask] <- NA
+    raw_array[!mask] <- NaN
 
     ## binarise if return of values is not desired
     if (!returnValues) {
-        raw_array <- (!is.na(raw_array)) * 1
+        raw_array[!is.na(raw_array)] <- 1 # these are those not masked due to threshold
+        raw_array[is.nan(raw_array)] <- 0 # these are those masked due to threshold
     }
     dimnames(raw_array) <- array_dims
 

@@ -4,33 +4,67 @@
 \alias{Metrics_ETCCDI}
 \title{Calculate ETCCDI Indices from List Input}
 \usage{
-Metrics_ETCCDI(projectionList, TResolution = "year", RRThreshold = 42)
+Metrics_ETCCDI(
+  projectionList,
+  baseLineList,
+  TResolution = "year",
+  RRThreshold = 42,
+  fileName = NULL
+)
 }
 \arguments{
 \item{projectionList}{List. List of \code{CFVariable} objects. Names of elements must be "TX", "TN", and "RR", holding maximum and minimum daily air temperature and daily total precipitation, respectively. Note that these data must be recorded in "K", "K", and "mm", respectively.}
 
+\item{baseLineList}{List. List of \code{CFDataset} objects. Names of elements must be "TX_Base", "TN_Base", and "RR_Base", holding lower and upper quantiles of maximum and minimum daily air temperature and daily total precipitation, respectively. Note that these data must be recorded in "K", "K", and "mm", respectively.}
+
 \item{TResolution}{Character. Temporal resolution for calculation of ETCCDI. Supports "year" (default), "month" and "season".}
 
 \item{RRThreshold}{Numeric. Custom threshold for daily precipiation in mm for calculation of Rnnmm. Defaults to 42.}
+
+\item{fileName}{Character, optional. Character. A file name for the produced file, including path and ".nc" file ending.}
 }
 \value{
-A named list of \code{CFVariable} objects with each element corresponding to an ETCCDI.
+A \code{CFDataset} containing a CFVariable for each ETCCDI. Each variable is named by its ETCCDI acronym and has a \code{long_name} attribute describing the index.
 }
 \description{
 This function calculates \href{https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/jgrd.50203}{ETCCDIs} from a named list of CFVariable objects. Currently, only some ETCCDI are supported.
 }
 \examples{
 \dontrun{
-TX_CF <- NC_Read("inst/extdata/KiN_tasmax_2050.nc")[["tasmax"]]
-TN_CF <- NC_Read("inst/extdata/KiN_tasmin_2050.nc")[["tasmin"]]
-RR_CF <- NC_Read("inst/extdata/KiN_pr_2050.nc")[["pr"]] * 86400 # to get from mm/day to kg m-2 s-1
-RR_CF$set_attribute("units", "NC_CHAR", "mm")
+## these are CFVariable objects
+TX <- NC_Read("inst/extdata/KiN_tasmax_2050.nc")[["tasmax"]]
+TN <- NC_Read("inst/extdata/KiN_tasmin_2050.nc")[["tasmin"]]
+RR <- NC_Read("inst/extdata/KiN_pr_2050.nc")[["pr"]] * 86400 # to get from mm/day to kg m-2 s-1
+RR$set_attribute("units", "NC_CHAR", "mm")
 
-Metrics_ETCCDI(projectionList = list(TX = TX_CF, TN = TN_CF, RR = RR_CF), TResolution = "year")
-Metrics_ETCCDI(projectionList = list(TX = TX_CF, TN = TN_CF, RR = RR_CF), TResolution = "month")
-Metrics_ETCCDI(projectionList = list(TX = TX_CF, TN = TN_CF, RR = RR_CF), TResolution = "season")
+## these are CFDataset objects with two variables each (1st and 2nd level of quantiles)
+TX_Base <- NC_Read("inst/extdata/KiN_tasmax_BaseLineQuantiles.nc") # variables are 0.1 and 0.9 quantile baselines, in that order
+TN_Base <- NC_Read("inst/extdata/KiN_tasmin_BaseLineQuantiles.nc") # variables are 0.1 and 0.9 quantile baselines, in that order
+RR_Base <- NC_Read("inst/extdata/KiN_pr_BaseLineQuantiles.nc") # variables are 0.95 and 0.99 quantile baselines, in that order
+for (i in names(RR_Base)) {
+    RR_Base[[i]] * 86400 # to get from mm/day to kg m-2 s-1
+    RR_Base[[i]]$set_attribute("units", "NC_CHAR", "mm")
 }
 
+Metrics_ETCCDI(
+    projectionList = list(TX = TX, TN = TN, RR = RR),
+    baseLineList = list(TX_Base = TX_Base, TN_Base = TN_Base, RR_Base = RR_Base),
+    TResolution = "year"
+)
+
+Metrics_ETCCDI(
+    projectionList = list(TX = TX, TN = TN, RR = RR),
+    baseLineList = list(TX_Base = TX_Base, TN_Base = TN_Base, RR_Base = RR_Base),
+    TResolution = "month"
+)
+
+Metrics_ETCCDI(
+    projectionList = list(TX = TX, TN = TN, RR = RR),
+    baseLineList = list(TX_Base = TX_Base, TN_Base = TN_Base, RR_Base = RR_Base),
+    TResolution = "season",
+    fileName = "ETCCDISeasons.nc"
+)
+}
 }
 \author{
 Erik Kusch

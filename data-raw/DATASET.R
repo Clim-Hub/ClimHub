@@ -1,7 +1,7 @@
 # Load Package ------------------
 # document()
 # # build()
-# load_all()
+load_all()
 
 # Subsetted NORA3 file -----------------
 NORA3 <- Access_NORA3(
@@ -48,22 +48,21 @@ for (i in seq_along(vars)) {
   )
 
   QuantF <- file.path(getwd(), "inst/extdata", paste0("KiN_", names(vars)[i], "_BaseLineQuantiles.nc"))
-  if(!file.exists(QuantF)){
-    if(names(vars)[i] == "pr"){
+  if (!file.exists(QuantF)) {
+    if (names(vars)[i] == "pr") {
       probs_vec <- c(0.95, 0.99)
-    }else{
-      probs_vec  <- c(0.1, 0.9)
+    } else {
+      probs_vec <- c(0.1, 0.9)
     }
     Quant <- Metrics_BootstrapQuantiles(
-      CFVariable = KiN_Base[[names(vars)[i]]], 
-      probs = probs_vec, 
+      CFVariable = KiN_Base[[names(vars)[i]]],
+      probs = probs_vec,
       bootstrapWindow = 5
     )
     Quant$save(QuantF)
-  }else{
+  } else {
     Quant <- NC_Read(QuantF)
   }
-  
 }
 
 # # Jotunheimen boundary as spatialfeatureobject ------------------

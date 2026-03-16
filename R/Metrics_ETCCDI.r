@@ -8,6 +8,8 @@
 #' @param RRThreshold Numeric. Custom threshold for daily precipiation in mm for calculation of Rnnmm. Defaults to 42.
 #' @param fileName Character, optional. Character. A file name for the produced file, including path and ".nc" file ending.
 #'
+#' @importFrom ncdfCF as_CF
+#'
 #' @return A `CFDataset` containing a CFVariable for each ETCCDI. Each variable is named by its ETCCDI acronym and has a `long_name` attribute describing the index.
 #'
 #' @author Erik Kusch
@@ -72,7 +74,9 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, TResolution = "year", R
     ## summary functions
     ### count maximum run of 1s (value 1 represents a value exceeding a given threshold supplied to and evaluated by Helper_Threshold)
     max_run_of_ones <- function(x) {
-        if(length(na.omit(x))==0){return(NA_real_)}
+        if (length(na.omit(x)) == 0) {
+            return(NA_real_)
+        }
         x[is.na(x)] <- 0 # convert NAs to 0s as NAs break the computation
         if (length(x) == 0) {
             return(NA_real_)
@@ -87,7 +91,9 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, TResolution = "year", R
 
     ### sum number of days in runs exceeding certain threshold of length
     sum_run_of_ones <- function(x, thresh = 6) {
-        if(length(na.omit(x))==0){return(NA_real_)}
+        if (length(na.omit(x)) == 0) {
+            return(NA_real_)
+        }
         x[is.na(x)] <- 0 # convert NAs to 0s as NAs break the computation
         if (length(x) == 0) {
             return(NA_real_)
@@ -102,7 +108,9 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, TResolution = "year", R
 
     ### compute maximum of 5 day intervals
     max_sum_over_5 <- function(x) {
-        if(length(na.omit(x))==0){return(NA_real_)}
+        if (length(na.omit(x)) == 0) {
+            return(NA_real_)
+        }
         x[is.na(x)] <- 0 # keep the NA‑to‑0 convention if you like
         n <- length(x)
         if (n < 5) {
@@ -126,35 +134,35 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, TResolution = "year", R
     }
 
     ### regular functions ignoring NAs
-    sum_non_na <- function(x){
+    sum_non_na <- function(x) {
         x <- x[!is.na(x)]
-        if(length(x) == 0){
+        if (length(x) == 0) {
             NA_real_
-        }else{
+        } else {
             sum(x, na.rm = TRUE)
         }
-    } 
-    mean_non_na <- function(x){
+    }
+    mean_non_na <- function(x) {
         x <- x[!is.na(x)]
-        if(length(x) == 0){
+        if (length(x) == 0) {
             NA_real_
-        }else{
+        } else {
             mean(x, na.rm = TRUE)
         }
-    } 
-    max_non_na <- function(x){
+    }
+    max_non_na <- function(x) {
         x <- x[!is.na(x)]
-        if(length(x) == 0){
+        if (length(x) == 0) {
             NA_real_
-        }else{
+        } else {
             max(x, na.rm = TRUE)
         }
     }
-    min_non_na <- function(x){
+    min_non_na <- function(x) {
         x <- x[!is.na(x)]
-        if(length(x) == 0){
+        if (length(x) == 0) {
             NA_real_
-        }else{
+        } else {
             min(x, na.rm = TRUE)
         }
     }
@@ -243,8 +251,8 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, TResolution = "year", R
 
     ### GSL - Growing Season Length: Count the number of days between the first occurrence of at least 6 consecutive days with (TN+TX)/2 > 5°C and the first occurrence after 1st July (Northern Hemisphere) or 1st January (Southern Hemisphere) of at least 6 consecutive days with (TN+TX)/2 < 5°C
     # message("===== GSL - Growing Season Length =====")
-    warnings("GSL calculation not implemented yet")
-    # TM <- (TN+TX)/2
+    TM <- (TN + TX) / 2
+    GSL <- Helper_ETCCDIGSL(TM)
     pb$tick(tokens = list(layer = 5))
 
     ### TXx - Monthly Max of Daily Max Temp: Maximum daily maximum temperature in each month.
@@ -506,7 +514,7 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, TResolution = "year", R
         SU = SU,
         ID = ID,
         TR = TR,
-        # GSL = GSL,
+        GSL = GSL,
         TXx = TXx,
         TNx = TNx,
         TXn = TXn,

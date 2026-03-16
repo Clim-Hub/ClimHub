@@ -10,6 +10,8 @@
 #' @param returnSummary Function. Summary function for tresholded CFVariable.
 #' @param returnTResolution Character. Temporal resolution of summary of tresholded CFVariable.
 #'
+#' @importFrom ncdfCF as_CF
+#'
 #' @return A CFVariable.
 #'
 #' @author Erik Kusch
@@ -75,7 +77,7 @@ Helper_Threshold <- function(CFVariable, operator, threshold, threshMode = NULL,
     dimnames(raw_array) <- array_dims
 
     # Create a new CFVariable from the filtered data
-    Thresh_CF <- as_CF("Thresholded", raw_array)
+    Thresh_CF <- ncdfCF::as_CF("Thresholded", raw_array)
 
     # The original attributes - drop "actual_range" because it is no longer accurate
     atts <- CFVariable$attributes[CFVariable$attributes$name != "actual_range", ]

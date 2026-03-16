@@ -9,6 +9,7 @@
 #' @param fileName Character, optional. Character. A file name for the produced file, including path and ".nc" file ending.
 #'
 #' @importFrom ncdfCF as_CF
+#' @importFrom ncdfCF create_ncdf
 #'
 #' @return A `CFDataset` containing a CFVariable for each ETCCDI. Each variable is named by its ETCCDI acronym and has a `long_name` attribute describing the index.
 #'

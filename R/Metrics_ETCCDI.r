@@ -446,7 +446,7 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, TResolution = "year", R
     )
     pb$tick(tokens = list(layer = 22))
 
-    ### CDD - Consecutive Dry Days: Maximum number of consecutive days with RR < 1mm.
+    ### CDD - Consecutive Dry Days: Maximum number of consecutive days with RR < 1mm.; !! ISSUES HERE, TALK TO NINA
     # message("===== CDD - Consecutive Dry Days =====")
     CDD <- Helper_Threshold(
         RR,
@@ -488,7 +488,7 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, TResolution = "year", R
     R99pTOT <- Helper_Threshold(
         RR,
         operator = ">",
-        threshold = RR_Base[[names(RR_Base)[1]]],
+        threshold = RR_Base[[names(RR_Base)[2]]],
         threshMode = "ETCCDIQuantiles",
         returnValues = TRUE,
         returnSummary = sum_non_na,

@@ -7,5 +7,4 @@
 .vscode
 
 # ignore KiN nc files for now as most are too big to ship the package with
-*KiN_*.nc
-*NORA3_SubSet.nc
+ExampleData/*

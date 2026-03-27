@@ -131,26 +131,13 @@ Discovery_Citation <- function(dataSet = "NULL") {
 Discovery_Library <- function() {
     owner <- "Clim-Hub"
     repo <- "ClimHub"
+    branch <- "master"
     path <- "product-metadata"
 
-    # Construct the URL
-    URL <- paste0("https://github.com/", owner, "/", repo, "/tree/master/", path)
-
-    # Read the page
-    page <- rvest::read_html(URL)
-
-    # Extract the embedded JSON metadata
-    raw_metadata <- page %>%
-        rvest::html_nodes("script") %>% # Extract all <script> tags
-        rvest::html_text() %>% # Get the text content
-        grep("payload", ., value = TRUE) %>% # Locate the script containing "payload"
-        jsonlite::fromJSON(simplifyVector = FALSE) # Parse JSON metadata
-
-    # Navigate to the relevant "tree" section
-    tree_items <- raw_metadata$payload$codeViewFileTreeLayoutRoute$fileTree$`product-metadata`$items
-
-    # make into vector of names of files
-    tree_items <- unlist(lapply(tree_items, "[[", "name"))
+    # Use GitHub Contents API to avoid brittle HTML/script parsing.
+    URL <- paste0("https://api.github.com/repos/", owner, "/", repo, "/contents/", path, "?ref=", branch)
+    tree_items <- jsonlite::fromJSON(URL, simplifyVector = TRUE)
+    tree_items <- tree_items$name
 
     # subset for .json files
     tree_items <- tree_items[grep(pattern = "\\.json$", tree_items)]

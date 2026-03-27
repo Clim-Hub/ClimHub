@@ -2,73 +2,170 @@
 #'
 #' @description This function calculates \href{https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/jgrd.50203}{ETCCDIs} from a named list of CFVariable objects. Currently, only some ETCCDI are supported.
 #'
-#' @details Input requirements are conditional on the selected ETCCDI indices in `indices`.
-#' To reduce memory usage and speed up calculations, supply only the inputs required for the selected indices.
+#' @details Input requirements are conditional on the selected ETCCDI indices in the `indices` argument (see table below). To reduce memory usage and speed up calculations, supply only the inputs required for the selected indices.
 #'
-#' | ETCCDI | Full name | Required data input | Verbose description | Unit | Default temporal resolution |
-#' |:--|:--|:--|:--|:--|:--|
-#' | FD | Number of frost days | TN | TODO | TODO | TODO |
-#' | SU | Number of summer days | TX | TODO | TODO | TODO |
-#' | ID | Number of icing days | TX | TODO | TODO | TODO |
-#' | TR | Number of tropical nights | TN | TODO | TODO | TODO |
-#' | GSL | Growing Season Length | TX, TN | TODO | TODO | TODO |
-#' | TXx | Max of Daily Max Temp | TX | TODO | TODO | TODO |
-#' | TNx | Max of Daily Min Temp | TN | TODO | TODO | TODO |
-#' | TXn | Min of Daily Max Temp | TX | TODO | TODO | TODO |
-#' | TNn | Min of Daily Min Temp | TN | TODO | TODO | TODO |
-#' | TN10p | Percent Days TN < 10th Percentile | TN, TN_Base | TODO | TODO | TODO |
-#' | TX10p | Percent Days TX < 10th Percentile | TX, TX_Base | TODO | TODO | TODO |
-#' | TN90p | Percent Days TN > 90th Percentile | TN, TN_Base | TODO | TODO | TODO |
-#' | TX90p | Percent Days TX > 90th Percentile | TX, TX_Base | TODO | TODO | TODO |
-#' | WSDI | Warm Spell Duration Index | TX, TX_Base | TODO | TODO | TODO |
-#' | CSDI | Cold Spell Duration Index | TN, TX_Base | TODO | TODO | TODO |
-#' | DTR | Daily Temperature Range | TX, TN | TODO | TODO | TODO |
-#' | Rx1day | Max 1-day Precipitation | RR | TODO | TODO | TODO |
-#' | Rx5day | Max 5-day Precipitation | RR | TODO | TODO | TODO |
-#' | SDII | Simple Precipitation Intensity Index | RR | TODO | TODO | TODO |
-#' | R10mm | Days with Precip ≥ 10mm | RR | TODO | TODO | TODO |
-#' | R20mm | Days with Precip ≥ 20mm | RR | TODO | TODO | TODO |
-#' | Rnnmm | Days with Precip ≥ user-defined threshold | RR | TODO | TODO | TODO |
-#' | CDD | Consecutive Dry Days | RR | TODO | TODO | TODO |
-#' | CWD | Consecutive Wet Days | RR | TODO | TODO | TODO |
-#' | R95pTOT | Total Precipitation from RR > 95th Percentile | RR, RR_Base | TODO | TODO | TODO |
-#' | R99pTOT | Total Precipitation from RR > 99th Percentile | RR, RR_Base | TODO | TODO | TODO |
-#' | RCPTOT | Total Precipitation on Wet Days | RR | TODO | TODO | TODO |
+#' | **ETCCDI** | **Name** | **Required Data** | **Description** | **Unit** | **Default `TResolution`** |
+#' |---|---|---|---|---|---|
+#' | FD | Number of frost days | `TN` | Annual count of days when TN (daily minimum temperature) < 0°C. | days | year |
+#' | SU | Number of summer days | `TX` | Annual count of days when TX (daily maximum temperature) > 25°C. | days | year |
+#' | ID | Number of icing days | `TX` | Annual count of days when TX (daily maximum temperature) < 0°C. | days | year |
+#' | TR | Number of tropical nights | `TN` | Annual count of days when TN (daily minimum temperature) > 20°C. | days | year |
+#' | GSL | Growing Season Length | `TX`, `TN` | Annual count of days between the first occurrence of at least 6 consecutive days with (TN+TX)/2 > 5°C and the first occurrence after 1st July (Northern Hemisphere) or 1st January (Southern Hemisphere) of at least 6 consecutive days with (TN+TX)/2 < 5°C | days | year |
+#' | TXx | Max of Daily Max Temp | `TX` | Maximum daily maximum temperature in each month. | K | month |
+#' | TNx | Max of Daily Min Temp | `TN` | Maximum daily minimum temperature in each month. | K | month |
+#' | TXn | Min of Daily Max Temp | `TX` | Minimum daily maximum temperature in each month. | K | month |
+#' | TNn | Min of Daily Min Temp | `TN` | Minimum daily minimum temperature in each month. | K | month |
+#' | TN10p | Percent Days TN < 10th Percentile | `TN`, `TN_Base` | Percent of days, per year, where TN < 10th percentile of base period. | % | year |
+#' | TX10p | Percent Days TX < 10th Percentile | `TX`, `TX_Base` | Percent of days, per year, where TX < 10th percentile of base period. | % | year |
+#' | TN90p | Percent Days TN > 90th Percentile | `TN`, `TN_Base` | Percent of days, per year, where TN > 90th percentile of base period. | % | year |
+#' | TX90p | Percent Days TX > 90th Percentile | `TX`, `TX_Base` | Percent of days, per year, where TX > 90th percentile of base period. | % | year |
+#' | WSDI | Warm Spell Duration Index | `TX`, `TX_Base` | Annual count of days contained within runs of 6+ consecutive days when TX > 90th percentile of base period. | days | year |
+#' | CSDI | Cold Spell Duration Index | `TN`, `TX_Base` | Annual count of days contained within runs of 6+ consecutive days when TN < 10th percentile of base period. | days | year |
+#' | DTR | Daily Temperature Range | `TX`, `TN` | Monthly mean difference between daily max (TX) and min (TN) temperatures. | K | month |
+#' | Rx1day | Max 1-day Precipitation | `RR` | Maximum precipitation in a single day each month. | mm | month |
+#' | Rx5day | Max 5-day Precipitation | `RR` | Maximum precipitation over any 5 consecutive days in each month. | mm | month |
+#' | SDII | Simple Precipitation Intensity Index | `RR` | Mean precipitation amount on wet days (RR ≥ 1mm). | mm/day | year |
+#' | R10mm | Days with Precip ≥ 10mm | `RR` | Annual count of days with precipitation ≥ 10mm. | days | year |
+#' | R20mm | Days with Precip ≥ 20mm | `RR` | Annual count of days with precipitation ≥ 20mm. | days | year |
+#' | Rnnmm | Days with Precip ≥ user-defined threshold | `RR` | Annual count of days with precipitation ≥ nnmm. | days | year |
+#' | CDD | Consecutive Dry Days | `RR` | Maximum number of consecutive days with RR < 1mm. | days | year |
+#' | CWD | Consecutive Wet Days | `RR` | Maximum number of consecutive days with RR ≥ 1mm. | days | year |
+#' | R95pTOT | Total Precipitation from RR > 95th Percentile | `RR`, `RR_Base` | Total precipitation from wet days (RR > 95th percentile of base period). | mm | year |
+#' | R99pTOT | Total Precipitation from RR > 99th Percentile | `RR`, `RR_Base` | Total precipitation from wet days (RR > 99th percentile of base period). | mm | year |
+#' | RCPTOT | Total Precipitation on Wet Days | `RR` | Sum of precipitation on wet days (RR ≥ 1mm) over a year. | mm | year |
 #'
-#' @param projectionList List. List of `CFVariable` objects required by the selected ETCCDI indices. Include only named elements that are needed for `indices`: "TX" (daily maximum air temperature, K), "TN" (daily minimum air temperature, K), and/or "RR" (daily total precipitation, mm).
-#' @param baseLineList Optional, list. List of `CFDataset` objects containing baseline quantiles required only for quantile-based ETCCDI indices. Include only named elements needed for `indices`: "TX_Base", "TN_Base", and/or "RR_Base". If no quantile-based ETCCDI is selected, this argument can be omitted.
-#' @param TResolution Character. Temporal resolution for calculation of ETCCDI. Supports "year" (default), "month" and "season".
+#' @param projectionList List. List of `CFVariable` objects required by the selected ETCCDI indices via the `indices` argument. Include only named elements that are needed for `indices`: "TX" (daily maximum air temperature in Kelvin), "TN" (daily minimum air temperature in Kelvin), and/or "RR" (daily total precipitation in mm). See details for required data input per index.
+#' @param baseLineList Optional, list. List of `CFDataset` objects containing baseline quantiles required only for quantile-based ETCCDI indices. Include only named elements needed for `indices`: "TX_Base", "TN_Base", and/or "RR_Base" (note that these must be in Kelvin, Kelvin, and mm, respectively). If no quantile-based ETCCDI is selected, this argument can be omitted. See details for required quantile baselines per index.
+#' @param indices Optional, character. Character vector of ETCCDI abbreviations to calculate (see first column of the details table). If missing, all supported indices in this function are calculated. See details for supported indices.
+#' @param TResolution Optional, character. Temporal resolution for ETCCDI calculation. Supports "year", "month" and "season". If omitted, each selected index is calculated using its default temporal resolution from the details table. If provided, the same resolution is used for all selected indices and output variables whose default resolution differs are prefixed with "ALT_".
 #' @param RRThreshold Numeric. Custom threshold for daily precipiation in mm for calculation of Rnnmm. Defaults to 42.
-#' @param indices Optional, character. Character vector of ETCCDI abbreviations to calculate. If missing, all supported indices in this function are calculated.
 #' @param fileName Character, optional. Character. A file name for the produced file, including path and ".nc" file ending. If no value is supplied, the dataset is not written to disk but returned as a `CFDataset` object in memory. If a file name is supplied and a file with that name already exists, the function will attempt to load and return that file instead of recalculating the indices.
 #'
 #' @importFrom ncdfCF as_CF
 #' @importFrom ncdfCF create_ncdf
 #'
-#' @return A `CFDataset` containing a CFVariable for each ETCCDI. Each variable is named by its ETCCDI acronym and has a `long_name` attribute describing the index.
+#' @return A `CFDataset` or a list of `CFDataset`s. If all calculated ETCCDI indices have the same temporal resolution (e.g., when `TResolution` is specified or a subset of `indices` is selected that share a temporal resolution default), a single `CFDataset` is returned containing all variables. If indices span multiple temporal resolutions (e.g., when `TResolution` is omitted and some of the requestred `indices` default to a temporal resolution of "year" while others default to "month"), a named list of `CFDataset`s is returned, each containing only variables of that temporal resolution, with names indicating the resolution ("year" or "month").
+#'
+#' When saving to disk with a `fileName`: (1) If all indices share one temporal resolution, a singular `CFDataset` is saved with the provided `fileName` appended with the shared temporal resolution. (2) If indices span multiple temporal resolutions, each resolution-specific `CFDataset` is saved with a suffix denoting its temporal resolution (e.g., "_year.nc", "_month.nc"). In the latter case, the function returns the list of resolution-specific datasets, each loaded from disk via `NC_Read()`.
+#'
+#' Each variable is named by its ETCCDI acronym and has a `long_name` attribute describing the index.
 #'
 #' @author Erik Kusch
 #'
 #' @examples
 #' \dontrun{
+#' ## Directory for Data and Output -----------
+#' Dir.Data <- file.path(getwd(), "ExampleData")
+#' dir.create(Dir.Data, showWarnings = FALSE)
 #'
+#' ## Downloading and preparing data -----------
+#' ### Variables for which we need data
+#' vars <- c("minimum_air_temperature", "maximum_air_temperature", "precipitation_flux")
+#' names(vars) <- c("tasmin", "tasmax", "pr")
+#'
+#' ### Data (Down-)Loading and Preparation
+#' Data_ls <- lapply(seq_along(vars), FUN = function(i) {
+#'     print(as.character(vars[i]))
+#'     ## these need to be made into quantiles to define base-period for ETCCDI calculation
+#'     KiN_Base <- Access_KlimaiNorge2100(
+#'         variable = as.character(vars[i]),
+#'         dateStart = "1971-01-01", # note that the standard base period starts 1961, but KiN does start in 1971 so we use that as the start date
+#'         dateStop = "2000-12-31",
+#'         extent = c(9, 11, 59, 61),
+#'         model = "noresm-r1i1p1f1-hclim",
+#'         method = "eqm",
+#'         scenario = "ssp370",
+#'         fileName = file.path(Dir.Data, paste0("KiN_", names(vars)[i], ".nc"))
+#'     )
+#'
+#'     ## these are the files for calculation of ETCCDI metrics in future
+#'     KiN_2090 <- Access_KlimaiNorge2100(
+#'         variable = as.character(vars[i]),
+#'         dateStart = "2090-01-01",
+#'         dateStop = "2099-12-31",
+#'         extent = c(9, 11, 59, 61),
+#'         model = "noresm-r1i1p1f1-hclim",
+#'         method = "eqm",
+#'         scenario = "ssp370",
+#'         fileName = file.path(Dir.Data, paste0("KiN_", names(vars)[i], "_2090.nc"))
+#'     )
+#'
+#'     ## these are the files for baseline quantiles
+#'     QuantF <- file.path(Dir.Data, paste0("KiN_", names(vars)[i], "_BaseLineQuantiles.nc"))
+#'     if (!file.exists(QuantF)) {
+#'         if (names(vars)[i] == "pr") {
+#'             probs_vec <- c(0.95, 0.99)
+#'             input <- KiN_Base[[names(vars)[i]]] * 86400 # to get from mm/day to kg m-2 s-1
+#'             input$set_attribute("units", "NC_CHAR", "mm")
+#'         } else {
+#'             probs_vec <- c(0.1, 0.9)
+#'             input <- KiN_Base[[names(vars)[i]]]
+#'         }
+#'         Quant <- Metrics_BootstrapQuantiles(
+#'             CFVariable = input,
+#'             probs = probs_vec,
+#'             bootstrapWindow = 5
+#'         )
+#'         Quant$save(QuantF)
+#'     } else {
+#'         Quant <- NC_Read(QuantF)
+#'     }
+#'
+#'     return(list(projection = KiN_2090, baseLine = Quant))
+#' })
+#' names(Data_ls) <- names(vars)
+#'
+#' ### Data Object listing
+#' TX <- Data_ls[["tasmax"]][["projection"]][["tasmax"]]
+#' TN <- Data_ls[["tasmin"]][["projection"]][["tasmin"]]
+#' RR <- Data_ls[["pr"]][["projection"]][["pr"]] * 86400 # to get from mm/day to kg m-2 s-1
+#' RR$set_attribute("units", "NC_CHAR", "mm")
+#'
+#' TX_Base <- Data_ls[["tasmax"]][["baseLine"]]
+#' TN_Base <- Data_ls[["tasmin"]][["baseLine"]]
+#' RR_Base <- Data_ls[["pr"]][["baseLine"]]
+#'
+#' rm(Data_ls) # remove list to free up memory
+#'
+#' ## ETCCDI calculation -----------
+#' ### All ETCCDI
+#' Metrics_ETCCDI(
+#'     projectionList = list(TX = TX, TN = TN, RR = RR),
+#'     baseLineList = list(TX_Base = TX_Base, TN_Base = TN_Base, RR_Base = RR_Base),
+#'     fileName = file.path(Dir.Data, "ETCCDI_Metrics.nc")
+#' )
+#'
+#' ### Select ETCCDI
+#' Metrics_ETCCDI(
+#'     projectionList = list(TX = TX, TN = TN, RR = RR),
+#'     baseLineList = list(TX_Base = TX_Base, TN_Base = TN_Base, RR_Base = RR_Base),
+#'     indices = c("FD", "TXx", "R95pTOT")
+#' )
+#'
+#' ### Select ETCCDI with custom temporal resolutions
+#' Metrics_ETCCDI(
+#'     projectionList = list(RR = RR),
+#'     # baseLineList = list(RR_Base = RR_Base), # we do not need to supply the baseline quantiles if we do not select any indices that depend on them
+#'     indices = c("Rnnmm"),
+#'     RRThreshold = 21, # this is the threshold for the Rnnmm metric, in mm
+#'     TResolution = "season"
+#' )
+#'
+#' Metrics_ETCCDI(
+#'     projectionList = list(TX = TX, TN = TN, RR = RR),
+#'     baseLineList = list(TX_Base = TX_Base, TN_Base = TN_Base, RR_Base = RR_Base),
+#'     indices = c("FD", "SU", "ID", "TR"),
+#'     TResolution = "month" # note that this is not the default for these indices, so the returned object will bear the prefix "ALT_" for each index to indicate that this is an alternative calculation with a different temporal resolution
+#' )
 #' }
 #' @export
-Metrics_ETCCDI <- function(projectionList, baseLineList, TResolution = "year", RRThreshold = 42, indices, fileName) {
+Metrics_ETCCDI <- function(projectionList, baseLineList, indices, TResolution, RRThreshold = 42, fileName) {
     ## fileName handling
     if (!missing(fileName)) {
         fileName <- normalizePath(fileName, mustWork = FALSE)
     }
 
-    ## File Check =========
-    if (!missing(fileName)) {
-        FCheck <- Helper_FileCheck(fileName = fileName, loadFun = NC_Read, load = TRUE, verbose = TRUE)
-        if (!is.null(FCheck)) {
-            return(FCheck)
-        }
-    }
-
-    ## index selection handling
+    ## index selection handling (moved before FCheck)
     supportedIndices <- c(
         "FD", "SU", "ID", "TR", "GSL", "TXx", "TNx", "TXn", "TNn", "TN10p",
         "TX10p", "TN90p", "TX90p", "WSDI", "CSDI", "DTR", "Rx1day", "Rx5day",
@@ -96,6 +193,87 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, TResolution = "year", R
             )
         }
         selectedIndices <- unique(indices)
+    }
+
+    ## ETCCDI default temporal resolution handling (moved before FCheck)
+    defaultTResolution <- c(
+        FD = "year",
+        SU = "year",
+        ID = "year",
+        TR = "year",
+        GSL = "year",
+        TXx = "month",
+        TNx = "month",
+        TXn = "month",
+        TNn = "month",
+        TN10p = "year",
+        TX10p = "year",
+        TN90p = "year",
+        TX90p = "year",
+        WSDI = "year",
+        CSDI = "year",
+        DTR = "month",
+        Rx1day = "month",
+        Rx5day = "month",
+        SDII = "year",
+        R10mm = "year",
+        R20mm = "year",
+        Rnnmm = "year",
+        CDD = "year",
+        CWD = "year",
+        R95pTOT = "year",
+        R99pTOT = "year",
+        RCPTOT = "year"
+    )
+    userProvidedTResolution <- !missing(TResolution)
+    if (userProvidedTResolution) {
+        if (!is.character(TResolution) || length(TResolution) != 1) {
+            stop("'TResolution' must be a single character value: 'year', 'month', or 'season'.")
+        }
+        providedTResolution <- tolower(TResolution)
+        if (is.na(providedTResolution) || !providedTResolution %in% c("year", "month", "season")) {
+            stop("'TResolution' must be one of 'year', 'month', or 'season'.")
+        }
+    } else {
+        providedTResolution <- NULL
+    }
+    get_index_t_resolution <- function(indexName) {
+        if (userProvidedTResolution) {
+            providedTResolution
+        } else {
+            defaultTResolution[[indexName]]
+        }
+    }
+
+    ## Create tResolution_ls and identify unique resolutions (for FCheck)
+    tResolution_ls <- list()
+    for (idx in selectedIndices) {
+        tResolution_ls[[idx]] <- get_index_t_resolution(idx)
+    }
+    unique_resolutions <- unique(unlist(tResolution_ls))
+
+    ## File Check with awareness of temporal resolution structure =========
+    if (!missing(fileName)) {
+        if (length(unique_resolutions) == 1) {
+            # Single temporal resolution - single file to check
+            file_suffix <- paste0("_", unique_resolutions[1], ".nc")
+            checkFileName <- sub("\\.nc$", file_suffix, fileName)
+            FCheck <- Helper_FileCheck(fileName = checkFileName, loadFun = NC_Read, load = TRUE, verbose = TRUE)
+            if (!is.null(FCheck)) {
+                return(FCheck)
+            }
+        } else {
+            # Multiple temporal resolutions - check for resolution-specific files
+            resolution_files <- list()
+            for (tres in unique_resolutions) {
+                file_suffix <- paste0("_", tolower(tres), ".nc")
+                output_fileName <- sub("\\.nc$", file_suffix, fileName)
+                resolution_files[[tres]] <- Helper_FileCheck(fileName = output_fileName, loadFun = NC_Read, load = TRUE, verbose = TRUE)
+            }
+            if (all(sapply(resolution_files, Negate(is.null)))) {
+                return(resolution_files)
+            }
+        }
     }
 
     ## Setting up Progress Bar
@@ -242,7 +420,7 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, TResolution = "year", R
                 threshold = 273.15,
                 returnValues = FALSE,
                 returnSummary = sum_non_na,
-                returnTResolution = TResolution
+                returnTResolution = get_index_t_resolution("FD")
             )
         },
         SU = function() {
@@ -252,7 +430,7 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, TResolution = "year", R
                 threshold = 273.15 + 25,
                 returnValues = FALSE,
                 returnSummary = sum_non_na,
-                returnTResolution = TResolution
+                returnTResolution = get_index_t_resolution("SU")
             )
         },
         ID = function() {
@@ -262,7 +440,7 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, TResolution = "year", R
                 threshold = 273.15,
                 returnValues = FALSE,
                 returnSummary = sum_non_na,
-                returnTResolution = TResolution
+                returnTResolution = get_index_t_resolution("ID")
             )
         },
         TR = function() {
@@ -272,7 +450,7 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, TResolution = "year", R
                 threshold = 273.15 + 20,
                 returnValues = FALSE,
                 returnSummary = sum_non_na,
-                returnTResolution = TResolution
+                returnTResolution = get_index_t_resolution("TR")
             )
         },
         GSL = function() {
@@ -280,16 +458,16 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, TResolution = "year", R
             Helper_ETCCDIGSL(TM)
         },
         TXx = function() {
-            TX$summarise("Tresholded", max_non_na, TResolution)
+            TX$summarise("Tresholded", max_non_na, get_index_t_resolution("TXx"))
         },
         TNx = function() {
-            TN$summarise("Tresholded", max_non_na, TResolution)
+            TN$summarise("Tresholded", max_non_na, get_index_t_resolution("TNx"))
         },
         TXn = function() {
-            TX$summarise("Tresholded", min_non_na, TResolution)
+            TX$summarise("Tresholded", min_non_na, get_index_t_resolution("TXn"))
         },
         TNn = function() {
-            TN$summarise("Tresholded", min_non_na, TResolution)
+            TN$summarise("Tresholded", min_non_na, get_index_t_resolution("TNn"))
         },
         TN10p = function() {
             Helper_Threshold(
@@ -299,7 +477,7 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, TResolution = "year", R
                 threshMode = "ETCCDIQuantiles",
                 returnValues = FALSE,
                 returnSummary = percentage_non_na,
-                returnTResolution = TResolution
+                returnTResolution = get_index_t_resolution("TN10p")
             )
         },
         TX10p = function() {
@@ -310,7 +488,7 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, TResolution = "year", R
                 threshMode = "ETCCDIQuantiles",
                 returnValues = FALSE,
                 returnSummary = percentage_non_na,
-                returnTResolution = TResolution
+                returnTResolution = get_index_t_resolution("TX10p")
             )
         },
         TN90p = function() {
@@ -321,7 +499,7 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, TResolution = "year", R
                 threshMode = "ETCCDIQuantiles",
                 returnValues = FALSE,
                 returnSummary = percentage_non_na,
-                returnTResolution = TResolution
+                returnTResolution = get_index_t_resolution("TN90p")
             )
         },
         TX90p = function() {
@@ -332,7 +510,7 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, TResolution = "year", R
                 threshMode = "ETCCDIQuantiles",
                 returnValues = FALSE,
                 returnSummary = percentage_non_na,
-                returnTResolution = TResolution
+                returnTResolution = get_index_t_resolution("TX90p")
             )
         },
         WSDI = function() {
@@ -343,7 +521,7 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, TResolution = "year", R
                 threshMode = "ETCCDIQuantiles",
                 returnValues = FALSE,
                 returnSummary = sum_run_of_ones,
-                returnTResolution = TResolution
+                returnTResolution = get_index_t_resolution("WSDI")
             )
         },
         CSDI = function() {
@@ -354,18 +532,18 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, TResolution = "year", R
                 threshMode = "ETCCDIQuantiles",
                 returnValues = FALSE,
                 returnSummary = sum_run_of_ones,
-                returnTResolution = TResolution
+                returnTResolution = get_index_t_resolution("CSDI")
             )
         },
         DTR = function() {
             dtr <- TX - TN
-            dtr$summarise("Tresholded", mean_non_na, TResolution)
+            dtr$summarise("Tresholded", mean_non_na, get_index_t_resolution("DTR"))
         },
         Rx1day = function() {
-            RR$summarise("Tresholded", max_non_na, TResolution)
+            RR$summarise("Tresholded", max_non_na, get_index_t_resolution("Rx1day"))
         },
         Rx5day = function() {
-            RR$summarise("Tresholded", max_sum_over_5, TResolution)
+            RR$summarise("Tresholded", max_sum_over_5, get_index_t_resolution("Rx5day"))
         },
         SDII = function() {
             Helper_Threshold(
@@ -374,7 +552,7 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, TResolution = "year", R
                 threshold = 1,
                 returnValues = TRUE,
                 returnSummary = mean_non_na,
-                returnTResolution = TResolution
+                returnTResolution = get_index_t_resolution("SDII")
             )
         },
         R10mm = function() {
@@ -384,7 +562,7 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, TResolution = "year", R
                 threshold = 10,
                 returnValues = FALSE,
                 returnSummary = sum_non_na,
-                returnTResolution = TResolution
+                returnTResolution = get_index_t_resolution("R10mm")
             )
         },
         R20mm = function() {
@@ -394,7 +572,7 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, TResolution = "year", R
                 threshold = 20,
                 returnValues = FALSE,
                 returnSummary = sum_non_na,
-                returnTResolution = TResolution
+                returnTResolution = get_index_t_resolution("R20mm")
             )
         },
         Rnnmm = function() {
@@ -404,27 +582,27 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, TResolution = "year", R
                 threshold = RRThreshold,
                 returnValues = FALSE,
                 returnSummary = sum_non_na,
-                returnTResolution = TResolution
+                returnTResolution = get_index_t_resolution("Rnnmm")
             )
         },
-        CDD = function() {
+        CDD = function() { #  !! ISSUES HERE, TALK TO NINA
             Helper_Threshold(
                 RR,
                 operator = "<",
                 threshold = 1,
                 returnValues = FALSE,
                 returnSummary = max_run_of_ones,
-                returnTResolution = TResolution
+                returnTResolution = get_index_t_resolution("CDD")
             )
         },
-        CWD = function() {
+        CWD = function() { #  !! ISSUES HERE, TALK TO NINA
             Helper_Threshold(
                 RR,
                 operator = ">=",
                 threshold = 1,
                 returnValues = FALSE,
                 returnSummary = max_run_of_ones,
-                returnTResolution = TResolution
+                returnTResolution = get_index_t_resolution("CWD")
             )
         },
         R95pTOT = function() {
@@ -435,7 +613,7 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, TResolution = "year", R
                 threshMode = "ETCCDIQuantiles",
                 returnValues = TRUE,
                 returnSummary = sum_non_na,
-                returnTResolution = TResolution
+                returnTResolution = get_index_t_resolution("R95pTOT")
             )
         },
         R99pTOT = function() {
@@ -446,7 +624,7 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, TResolution = "year", R
                 threshMode = "ETCCDIQuantiles",
                 returnValues = TRUE,
                 returnSummary = sum_non_na,
-                returnTResolution = TResolution
+                returnTResolution = get_index_t_resolution("R99pTOT")
             )
         },
         RCPTOT = function() {
@@ -456,12 +634,12 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, TResolution = "year", R
                 threshold = 1,
                 returnValues = TRUE,
                 returnSummary = sum_non_na,
-                returnTResolution = TResolution
+                returnTResolution = get_index_t_resolution("RCPTOT")
             )
         }
     )
 
-    ## calculate only selected ETCCDI objects
+    ## calculate only selected ETCCDI objects (tResolution_ls already created before FCheck)
     Return_ls <- list()
     for (i in seq_along(selectedIndices)) {
         idx <- selectedIndices[[i]]
@@ -469,7 +647,7 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, TResolution = "year", R
         pb$tick(tokens = list(layer = i))
     }
 
-    ## Combine into a single CFDataset with appropriate variable names + long_name attributes
+    ## Combine into CFDataset(s) with appropriate variable names + long_name attributes
     long_names <- c(
         FD = "Number of frost days",
         SU = "Number of summer days",
@@ -500,25 +678,72 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, TResolution = "year", R
         RCPTOT = "Total Precipitation on Wet Days"
     )
 
-    ds <- ncdfCF::create_ncdf()
-    for (nm in names(Return_ls)) { # this loops over the CFVariables, removes their attributes and sets correct names
+    # Create base dataset with all variables (regardless of temporal resolution)
+    base_ds <- ncdfCF::create_ncdf()
+    for (nm in names(Return_ls)) {
         cfvar <- Return_ls[[nm]]
         raw <- cfvar$raw()
-        new_var <- ncdfCF::as_CF(nm, raw)
-
+        outputName <- nm
+        if (userProvidedTResolution && defaultTResolution[[nm]] != providedTResolution) {
+            outputName <- paste0("ALT_", nm)
+        }
+        new_var <- ncdfCF::as_CF(outputName, raw)
         if (nm %in% names(long_names)) {
             new_var$set_attribute("long_name", "NC_CHAR", long_names[[nm]])
         }
-
-        ds$add_variable(new_var)
+        base_ds$add_variable(new_var)
     }
 
-    ## optionally write dataset to disk
-    if (!missing(fileName)) {
-        ds$save(fileName)
-        ds <- NC_Read(fileName)
+    # Determine what to return and save (unique_resolutions already created before FCheck)
+    if (length(unique_resolutions) == 1) {
+        # Single temporal resolution - base dataset is sufficient
+        if (!missing(fileName)) {
+            base_file_suffix <- paste0("_", paste(unique_resolutions, collapse = "_"), ".nc")
+            base_fileName <- sub("\\.nc$", base_file_suffix, fileName)
+            base_ds$save(base_fileName)
+            return_ds <- NC_Read(base_fileName)
+        } else {
+            return_ds <- base_ds
+        }
+    } else {
+        # Multiple temporal resolutions - create sub-datasets for each resolution
+        datasets_by_resolution <- list()
+
+        for (tres in unique_resolutions) {
+            sub_ds <- ncdfCF::create_ncdf()
+            var_names_for_this_res <- names(tResolution_ls)[unlist(tResolution_ls) == tres]
+
+            for (nm in var_names_for_this_res) {
+                cfvar <- Return_ls[[nm]]
+                raw <- cfvar$raw()
+                outputName <- nm
+                if (userProvidedTResolution && defaultTResolution[[nm]] != providedTResolution) {
+                    outputName <- paste0("ALT_", nm)
+                }
+                new_var <- ncdfCF::as_CF(outputName, raw)
+                if (nm %in% names(long_names)) {
+                    new_var$set_attribute("long_name", "NC_CHAR", long_names[[nm]])
+                }
+                sub_ds$add_variable(new_var)
+            }
+
+            datasets_by_resolution[[tres]] <- sub_ds
+        }
+
+        # Save datasets if fileName provided
+        if (!missing(fileName)) {
+            # Save each sub-dataset with resolution suffix
+            for (tres in unique_resolutions) {
+                file_suffix <- paste0("_", tolower(tres), ".nc")
+                output_fileName <- sub("\\.nc$", file_suffix, fileName)
+                datasets_by_resolution[[tres]]$save(output_fileName)
+                datasets_by_resolution[[tres]] <- NC_Read(output_fileName)
+            }
+        }
+
+        return_ds <- datasets_by_resolution
     }
 
-    ## return dataset to user
-    ds
+    ## return dataset(s) to user
+    return_ds
 }

@@ -58,6 +58,15 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
 
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+
+      - name: Validate ArgumentUsage workbook
+        run: |
+          set -euo pipefail
+          Rscript .github/scripts/update_argument_usage.R
+          git diff --exit-code -- .github/ArgumentUsage.xlsx
+
       - name: Set up environment / dependencies
         run: |
           # install dependencies, etc.
@@ -71,7 +80,9 @@ jobs:
   release:
     name: Create GitHub Release
     runs-on: ubuntu-latest
-    needs: versioning
+    needs:
+      - versioning
+      - build
     # only create a release on pushes and when a version was produced
     if: ${{ github.event_name == 'push' && needs.versioning.outputs.version != '' }}
     permissions:
@@ -83,6 +94,9 @@ jobs:
         with:
           fetch-depth: 0
           fetch-tags: true
+
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
 
       - name: Update DESCRIPTION file with new version
         run: |
@@ -96,15 +110,24 @@ jobs:
           echo "New DESCRIPTION header:"
           head -n 5 DESCRIPTION
 
-          # Commit only if it actually changed
+      - name: Refresh ArgumentUsage workbook
+        run: |
+          set -euo pipefail
+          Rscript .github/scripts/update_argument_usage.R
+
+      - name: Commit release metadata
+        run: |
+          set -euo pipefail
+          VERSION="${{ needs.versioning.outputs.version }}"
+
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add DESCRIPTION
+          git add DESCRIPTION .github/ArgumentUsage.xlsx
           if ! git diff --cached --quiet; then
-            git commit -m "[skip ci] chore: bump DESCRIPTION Version to ${VERSION}"
+            git commit -m "[skip ci] chore: bump DESCRIPTION Version to ${VERSION} and refresh ArgumentUsage workbook"
             git push
           else
-            echo "DESCRIPTION already at ${VERSION}; nothing to commit."
+            echo "DESCRIPTION and ArgumentUsage workbook already up to date; nothing to commit."
           fi
 
       - name: Create GitHub Release

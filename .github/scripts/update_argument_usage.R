@@ -1,4 +1,9 @@
 #!/usr/bin/env Rscript
+# Refresh .github/ArgumentUsage.xlsx from the current package source.
+# The workbook is treated as a template so row order, column order, widths,
+# styles, and legacy labels are preserved where possible. Function signatures
+# come from R/, argument descriptions come from man/*.Rd, and the workbook is
+# only rewritten when the generated XML actually changes.
 
 args <- commandArgs(trailingOnly = TRUE)
 xlsx_path <- if (length(args) >= 1) args[[1]] else ".github/ArgumentUsage.xlsx"
@@ -97,6 +102,8 @@ rd_flatten <- function(node) {
 }
 
 parse_function_specs <- function(r_dir = "R") {
+    # Discover top-level package functions directly from source without
+    # evaluating their bodies. Dot-prefixed lifecycle hooks are skipped.
     files <- sort(list.files(r_dir, pattern = "[.][Rr]$", full.names = TRUE))
     specs <- list()
 
@@ -134,6 +141,7 @@ parse_function_specs <- function(r_dir = "R") {
 }
 
 parse_rd_arguments <- function(function_names, man_dir = "man") {
+    # Extract the canonical argument text from each generated Rd file.
     docs <- list()
 
     for (function_name in function_names) {
@@ -181,6 +189,7 @@ parse_rd_arguments <- function(function_names, man_dir = "man") {
 }
 
 validate_documentation <- function(function_specs, rd_docs) {
+    # Fail fast if a function signature and its Rd file disagree.
     for (function_name in names(function_specs)) {
         formal_keys <- normalize_arg_key(function_specs[[function_name]])
         doc_keys <- names(rd_docs[[function_name]])
@@ -201,6 +210,8 @@ validate_documentation <- function(function_specs, rd_docs) {
 }
 
 parse_shared_strings <- function(path) {
+    # The workbook uses shared strings for all populated cells, so these need
+    # to be decoded before the existing sheet can be matched and rebuilt.
     xml <- read_text(path)
     string_nodes <- extract_matches(xml, "(?s)<si>.*?</si>")
 
@@ -214,6 +225,8 @@ parse_shared_strings <- function(path) {
 }
 
 parse_sheet_template <- function(path, shared_strings) {
+    # Read the existing sheet so current argument rows and function columns can
+    # be preserved instead of re-sorted from scratch on each run.
     sheet_xml <- read_text(path)
     row_nodes <- extract_matches(sheet_xml, "(?s)<row\\b[^>]*>.*?</row>")
     rows <- list()
@@ -284,6 +297,8 @@ argument_description_overrides <- c(
 )
 
 order_functions <- function(existing_headers, current_functions) {
+    # Preserve the current workbook column order, apply known legacy header
+    # mappings, expand the old grouped Discovery column, and append anything new.
     ordered <- character()
     used <- character()
     removed_headers <- character()
@@ -361,6 +376,8 @@ build_existing_argument_map <- function(argument_rows) {
 }
 
 build_argument_order <- function(existing_argument_rows, function_specs, ordered_functions) {
+    # Keep existing argument row order for surviving arguments, then append
+    # newly introduced arguments in first-seen source order.
     source_order <- unique(unlist(lapply(ordered_functions, function(function_name) {
         normalize_arg_key(function_specs[[function_name]])
     }), use.names = FALSE))
@@ -393,6 +410,8 @@ build_doc_index <- function(ordered_functions, rd_docs) {
 }
 
 resolve_argument_description <- function(arg_key, existing_argument_map, doc_index) {
+    # Existing workbook text wins to avoid churn. New arguments must either
+    # have a single documented description or an explicit override above.
     if (!is.null(existing_argument_map[[arg_key]])) {
         existing_usage <- existing_argument_map[[arg_key]]$usage
         if (nzchar(normalize_ws(existing_usage))) {
@@ -467,6 +486,9 @@ make_shared_strings_xml <- function(values, total_count) {
 }
 
 make_sheet_data_xml <- function(argument_rows, ordered_functions, function_specs) {
+    # Rebuild the single worksheet as the same argument/function matrix:
+    # row 1 = headers, column A = argument names, column B = descriptions,
+    # remaining cells = X markers for argument usage.
     pool <- new_string_pool()
     total_cells <- 0L
     total_columns <- length(ordered_functions) + 2L
@@ -545,6 +567,8 @@ update_sheet_xml <- function(template_xml, new_dimension, new_cols_xml, new_shee
 }
 
 repack_xlsx <- function(tempdir, destination) {
+    # Keep the rest of the xlsx package untouched and only replace the rebuilt
+    # OpenXML payload after the new parts have been written to the temp tree.
     destination <- normalizePath(destination, winslash = "/", mustWork = FALSE)
     zip_path <- tempfile(fileext = ".xlsx")
     files <- list.files(tempdir, recursive = TRUE, all.files = TRUE, no.. = TRUE)
@@ -566,6 +590,12 @@ if (!file.exists(xlsx_path)) {
     stop("Workbook does not exist: ", xlsx_path)
 }
 
+# Main flow:
+# 1. unpack the current workbook
+# 2. read existing layout from sheet1/sharedStrings
+# 3. derive current functions and docs from source
+# 4. reconcile old layout with new source-of-truth
+# 5. write the workbook back only if the XML payload changed
 tempdir <- tempfile("argument-usage-")
 dir.create(tempdir)
 on.exit(unlink(tempdir, recursive = TRUE), add = TRUE)

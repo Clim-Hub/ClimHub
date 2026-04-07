@@ -127,7 +127,7 @@ Access_NORA3 <- function(
     }
     list()
   }
-  subset <- c(subset, list(time = c(as.character(Start), as.character(Stop + 21600)))) # Stop date/hour inclusive
+  subset <- c(subset, list(time = c(as.character(Start), as.character(Stop + leadTimeHour * 60 * 60 + 1)))) # Stop date/hour inclusive
 
   ## Download execution =========
   message("###### Data Download")

@@ -37,18 +37,16 @@
 #' @param projectionList List. List of `CFVariable` objects required by the selected ETCCDI indices via the `indices` argument. Include only named elements that are needed for `indices`: "TX" (daily maximum air temperature in Kelvin), "TN" (daily minimum air temperature in Kelvin), and/or "RR" (daily total precipitation in mm). See details for required data input per index.
 #' @param baseLineList Optional, list. List of `CFDataset` objects containing baseline quantiles required only for quantile-based ETCCDI indices. Include only named elements needed for `indices`: "TX_Base", "TN_Base", and/or "RR_Base" (note that these must be in Kelvin, Kelvin, and mm, respectively). If no quantile-based ETCCDI is selected, this argument can be omitted. See details for required quantile baselines per index.
 #' @param indices Optional, character. Character vector of ETCCDI abbreviations to calculate (see first column of the details table). If missing, all supported indices in this function are calculated. See details for supported indices.
-#' @param TResolution Optional, character. Temporal resolution for ETCCDI calculation. Supports "year", "month" and "season". If omitted, each selected index is calculated using its default temporal resolution from the details table. If provided, the same resolution is used for all selected indices and output variables whose default resolution differs are prefixed with "ALT_".
+#' @param TResolution Optional, character. Temporal resolution for ETCCDI calculation. Supports "year", "month" and "season". If omitted, each selected index is calculated using its default temporal resolution from the details table. If provided, the same resolution is used for all selected indices and output indices whose default resolution differs are prefixed with "ALT_".
 #' @param RRThreshold Numeric. Custom threshold for daily precipiation in mm for calculation of Rnnmm. Defaults to 42.
 #' @param fileName Character, optional. Character. A file name for the produced file, including path and ".nc" file ending. If no value is supplied, the dataset is not written to disk but returned as a `CFDataset` object in memory. If a file name is supplied and a file with that name already exists, the function will attempt to load and return that file instead of recalculating the indices.
 #'
 #' @importFrom ncdfCF as_CF
 #' @importFrom ncdfCF create_ncdf
 #'
-#' @return A `CFDataset` or a list of `CFDataset`s. If all calculated ETCCDI indices have the same temporal resolution (e.g., when `TResolution` is specified or a subset of `indices` is selected that share a temporal resolution default), a single `CFDataset` is returned containing all variables. If indices span multiple temporal resolutions (e.g., when `TResolution` is omitted and some of the requestred `indices` default to a temporal resolution of "year" while others default to "month"), a named list of `CFDataset`s is returned, each containing only variables of that temporal resolution, with names indicating the resolution ("year" or "month").
+#' @return A `CFDataset`. If all calculated ETCCDI indices have the same temporal resolution (e.g., when `TResolution` is specified or a subset of `indices` is selected that share a temporal resolution default), the returned `CFDataset` contains all variables in the root group. If indices span multiple temporal resolutions (e.g., when `TResolution` is omitted and some selected `indices` default to "year" while others default to "month"), the returned `CFDataset` contains one subgroup per temporal resolution, each containing only variables of that temporal resolution.
 #'
-#' When saving to disk with a `fileName`: (1) If all indices share one temporal resolution, a singular `CFDataset` is saved with the provided `fileName` appended with the shared temporal resolution. (2) If indices span multiple temporal resolutions, each resolution-specific `CFDataset` is saved with a suffix denoting its temporal resolution (e.g., "_year.nc", "_month.nc"). In the latter case, the function returns the list of resolution-specific datasets, each loaded from disk via `NC_Read()`.
-#'
-#' Each variable is named by its ETCCDI acronym and has a `long_name` attribute describing the index.
+#' Each variable is named by its ETCCDI acronym and has a `long_name` attribute describing the index. Acronyms of indices calculated with a non-default temporal resolution are prefixed with "ALT_" to indicate that these are alternative calculations.
 #'
 #' @author Erik Kusch
 #'
@@ -254,25 +252,9 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, indices, TResolution, R
 
     ## File Check with awareness of temporal resolution structure =========
     if (!missing(fileName)) {
-        if (length(unique_resolutions) == 1) {
-            # Single temporal resolution - single file to check
-            file_suffix <- paste0("_", unique_resolutions[1], ".nc")
-            checkFileName <- sub("\\.nc$", file_suffix, fileName)
-            FCheck <- Helper_FileCheck(fileName = checkFileName, loadFun = NC_Read, load = TRUE, verbose = TRUE)
-            if (!is.null(FCheck)) {
-                return(FCheck)
-            }
-        } else {
-            # Multiple temporal resolutions - check for resolution-specific files
-            resolution_files <- list()
-            for (tres in unique_resolutions) {
-                file_suffix <- paste0("_", tolower(tres), ".nc")
-                output_fileName <- sub("\\.nc$", file_suffix, fileName)
-                resolution_files[[tres]] <- Helper_FileCheck(fileName = output_fileName, loadFun = NC_Read, load = TRUE, verbose = TRUE)
-            }
-            if (all(sapply(resolution_files, Negate(is.null)))) {
-                return(resolution_files)
-            }
+        FCheck <- Helper_FileCheck(fileName = fileName, loadFun = NC_Read, load = TRUE, verbose = TRUE)
+        if (!is.null(FCheck)) {
+            return(FCheck)
         }
     }
 
@@ -678,39 +660,41 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, indices, TResolution, R
         RCPTOT = "Total Precipitation on Wet Days"
     )
 
-    # Create base dataset with all variables (regardless of temporal resolution)
-    base_ds <- ncdfCF::create_ncdf()
-    for (nm in names(Return_ls)) {
-        cfvar <- Return_ls[[nm]]
-        raw <- cfvar$raw()
-        outputName <- nm
-        if (userProvidedTResolution && defaultTResolution[[nm]] != providedTResolution) {
-            outputName <- paste0("ALT_", nm)
-        }
-        new_var <- ncdfCF::as_CF(outputName, raw)
-        if (nm %in% names(long_names)) {
-            new_var$set_attribute("long_name", "NC_CHAR", long_names[[nm]])
-        }
-        base_ds$add_variable(new_var)
-    }
-
     # Determine what to return and save (unique_resolutions already created before FCheck)
     if (length(unique_resolutions) == 1) {
         # Single temporal resolution - base dataset is sufficient
-        if (!missing(fileName)) {
-            base_file_suffix <- paste0("_", paste(unique_resolutions, collapse = "_"), ".nc")
-            base_fileName <- sub("\\.nc$", base_file_suffix, fileName)
-            base_ds$save(base_fileName)
-            return_ds <- NC_Read(base_fileName)
-        } else {
-            return_ds <- base_ds
+        return_ds <- ncdfCF::create_ncdf()
+        for (nm in names(Return_ls)) {
+            cfvar <- Return_ls[[nm]]
+            raw <- cfvar$raw()
+            outputName <- nm
+            ## adding variable with "ALT_" prefix if user provided a temporal resolution that differs from the default for this index
+            if (userProvidedTResolution && defaultTResolution[[nm]] != providedTResolution) {
+                outputName <- paste0("ALT_", nm)
+            }
+            new_var <- ncdfCF::as_CF(outputName, raw)
+            if (nm %in% names(long_names)) {
+                new_var$set_attribute("long_name", "NC_CHAR", long_names[[nm]])
+            }
+            return_ds$add_variable(new_var)
         }
     } else {
-        # Multiple temporal resolutions - create sub-datasets for each resolution
-        datasets_by_resolution <- list()
+        # Multiple temporal resolutions - create one dataset with one subgroup per resolution
+        return_ds <- ncdfCF::create_ncdf()
+        # List of shared objects that go into the root group (.. = parent group of the sub-group, i.e. the root group)
+        latlonnames <- c(
+            if (exists("TX")) names(TX$axes) else character(0),
+            if (exists("TN")) names(TN$axes) else character(0),
+            if (exists("RR")) names(RR$axes) else character(0)
+        )
+        latlonnames <- unique(latlonnames)
+        latlonnames <- latlonnames[!(latlonnames %in% "time")]
+        latlon <- as.list(rep("..", length(latlonnames) * 2 + 1))
+        names(latlon) <- c(latlonnames, paste0(latlonnames, "_bnds"), "height")
 
         for (tres in unique_resolutions) {
-            sub_ds <- ncdfCF::create_ncdf()
+            subgroup_name <- as.character(tres)
+            resolution_group <- return_ds$root$create_subgroup(subgroup_name)
             var_names_for_this_res <- names(tResolution_ls)[unlist(tResolution_ls) == tres]
 
             for (nm in var_names_for_this_res) {
@@ -724,24 +708,15 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, indices, TResolution, R
                 if (nm %in% names(long_names)) {
                     new_var$set_attribute("long_name", "NC_CHAR", long_names[[nm]])
                 }
-                sub_ds$add_variable(new_var)
-            }
-
-            datasets_by_resolution[[tres]] <- sub_ds
-        }
-
-        # Save datasets if fileName provided
-        if (!missing(fileName)) {
-            # Save each sub-dataset with resolution suffix
-            for (tres in unique_resolutions) {
-                file_suffix <- paste0("_", tolower(tres), ".nc")
-                output_fileName <- sub("\\.nc$", file_suffix, fileName)
-                datasets_by_resolution[[tres]]$save(output_fileName)
-                datasets_by_resolution[[tres]] <- NC_Read(output_fileName)
+                resolution_group$add_variable(new_var, locations = latlon)
             }
         }
+    }
 
-        return_ds <- datasets_by_resolution
+    ## saving if fileName provided, otherwise just return dataset object
+    if (!missing(fileName)) {
+        return_ds$save(fileName)
+        return_ds <- NC_Read(fileName)
     }
 
     ## return dataset(s) to user

@@ -20,18 +20,16 @@ Metrics_ETCCDI(
 
 \item{indices}{Optional, character. Character vector of ETCCDI abbreviations to calculate (see first column of the details table). If missing, all supported indices in this function are calculated. See details for supported indices.}
 
-\item{TResolution}{Optional, character. Temporal resolution for ETCCDI calculation. Supports "year", "month" and "season". If omitted, each selected index is calculated using its default temporal resolution from the details table. If provided, the same resolution is used for all selected indices and output variables whose default resolution differs are prefixed with "ALT_".}
+\item{TResolution}{Optional, character. Temporal resolution for ETCCDI calculation. Supports "year", "month" and "season". If omitted, each selected index is calculated using its default temporal resolution from the details table. If provided, the same resolution is used for all selected indices and output indices whose default resolution differs are prefixed with "ALT_".}
 
 \item{RRThreshold}{Numeric. Custom threshold for daily precipiation in mm for calculation of Rnnmm. Defaults to 42.}
 
 \item{fileName}{Character, optional. Character. A file name for the produced file, including path and ".nc" file ending. If no value is supplied, the dataset is not written to disk but returned as a \code{CFDataset} object in memory. If a file name is supplied and a file with that name already exists, the function will attempt to load and return that file instead of recalculating the indices.}
 }
 \value{
-A \code{CFDataset} or a list of \code{CFDataset}s. If all calculated ETCCDI indices have the same temporal resolution (e.g., when \code{TResolution} is specified or a subset of \code{indices} is selected that share a temporal resolution default), a single \code{CFDataset} is returned containing all variables. If indices span multiple temporal resolutions (e.g., when \code{TResolution} is omitted and some of the requestred \code{indices} default to a temporal resolution of "year" while others default to "month"), a named list of \code{CFDataset}s is returned, each containing only variables of that temporal resolution, with names indicating the resolution ("year" or "month").
+A \code{CFDataset}. If all calculated ETCCDI indices have the same temporal resolution (e.g., when \code{TResolution} is specified or a subset of \code{indices} is selected that share a temporal resolution default), the returned \code{CFDataset} contains all variables in the root group. If indices span multiple temporal resolutions (e.g., when \code{TResolution} is omitted and some selected \code{indices} default to "year" while others default to "month"), the returned \code{CFDataset} contains one subgroup per temporal resolution, each containing only variables of that temporal resolution.
 
-When saving to disk with a \code{fileName}: (1) If all indices share one temporal resolution, a singular \code{CFDataset} is saved with the provided \code{fileName} appended with the shared temporal resolution. (2) If indices span multiple temporal resolutions, each resolution-specific \code{CFDataset} is saved with a suffix denoting its temporal resolution (e.g., "_year.nc", "_month.nc"). In the latter case, the function returns the list of resolution-specific datasets, each loaded from disk via \code{NC_Read()}.
-
-Each variable is named by its ETCCDI acronym and has a \code{long_name} attribute describing the index.
+Each variable is named by its ETCCDI acronym and has a \code{long_name} attribute describing the index. Acronyms of indices calculated with a non-default temporal resolution are prefixed with "ALT_" to indicate that these are alternative calculations.
 }
 \description{
 This function calculates \href{https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/jgrd.50203}{ETCCDIs} from a named list of CFVariable objects. Currently, only some ETCCDI are supported.

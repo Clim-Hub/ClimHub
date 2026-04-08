@@ -68,7 +68,7 @@ Access_KlimaiNorge2100 <- function(
         ),
         Time = list(
             Input = c(Start, Stop),
-            Allowed = QuickFacts_ls$time$extent,
+            Allowed = as.POSIXct(paste0(QuickFacts_ls$time$extent, "00:00:00"), tz = "UTC"),
             Operator = "exceeds"
         ),
         Methods = list(

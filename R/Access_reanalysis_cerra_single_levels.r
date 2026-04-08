@@ -133,7 +133,7 @@ Access_reanalysis_cerra_single_levels <- function(
         Time = list(
             Input = Dates_df$UTC,
             Allowed = c(
-                QuickFacts_ls$time$extent[1],
+                as.POSIXct(paste0(QuickFacts_ls$time$extent[1], "00:00:00"), tz = "UTC"),
                 gsub(" UTC", "", Helper_MakeUTC(dates = as.POSIXct(paste0(format(Sys.time(), "%Y-%m-%d %H"), ":00")))$UTC) # assuming current day and hour as possible end since dataset is released ongoingly
             ),
             Operator = "exceeds"

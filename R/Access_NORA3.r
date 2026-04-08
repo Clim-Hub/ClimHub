@@ -57,7 +57,7 @@ Access_NORA3 <- function(
     ),
     Time = list(
       Input = c(Start, Stop),
-      Allowed = c(QuickFacts_ls$time$extent[1], paste0(format(Sys.time(), "%Y-%m-%d %H"), ":00")), # assuming current day and hour as possible end since dataset is released ongoingly
+      Allowed = c(as.POSIXct(paste0(QuickFacts_ls$time$extent[1], "00:00:00"), tz = "UTC"), as.POSIXct(paste0(format(Sys.time(), "%Y-%m-%d %H"), ":00"), tz = "UTC ")), # assuming current day and hour as possible end since dataset is released ongoingly
       Operator = "exceeds"
     ),
     leadTimeHour = list(

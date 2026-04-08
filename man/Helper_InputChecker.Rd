@@ -18,13 +18,13 @@ Loops over contents of a named list of lists where each sublist contains the poi
 }
 \examples{
 Variable <- "Maximum Air Temperature"
-DateStart <- "1971-01-01"
-DateStop <- "1971-08-31"
+dateStart <- "1971-01-01"
+dateStop <- "1971-08-31"
 Model <- "CNRM_CCLM"
 Scenario <- "rcp85"
 
-Start <- as.POSIXct(paste0(DateStart, "00:00:00"), tz = "UTC")
-Stop <- as.POSIXct(paste0(DateStop, "00:00:00"), tz = "UTC")
+Start <- as.POSIXct(paste0(dateStart, "00:00:00"), tz = "UTC")
+Stop <- as.POSIXct(paste0(dateStop, "00:00:00"), tz = "UTC")
 
 inputCheck <- list(
     Variable = list(

@@ -20,7 +20,7 @@ Metrics_ETCCDI(
 
 \item{indices}{Optional, character. Character vector of ETCCDI abbreviations to calculate (see first column of the details table). If missing, all supported indices in this function are calculated. See details for supported indices.}
 
-\item{TResolution}{Optional, character. Temporal resolution for ETCCDI calculation. Supports "year", "month" and "season". If omitted, each selected index is calculated using its default temporal resolution from the details table. If provided, the same resolution is used for all selected indices and output indices whose default resolution differs are prefixed with "ALT_".}
+\item{TResolution}{Optional, character. Temporal resolution for ETCCDI calculation. Supports "year", "month" and "season". If omitted, each selected index is calculated using its default temporal resolution from the details table. If provided, the same resolution is used for all selected indices and output indices whose default resolution differs are prefixed with "ALT_". Note that this is not applied to GSL which is always calculated at annual resolution due to its specific logic.}
 
 \item{RRThreshold}{Numeric. Custom threshold for daily precipiation in mm for calculation of Rnnmm. Defaults to 42.}
 
@@ -37,33 +37,33 @@ This function calculates \href{https://agupubs.onlinelibrary.wiley.com/doi/full/
 \details{
 Input requirements are conditional on the selected ETCCDI indices in the \code{indices} argument (see table below). To reduce memory usage and speed up calculations, supply only the inputs required for the selected indices.\tabular{llllll}{
    \strong{ETCCDI} \tab \strong{Name} \tab \strong{Required Data} \tab \strong{Description} \tab \strong{Unit} \tab \strong{Default \code{TResolution}} \cr
-   FD \tab Number of frost days \tab \code{TN} \tab Annual count of days when TN (daily minimum temperature) < 0°C. \tab days \tab year \cr
-   SU \tab Number of summer days \tab \code{TX} \tab Annual count of days when TX (daily maximum temperature) > 25°C. \tab days \tab year \cr
-   ID \tab Number of icing days \tab \code{TX} \tab Annual count of days when TX (daily maximum temperature) < 0°C. \tab days \tab year \cr
-   TR \tab Number of tropical nights \tab \code{TN} \tab Annual count of days when TN (daily minimum temperature) > 20°C. \tab days \tab year \cr
+   FD \tab Number of frost days \tab \code{TN} \tab Count of days when TN (daily minimum temperature) < 0°C. \tab days \tab year \cr
+   SU \tab Number of summer days \tab \code{TX} \tab Count of days when TX (daily maximum temperature) > 25°C. \tab days \tab year \cr
+   ID \tab Number of icing days \tab \code{TX} \tab Count of days when TX (daily maximum temperature) < 0°C. \tab days \tab year \cr
+   TR \tab Number of tropical nights \tab \code{TN} \tab Count of days when TN (daily minimum temperature) > 20°C. \tab days \tab year \cr
    GSL \tab Growing Season Length \tab \code{TX}, \code{TN} \tab Annual count of days between the first occurrence of at least 6 consecutive days with (TN+TX)/2 > 5°C and the first occurrence after 1st July (Northern Hemisphere) or 1st January (Southern Hemisphere) of at least 6 consecutive days with (TN+TX)/2 < 5°C \tab days \tab year \cr
-   TXx \tab Max of Daily Max Temp \tab \code{TX} \tab Maximum daily maximum temperature in each month. \tab K \tab month \cr
-   TNx \tab Max of Daily Min Temp \tab \code{TN} \tab Maximum daily minimum temperature in each month. \tab K \tab month \cr
-   TXn \tab Min of Daily Max Temp \tab \code{TX} \tab Minimum daily maximum temperature in each month. \tab K \tab month \cr
-   TNn \tab Min of Daily Min Temp \tab \code{TN} \tab Minimum daily minimum temperature in each month. \tab K \tab month \cr
-   TN10p \tab Percent Days TN < 10th Percentile \tab \code{TN}, \code{TN_Base} \tab Percent of days, per year, where TN < 10th percentile of base period. \tab \% \tab year \cr
-   TX10p \tab Percent Days TX < 10th Percentile \tab \code{TX}, \code{TX_Base} \tab Percent of days, per year, where TX < 10th percentile of base period. \tab \% \tab year \cr
-   TN90p \tab Percent Days TN > 90th Percentile \tab \code{TN}, \code{TN_Base} \tab Percent of days, per year, where TN > 90th percentile of base period. \tab \% \tab year \cr
-   TX90p \tab Percent Days TX > 90th Percentile \tab \code{TX}, \code{TX_Base} \tab Percent of days, per year, where TX > 90th percentile of base period. \tab \% \tab year \cr
-   WSDI \tab Warm Spell Duration Index \tab \code{TX}, \code{TX_Base} \tab Annual count of days contained within runs of 6+ consecutive days when TX > 90th percentile of base period. \tab days \tab year \cr
-   CSDI \tab Cold Spell Duration Index \tab \code{TN}, \code{TX_Base} \tab Annual count of days contained within runs of 6+ consecutive days when TN < 10th percentile of base period. \tab days \tab year \cr
-   DTR \tab Daily Temperature Range \tab \code{TX}, \code{TN} \tab Monthly mean difference between daily max (TX) and min (TN) temperatures. \tab K \tab month \cr
-   Rx1day \tab Max 1-day Precipitation \tab \code{RR} \tab Maximum precipitation in a single day each month. \tab mm \tab month \cr
-   Rx5day \tab Max 5-day Precipitation \tab \code{RR} \tab Maximum precipitation over any 5 consecutive days in each month. \tab mm \tab month \cr
+   TXx \tab Max of Daily Max Temp \tab \code{TX} \tab Maximum daily maximum temperature. \tab K \tab month \cr
+   TNx \tab Max of Daily Min Temp \tab \code{TN} \tab Maximum daily minimum temperature. \tab K \tab month \cr
+   TXn \tab Min of Daily Max Temp \tab \code{TX} \tab Minimum daily maximum temperature. \tab K \tab month \cr
+   TNn \tab Min of Daily Min Temp \tab \code{TN} \tab Minimum daily minimum temperature. \tab K \tab month \cr
+   TN10p \tab Percent Days TN < 10th Percentile \tab \code{TN}, \code{TN_Base} \tab Percent of days where TN < 10th percentile of base period. \tab \% \tab year \cr
+   TX10p \tab Percent Days TX < 10th Percentile \tab \code{TX}, \code{TX_Base} \tab Percent of days where TX < 10th percentile of base period. \tab \% \tab year \cr
+   TN90p \tab Percent Days TN > 90th Percentile \tab \code{TN}, \code{TN_Base} \tab Percent of days where TN > 90th percentile of base period. \tab \% \tab year \cr
+   TX90p \tab Percent Days TX > 90th Percentile \tab \code{TX}, \code{TX_Base} \tab Percent of days where TX > 90th percentile of base period. \tab \% \tab year \cr
+   WSDI \tab Warm Spell Duration Index \tab \code{TX}, \code{TX_Base} \tab Count of days contained within runs of 6+ consecutive days when TX > 90th percentile of base period. Note that periods of consecutive days are attributed to the time window in which the sequence terminates. \tab days \tab year \cr
+   CSDI \tab Cold Spell Duration Index \tab \code{TN}, \code{TN_Base} \tab Count of days contained within runs of 6+ consecutive days when TN < 10th percentile of base period. Note that periods of consecutive days are attributed to the time window in which the sequence terminates. \tab days \tab year \cr
+   DTR \tab Daily Temperature Range \tab \code{TX}, \code{TN} \tab Mean difference between daily max (TX) and min (TN) temperatures. \tab K \tab month \cr
+   Rx1day \tab Max 1-day Precipitation \tab \code{RR} \tab Maximum precipitation in a single day. \tab mm \tab month \cr
+   Rx5day \tab Max 5-day Precipitation \tab \code{RR} \tab Maximum precipitation over any 5 consecutive days. \tab mm \tab month \cr
    SDII \tab Simple Precipitation Intensity Index \tab \code{RR} \tab Mean precipitation amount on wet days (RR ≥ 1mm). \tab mm/day \tab year \cr
-   R10mm \tab Days with Precip ≥ 10mm \tab \code{RR} \tab Annual count of days with precipitation ≥ 10mm. \tab days \tab year \cr
-   R20mm \tab Days with Precip ≥ 20mm \tab \code{RR} \tab Annual count of days with precipitation ≥ 20mm. \tab days \tab year \cr
-   Rnnmm \tab Days with Precip ≥ user-defined threshold \tab \code{RR} \tab Annual count of days with precipitation ≥ nnmm. \tab days \tab year \cr
-   CDD \tab Consecutive Dry Days \tab \code{RR} \tab Maximum number of consecutive days with RR < 1mm. \tab days \tab year \cr
-   CWD \tab Consecutive Wet Days \tab \code{RR} \tab Maximum number of consecutive days with RR ≥ 1mm. \tab days \tab year \cr
+   R10mm \tab Days with Precip ≥ 10mm \tab \code{RR} \tab Count of days with precipitation ≥ 10mm. \tab days \tab year \cr
+   R20mm \tab Days with Precip ≥ 20mm \tab \code{RR} \tab Count of days with precipitation ≥ 20mm. \tab days \tab year \cr
+   Rnnmm \tab Days with Precip ≥ user-defined threshold \tab \code{RR} \tab Count of days with precipitation ≥ nnmm. \tab days \tab year \cr
+   CDD \tab Consecutive Dry Days \tab \code{RR} \tab Maximum number of consecutive days with RR < 1mm. Note that periods of consecutive days are attributed to the time window in which the sequence terminates. \tab days \tab year \cr
+   CWD \tab Consecutive Wet Days \tab \code{RR} \tab Maximum number of consecutive days with RR ≥ 1mm. Note that periods of consecutive days are attributed to the time window in which the sequence terminates. \tab days \tab year \cr
    R95pTOT \tab Total Precipitation from RR > 95th Percentile \tab \code{RR}, \code{RR_Base} \tab Total precipitation from wet days (RR > 95th percentile of base period). \tab mm \tab year \cr
    R99pTOT \tab Total Precipitation from RR > 99th Percentile \tab \code{RR}, \code{RR_Base} \tab Total precipitation from wet days (RR > 99th percentile of base period). \tab mm \tab year \cr
-   RCPTOT \tab Total Precipitation on Wet Days \tab \code{RR} \tab Sum of precipitation on wet days (RR ≥ 1mm) over a year. \tab mm \tab year \cr
+   RCPTOT \tab Total Precipitation on Wet Days \tab \code{RR} \tab Sum of precipitation on wet days (RR ≥ 1mm). \tab mm \tab year \cr
 }
 }
 \examples{

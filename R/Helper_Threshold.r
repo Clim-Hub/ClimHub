@@ -85,8 +85,9 @@ Helper_Threshold <- function(CFVariable, operator, threshold, threshMode = NULL,
     # Loop over the attributes and set them in the new CFVariable
     apply(atts, 1, function(a) Thresh_CF$set_attribute(a$name, a$type, a$value))
 
-    ## return summary
-    if (exists("returnSummary")) {
+    ## return summary only when explicitly requested by caller
+    ## (run-based ETCCDI logic needs unsummarised daily output)
+    if (!missing(returnSummary)) {
         Thresh_CF <- Thresh_CF$summarise(
             "Tresholded",
             returnSummary,

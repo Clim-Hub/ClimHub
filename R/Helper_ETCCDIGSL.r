@@ -68,8 +68,8 @@ Helper_ETCCDIGSL <- function(TM) {
         yrs <- sort(unique(as.integer(format(dates, "%Y"))))
 
         ## makke arrays for filling with information about start/end dates and GSL days
-        nlon <- dim(arr)[1]
-        nlat <- dim(arr)[2]
+        nlon <- dim(arr)[which(names(dn) == "lon")]
+        nlat <- dim(arr)[which(names(dn) == "lat")]
         ny <- length(yrs)
         startDate <- array(as.Date(NA),
             dim = c(nlon, nlat, ny),

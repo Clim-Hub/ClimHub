@@ -6,38 +6,38 @@
 #'
 #' | **ETCCDI** | **Name** | **Required Data** | **Description** | **Unit** | **Default `TResolution`** |
 #' |---|---|---|---|---|---|
-#' | FD | Number of frost days | `TN` | Annual count of days when TN (daily minimum temperature) < 0°C. | days | year |
-#' | SU | Number of summer days | `TX` | Annual count of days when TX (daily maximum temperature) > 25°C. | days | year |
-#' | ID | Number of icing days | `TX` | Annual count of days when TX (daily maximum temperature) < 0°C. | days | year |
-#' | TR | Number of tropical nights | `TN` | Annual count of days when TN (daily minimum temperature) > 20°C. | days | year |
+#' | FD | Number of frost days | `TN` | Count of days when TN (daily minimum temperature) < 0°C. | days | year |
+#' | SU | Number of summer days | `TX` | Count of days when TX (daily maximum temperature) > 25°C. | days | year |
+#' | ID | Number of icing days | `TX` | Count of days when TX (daily maximum temperature) < 0°C. | days | year |
+#' | TR | Number of tropical nights | `TN` | Count of days when TN (daily minimum temperature) > 20°C. | days | year |
 #' | GSL | Growing Season Length | `TX`, `TN` | Annual count of days between the first occurrence of at least 6 consecutive days with (TN+TX)/2 > 5°C and the first occurrence after 1st July (Northern Hemisphere) or 1st January (Southern Hemisphere) of at least 6 consecutive days with (TN+TX)/2 < 5°C | days | year |
-#' | TXx | Max of Daily Max Temp | `TX` | Maximum daily maximum temperature in each month. | K | month |
-#' | TNx | Max of Daily Min Temp | `TN` | Maximum daily minimum temperature in each month. | K | month |
-#' | TXn | Min of Daily Max Temp | `TX` | Minimum daily maximum temperature in each month. | K | month |
-#' | TNn | Min of Daily Min Temp | `TN` | Minimum daily minimum temperature in each month. | K | month |
-#' | TN10p | Percent Days TN < 10th Percentile | `TN`, `TN_Base` | Percent of days, per year, where TN < 10th percentile of base period. | % | year |
-#' | TX10p | Percent Days TX < 10th Percentile | `TX`, `TX_Base` | Percent of days, per year, where TX < 10th percentile of base period. | % | year |
-#' | TN90p | Percent Days TN > 90th Percentile | `TN`, `TN_Base` | Percent of days, per year, where TN > 90th percentile of base period. | % | year |
-#' | TX90p | Percent Days TX > 90th Percentile | `TX`, `TX_Base` | Percent of days, per year, where TX > 90th percentile of base period. | % | year |
-#' | WSDI | Warm Spell Duration Index | `TX`, `TX_Base` | Annual count of days contained within runs of 6+ consecutive days when TX > 90th percentile of base period. | days | year |
-#' | CSDI | Cold Spell Duration Index | `TN`, `TX_Base` | Annual count of days contained within runs of 6+ consecutive days when TN < 10th percentile of base period. | days | year |
-#' | DTR | Daily Temperature Range | `TX`, `TN` | Monthly mean difference between daily max (TX) and min (TN) temperatures. | K | month |
-#' | Rx1day | Max 1-day Precipitation | `RR` | Maximum precipitation in a single day each month. | mm | month |
-#' | Rx5day | Max 5-day Precipitation | `RR` | Maximum precipitation over any 5 consecutive days in each month. | mm | month |
+#' | TXx | Max of Daily Max Temp | `TX` | Maximum daily maximum temperature. | K | month |
+#' | TNx | Max of Daily Min Temp | `TN` | Maximum daily minimum temperature. | K | month |
+#' | TXn | Min of Daily Max Temp | `TX` | Minimum daily maximum temperature. | K | month |
+#' | TNn | Min of Daily Min Temp | `TN` | Minimum daily minimum temperature. | K | month |
+#' | TN10p | Percent Days TN < 10th Percentile | `TN`, `TN_Base` | Percent of days where TN < 10th percentile of base period. | % | year |
+#' | TX10p | Percent Days TX < 10th Percentile | `TX`, `TX_Base` | Percent of days where TX < 10th percentile of base period. | % | year |
+#' | TN90p | Percent Days TN > 90th Percentile | `TN`, `TN_Base` | Percent of days where TN > 90th percentile of base period. | % | year |
+#' | TX90p | Percent Days TX > 90th Percentile | `TX`, `TX_Base` | Percent of days where TX > 90th percentile of base period. | % | year |
+#' | WSDI | Warm Spell Duration Index | `TX`, `TX_Base` | Count of days contained within runs of 6+ consecutive days when TX > 90th percentile of base period. Note that periods of consecutive days are attributed to the time window in which the sequence terminates. | days | year |
+#' | CSDI | Cold Spell Duration Index | `TN`, `TN_Base` | Count of days contained within runs of 6+ consecutive days when TN < 10th percentile of base period. Note that periods of consecutive days are attributed to the time window in which the sequence terminates. | days | year |
+#' | DTR | Daily Temperature Range | `TX`, `TN` | Mean difference between daily max (TX) and min (TN) temperatures. | K | month |
+#' | Rx1day | Max 1-day Precipitation | `RR` | Maximum precipitation in a single day. | mm | month |
+#' | Rx5day | Max 5-day Precipitation | `RR` | Maximum precipitation over any 5 consecutive days. | mm | month |
 #' | SDII | Simple Precipitation Intensity Index | `RR` | Mean precipitation amount on wet days (RR ≥ 1mm). | mm/day | year |
-#' | R10mm | Days with Precip ≥ 10mm | `RR` | Annual count of days with precipitation ≥ 10mm. | days | year |
-#' | R20mm | Days with Precip ≥ 20mm | `RR` | Annual count of days with precipitation ≥ 20mm. | days | year |
-#' | Rnnmm | Days with Precip ≥ user-defined threshold | `RR` | Annual count of days with precipitation ≥ nnmm. | days | year |
-#' | CDD | Consecutive Dry Days | `RR` | Maximum number of consecutive days with RR < 1mm. | days | year |
-#' | CWD | Consecutive Wet Days | `RR` | Maximum number of consecutive days with RR ≥ 1mm. | days | year |
+#' | R10mm | Days with Precip ≥ 10mm | `RR` | Count of days with precipitation ≥ 10mm. | days | year |
+#' | R20mm | Days with Precip ≥ 20mm | `RR` | Count of days with precipitation ≥ 20mm. | days | year |
+#' | Rnnmm | Days with Precip ≥ user-defined threshold | `RR` | Count of days with precipitation ≥ nnmm. | days | year |
+#' | CDD | Consecutive Dry Days | `RR` | Maximum number of consecutive days with RR < 1mm. Note that periods of consecutive days are attributed to the time window in which the sequence terminates. | days | year |
+#' | CWD | Consecutive Wet Days | `RR` | Maximum number of consecutive days with RR ≥ 1mm. Note that periods of consecutive days are attributed to the time window in which the sequence terminates. | days | year |
 #' | R95pTOT | Total Precipitation from RR > 95th Percentile | `RR`, `RR_Base` | Total precipitation from wet days (RR > 95th percentile of base period). | mm | year |
 #' | R99pTOT | Total Precipitation from RR > 99th Percentile | `RR`, `RR_Base` | Total precipitation from wet days (RR > 99th percentile of base period). | mm | year |
-#' | RCPTOT | Total Precipitation on Wet Days | `RR` | Sum of precipitation on wet days (RR ≥ 1mm) over a year. | mm | year |
+#' | RCPTOT | Total Precipitation on Wet Days | `RR` | Sum of precipitation on wet days (RR ≥ 1mm). | mm | year |
 #'
 #' @param projectionList List. List of `CFVariable` objects required by the selected ETCCDI indices via the `indices` argument. Include only named elements that are needed for `indices`: "TX" (daily maximum air temperature in Kelvin), "TN" (daily minimum air temperature in Kelvin), and/or "RR" (daily total precipitation in mm). See details for required data input per index.
 #' @param baseLineList Optional, list. List of `CFDataset` objects containing baseline quantiles required only for quantile-based ETCCDI indices. Include only named elements needed for `indices`: "TX_Base", "TN_Base", and/or "RR_Base" (note that these must be in Kelvin, Kelvin, and mm, respectively). If no quantile-based ETCCDI is selected, this argument can be omitted. See details for required quantile baselines per index.
 #' @param indices Optional, character. Character vector of ETCCDI abbreviations to calculate (see first column of the details table). If missing, all supported indices in this function are calculated. See details for supported indices.
-#' @param TResolution Optional, character. Temporal resolution for ETCCDI calculation. Supports "year", "month" and "season". If omitted, each selected index is calculated using its default temporal resolution from the details table. If provided, the same resolution is used for all selected indices and output indices whose default resolution differs are prefixed with "ALT_".
+#' @param TResolution Optional, character. Temporal resolution for ETCCDI calculation. Supports "year", "month" and "season". If omitted, each selected index is calculated using its default temporal resolution from the details table. If provided, the same resolution is used for all selected indices and output indices whose default resolution differs are prefixed with "ALT_". Note that this is not applied to GSL which is always calculated at annual resolution due to its specific logic.
 #' @param RRThreshold Numeric. Custom threshold for daily precipiation in mm for calculation of Rnnmm. Defaults to 42.
 #' @param fileName Character, optional. Character. A file name for the produced file, including path and ".nc" file ending. If no value is supplied, the dataset is not written to disk but returned as a `CFDataset` object in memory. If a file name is supplied and a file with that name already exists, the function will attempt to load and return that file instead of recalculating the indices.
 #'
@@ -262,38 +262,59 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, indices, TResolution, R
     pb <- Helper_Progress(iterLength = length(selectedIndices), text = "ETCCDI Calculation")
 
     ## summary functions
-    ### count maximum run of 1s (value 1 represents a value exceeding a given threshold supplied to and evaluated by Helper_Threshold)
-    max_run_of_ones <- function(x) {
-        if (length(na.omit(x)) == 0) {
-            return(NA_real_)
-        }
-        x[is.na(x)] <- 0 # convert NAs to 0s as NAs break the computation
-        if (length(x) == 0) {
-            return(NA_real_)
-        }
-        r <- rle(x == 1) # run‑length encode logical test
-        if (any(r$values)) { # any runs of 1
-            max(r$lengths[r$values])
-        } else {
-            0
-        } # length of longest TRUE run
-    }
+    ### assign full run lengths to run end-points on the daily axis
+    ### this lets temporal aggregation assign a boundary-crossing run to the period where it ends
+    run_end_weighted_series <- function(binary_cf, minRunLength = 1) {
+        raw_array <- binary_cf$raw()
+        dn <- dimnames(raw_array)
 
-    ### sum number of days in runs exceeding certain threshold of length
-    sum_run_of_ones <- function(x, thresh = 6) {
-        if (length(na.omit(x)) == 0) {
-            return(NA_real_)
+        nlon <- dim(raw_array)[which(names(dn) == "lon")]
+        nlat <- dim(raw_array)[which(names(dn) == "lat")]
+
+        # Allocate output array with the same shape as the input, filled with zeros. Only run end-point positions will be set to non-zero values.
+        out_array <- array(0, dim = dim(raw_array), dimnames = dn)
+
+        # Loop over every spatial grid cell, identical in style to Helper_ETCCDIGSL.
+        for (i in seq_len(nlon)) {
+            for (j in seq_len(nlat)) {
+                # Extract the full daily time series for this lon/lat cell.
+                x <- raw_array[i, j, ]
+
+                # If the entire time series is NA (e.g. ocean mask), propagate NAs and move on.
+                if (all(is.na(x))) {
+                    out_array[i, j, ] <- NA_real_
+                    next
+                }
+
+                # Treat NAs as non-events (0) so they break consecutive runs rather than silently bridging two separate runs into one.
+                x[is.na(x)] <- 0
+
+                # Run-length encode the full daily binary series (1 = event, 0 = non-event). rle() returns $lengths (number of consecutive days) and $values (TRUE/FALSE).
+                runs <- rle(x == 1)
+
+                # cumsum of lengths gives the time-axis index of the LAST day of each run. Example: lengths c(3, 4, 2) → end-points at positions 3, 7, 9. We use this as an index for where a run ends so we can use it for assignment of the run length value to the correct day in the output array.
+                run_ends <- cumsum(runs$lengths)
+
+                # Keep only truly event runs (values == TRUE) that are long enough to qualify.
+                # minRunLength = 1 keeps all runs (used by CDD and CWD).
+                # minRunLength = 6 keeps only spells of 6+ consecutive days (used by WSDI and CSDI).
+                qualifying_runs <- runs$values & runs$lengths >= minRunLength
+
+                if (any(qualifying_runs)) {
+                    # Write the full run length at the run's end-point index. All other days stay 0. This encodes the boundary-attribution rule: a run that crosses a period boundary (e.g. 4 days in year 1 + 3 days in year 2, total 7) will place its value (7) at the end-point day in year 2. When the temporal summary then sums (WSDI/CSDI) or takes the max (CDD/CWD) per period, year 1 contributes nothing and year 2 receives the full run length.
+                    out_array[i, j, run_ends[qualifying_runs]] <- runs$lengths[qualifying_runs]
+                }
+            }
         }
-        x[is.na(x)] <- 0 # convert NAs to 0s as NAs break the computation
-        if (length(x) == 0) {
-            return(NA_real_)
+
+        # Wrap the result back into a CFVariable so it can be passed to $summarise().
+        run_cf <- ncdfCF::as_CF("Thresholded", out_array)
+        # Copy metadata attributes from the source, excluding actual_range which is now stale.
+        atts <- binary_cf$attributes[binary_cf$attributes$name != "actual_range", ]
+        if (nrow(atts) > 0) {
+            apply(atts, 1, function(a) run_cf$set_attribute(a$name, a$type, a$value))
         }
-        r <- rle(x == 1) # run‑length encode logical test
-        if (any(r$values)) { # any runs of 1
-            sum(r$lengths[r$values][r$lengths[r$values] > 6])
-        } else {
-            0
-        } # length of longest TRUE run
+        run_cf
     }
 
     ### compute maximum of 5 day intervals
@@ -496,25 +517,35 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, indices, TResolution, R
             )
         },
         WSDI = function() {
-            Helper_Threshold(
+            # Calculate spells on the full daily axis, then aggregate by run end period.
+            binary_cf <- Helper_Threshold(
                 TX,
                 operator = ">",
                 threshold = TX_Base[[names(TX_Base)[2]]],
                 threshMode = "ETCCDIQuantiles",
                 returnValues = FALSE,
-                returnSummary = sum_run_of_ones,
                 returnTResolution = get_index_t_resolution("WSDI")
+            )
+            run_end_weighted_series(binary_cf, minRunLength = 6)$summarise(
+                "Tresholded",
+                sum_non_na,
+                get_index_t_resolution("WSDI")
             )
         },
         CSDI = function() {
-            Helper_Threshold(
+            # CSDI uses TN against TN baseline 10th percentile.
+            binary_cf <- Helper_Threshold(
                 TN,
                 operator = "<",
-                threshold = TX_Base[[names(TX_Base)[1]]],
+                threshold = TN_Base[[names(TN_Base)[1]]],
                 threshMode = "ETCCDIQuantiles",
                 returnValues = FALSE,
-                returnSummary = sum_run_of_ones,
                 returnTResolution = get_index_t_resolution("CSDI")
+            )
+            run_end_weighted_series(binary_cf, minRunLength = 6)$summarise(
+                "Tresholded",
+                sum_non_na,
+                get_index_t_resolution("CSDI")
             )
         },
         DTR = function() {
@@ -567,24 +598,33 @@ Metrics_ETCCDI <- function(projectionList, baseLineList, indices, TResolution, R
                 returnTResolution = get_index_t_resolution("Rnnmm")
             )
         },
-        CDD = function() { #  !! ISSUES HERE, TALK TO NINA
-            Helper_Threshold(
+        CDD = function() {
+            binary_cf <- Helper_Threshold(
                 RR,
                 operator = "<",
                 threshold = 1,
                 returnValues = FALSE,
-                returnSummary = max_run_of_ones,
                 returnTResolution = get_index_t_resolution("CDD")
             )
+            # Endpoint-weighted runs ensure boundary-crossing runs are assigned at their end.
+            run_end_weighted_series(binary_cf, minRunLength = 1)$summarise(
+                "Tresholded",
+                max_non_na,
+                get_index_t_resolution("CDD")
+            )
         },
-        CWD = function() { #  !! ISSUES HERE, TALK TO NINA
-            Helper_Threshold(
+        CWD = function() {
+            binary_cf <- Helper_Threshold(
                 RR,
                 operator = ">=",
                 threshold = 1,
                 returnValues = FALSE,
-                returnSummary = max_run_of_ones,
                 returnTResolution = get_index_t_resolution("CWD")
+            )
+            run_end_weighted_series(binary_cf, minRunLength = 1)$summarise(
+                "Tresholded",
+                max_non_na,
+                get_index_t_resolution("CWD")
             )
         },
         R95pTOT = function() {

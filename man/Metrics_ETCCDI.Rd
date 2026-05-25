@@ -4,30 +4,174 @@
 \alias{Metrics_ETCCDI}
 \title{Calculate ETCCDI Indices from List Input}
 \usage{
-Metrics_ETCCDI(ls)
+Metrics_ETCCDI(
+  projectionList,
+  baseLineList,
+  indices,
+  TResolution,
+  RRThreshold = 42,
+  fileName
+)
 }
 \arguments{
-\item{ls}{Optional, list. List of SpatRasters. Names of elements must be "TX" and "TN", holding maximum and minimum daily air temperature respectively.}
+\item{projectionList}{List. List of \code{CFVariable} objects required by the selected ETCCDI indices via the \code{indices} argument. Include only named elements that are needed for \code{indices}: "TX" (daily maximum air temperature in Kelvin), "TN" (daily minimum air temperature in Kelvin), and/or "RR" (daily total precipitation in mm). See details for required data input per index.}
+
+\item{baseLineList}{Optional, list. List of \code{CFDataset} objects containing baseline quantiles required only for quantile-based ETCCDI indices. Include only named elements needed for \code{indices}: "TX_Base", "TN_Base", and/or "RR_Base" (note that these must be in Kelvin, Kelvin, and mm, respectively). If no quantile-based ETCCDI is selected, this argument can be omitted. See details for required quantile baselines per index.}
+
+\item{indices}{Optional, character. Character vector of ETCCDI abbreviations to calculate (see first column of the details table). If missing, all supported indices in this function are calculated. See details for supported indices.}
+
+\item{TResolution}{Optional, character. Temporal resolution for ETCCDI calculation. Supports "year", "month" and "season". If omitted, each selected index is calculated using its default temporal resolution from the details table. If provided, the same resolution is used for all selected indices and output indices whose default resolution differs are prefixed with "ALT_". Note that this is not applied to GSL which is always calculated at annual resolution due to its specific logic.}
+
+\item{RRThreshold}{Numeric. Custom threshold for daily precipiation in mm for calculation of Rnnmm. Defaults to 42.}
+
+\item{fileName}{Character, optional. Character. A file name for the produced file, including path and ".nc" file ending. If no value is supplied, the dataset is not written to disk but returned as a \code{CFDataset} object in memory. If a file name is supplied and a file with that name already exists, the function will attempt to load and return that file instead of recalculating the indices.}
 }
 \value{
-A named list of SpatRasters with each element corresponding to an ETCCDI.
+A \code{CFDataset}. If all calculated ETCCDI indices have the same temporal resolution (e.g., when \code{TResolution} is specified or a subset of \code{indices} is selected that share a temporal resolution default), the returned \code{CFDataset} contains all variables in the root group. If indices span multiple temporal resolutions (e.g., when \code{TResolution} is omitted and some selected \code{indices} default to "year" while others default to "month"), the returned \code{CFDataset} contains one subgroup per temporal resolution, each containing only variables of that temporal resolution.
+
+Each variable is named by its ETCCDI acronym and has a \code{long_name} attribute describing the index. Acronyms of indices calculated with a non-default temporal resolution are prefixed with "ALT_" to indicate that these are alternative calculations.
 }
 \description{
-This function calculates \href{https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/jgrd.50203}{ETCCDIs} from a named list of SpatRaster objects. Currently, only the first four ETCCDI are supported.
+This function calculates \href{https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/jgrd.50203}{ETCCDIs} from a named list of CFVariable objects. Currently, only some ETCCDI are supported.
+}
+\details{
+Input requirements are conditional on the selected ETCCDI indices in the \code{indices} argument (see table below). To reduce memory usage and speed up calculations, supply only the inputs required for the selected indices.\tabular{llllll}{
+   \strong{ETCCDI} \tab \strong{Name} \tab \strong{Required Data} \tab \strong{Description} \tab \strong{Unit} \tab \strong{Default \code{TResolution}} \cr
+   FD \tab Number of frost days \tab \code{TN} \tab Count of days when TN (daily minimum temperature) < 0°C. \tab days \tab year \cr
+   SU \tab Number of summer days \tab \code{TX} \tab Count of days when TX (daily maximum temperature) > 25°C. \tab days \tab year \cr
+   ID \tab Number of icing days \tab \code{TX} \tab Count of days when TX (daily maximum temperature) < 0°C. \tab days \tab year \cr
+   TR \tab Number of tropical nights \tab \code{TN} \tab Count of days when TN (daily minimum temperature) > 20°C. \tab days \tab year \cr
+   GSL \tab Growing Season Length \tab \code{TX}, \code{TN} \tab Annual count of days between the first occurrence of at least 6 consecutive days with (TN+TX)/2 > 5°C and the first occurrence after 1st July (Northern Hemisphere) or 1st January (Southern Hemisphere) of at least 6 consecutive days with (TN+TX)/2 < 5°C \tab days \tab year \cr
+   TXx \tab Max of Daily Max Temp \tab \code{TX} \tab Maximum daily maximum temperature. \tab K \tab month \cr
+   TNx \tab Max of Daily Min Temp \tab \code{TN} \tab Maximum daily minimum temperature. \tab K \tab month \cr
+   TXn \tab Min of Daily Max Temp \tab \code{TX} \tab Minimum daily maximum temperature. \tab K \tab month \cr
+   TNn \tab Min of Daily Min Temp \tab \code{TN} \tab Minimum daily minimum temperature. \tab K \tab month \cr
+   TN10p \tab Percent Days TN < 10th Percentile \tab \code{TN}, \code{TN_Base} \tab Percent of days where TN < 10th percentile of base period. \tab \% \tab year \cr
+   TX10p \tab Percent Days TX < 10th Percentile \tab \code{TX}, \code{TX_Base} \tab Percent of days where TX < 10th percentile of base period. \tab \% \tab year \cr
+   TN90p \tab Percent Days TN > 90th Percentile \tab \code{TN}, \code{TN_Base} \tab Percent of days where TN > 90th percentile of base period. \tab \% \tab year \cr
+   TX90p \tab Percent Days TX > 90th Percentile \tab \code{TX}, \code{TX_Base} \tab Percent of days where TX > 90th percentile of base period. \tab \% \tab year \cr
+   WSDI \tab Warm Spell Duration Index \tab \code{TX}, \code{TX_Base} \tab Count of days contained within runs of 6+ consecutive days when TX > 90th percentile of base period. Note that periods of consecutive days are attributed to the time window in which the sequence terminates. \tab days \tab year \cr
+   CSDI \tab Cold Spell Duration Index \tab \code{TN}, \code{TN_Base} \tab Count of days contained within runs of 6+ consecutive days when TN < 10th percentile of base period. Note that periods of consecutive days are attributed to the time window in which the sequence terminates. \tab days \tab year \cr
+   DTR \tab Daily Temperature Range \tab \code{TX}, \code{TN} \tab Mean difference between daily max (TX) and min (TN) temperatures. \tab K \tab month \cr
+   Rx1day \tab Max 1-day Precipitation \tab \code{RR} \tab Maximum precipitation in a single day. \tab mm \tab month \cr
+   Rx5day \tab Max 5-day Precipitation \tab \code{RR} \tab Maximum precipitation over any 5 consecutive days. \tab mm \tab month \cr
+   SDII \tab Simple Precipitation Intensity Index \tab \code{RR} \tab Mean precipitation amount on wet days (RR ≥ 1mm). \tab mm/day \tab year \cr
+   R10mm \tab Days with Precip ≥ 10mm \tab \code{RR} \tab Count of days with precipitation ≥ 10mm. \tab days \tab year \cr
+   R20mm \tab Days with Precip ≥ 20mm \tab \code{RR} \tab Count of days with precipitation ≥ 20mm. \tab days \tab year \cr
+   Rnnmm \tab Days with Precip ≥ user-defined threshold \tab \code{RR} \tab Count of days with precipitation ≥ nnmm. \tab days \tab year \cr
+   CDD \tab Consecutive Dry Days \tab \code{RR} \tab Maximum number of consecutive days with RR < 1mm. Note that periods of consecutive days are attributed to the time window in which the sequence terminates. \tab days \tab year \cr
+   CWD \tab Consecutive Wet Days \tab \code{RR} \tab Maximum number of consecutive days with RR ≥ 1mm. Note that periods of consecutive days are attributed to the time window in which the sequence terminates. \tab days \tab year \cr
+   R95pTOT \tab Total Precipitation from RR > 95th Percentile \tab \code{RR}, \code{RR_Base} \tab Total precipitation from wet days (RR > 95th percentile of base period). \tab mm \tab year \cr
+   R99pTOT \tab Total Precipitation from RR > 99th Percentile \tab \code{RR}, \code{RR_Base} \tab Total precipitation from wet days (RR > 99th percentile of base period). \tab mm \tab year \cr
+   RCPTOT \tab Total Precipitation on Wet Days \tab \code{RR} \tab Sum of precipitation on wet days (RR ≥ 1mm). \tab mm \tab year \cr
+}
 }
 \examples{
 \dontrun{
-TX_rast <- terra::rast("inst/extdata/Jotunheimen_TX.nc") # terra::rast(system.file("extdata", "Jotunheimen_TX.nc", package = "ClimHub"))
-TN_rast <- terra::rast("inst/extdata/Jotunheimen_TN.nc")
-RR_rast <- terra::rast("inst/extdata/Jotunheimen_RR.nc")
-terra::units(RR_rast) <- "mm"
-# BASEPeriod_rast <- terra::rast("inst/extdata/Jotunheimen_BASEPeriod.nc")
+## Directory for Data and Output -----------
+Dir.Data <- file.path(getwd(), "ExampleData")
+dir.create(Dir.Data, showWarnings = FALSE)
 
-Metrics_ETCCDI(ls = list(TX = TX_rast, TN = TN_rast, RR = RR_rast
-# , BASEPeriod = BASEPeriod_rast)
+## Downloading and preparing data -----------
+### Variables for which we need data
+vars <- c("minimum_air_temperature", "maximum_air_temperature", "precipitation_flux")
+names(vars) <- c("tasmin", "tasmax", "pr")
+
+### Data (Down-)Loading and Preparation
+Data_ls <- lapply(seq_along(vars), FUN = function(i) {
+    print(as.character(vars[i]))
+    ## these need to be made into quantiles to define base-period for ETCCDI calculation
+    KiN_Base <- Access_KlimaiNorge2100(
+        variable = as.character(vars[i]),
+        dateStart = "1971-01-01", # note that the standard base period starts 1961, but KiN does start in 1971 so we use that as the start date
+        dateStop = "2000-12-31",
+        extent = c(9, 11, 59, 61),
+        model = "noresm-r1i1p1f1-hclim",
+        method = "eqm",
+        scenario = "ssp370",
+        fileName = file.path(Dir.Data, paste0("KiN_", names(vars)[i], ".nc"))
+    )
+
+    ## these are the files for calculation of ETCCDI metrics in future
+    KiN_2090 <- Access_KlimaiNorge2100(
+        variable = as.character(vars[i]),
+        dateStart = "2090-01-01",
+        dateStop = "2099-12-31",
+        extent = c(9, 11, 59, 61),
+        model = "noresm-r1i1p1f1-hclim",
+        method = "eqm",
+        scenario = "ssp370",
+        fileName = file.path(Dir.Data, paste0("KiN_", names(vars)[i], "_2090.nc"))
+    )
+
+    ## these are the files for baseline quantiles
+    QuantF <- file.path(Dir.Data, paste0("KiN_", names(vars)[i], "_BaseLineQuantiles.nc"))
+    if (!file.exists(QuantF)) {
+        if (names(vars)[i] == "pr") {
+            probs_vec <- c(0.95, 0.99)
+            input <- KiN_Base[[names(vars)[i]]] * 86400 # to get from mm/day to kg m-2 s-1
+            input$set_attribute("units", "NC_CHAR", "mm")
+        } else {
+            probs_vec <- c(0.1, 0.9)
+            input <- KiN_Base[[names(vars)[i]]]
+        }
+        Quant <- Metrics_BootstrapQuantiles(
+            CFVariable = input,
+            probs = probs_vec,
+            bootstrapWindow = 5
+        )
+        Quant$save(QuantF)
+    } else {
+        Quant <- NC_Read(QuantF)
+    }
+
+    return(list(projection = KiN_2090, baseLine = Quant))
+})
+names(Data_ls) <- names(vars)
+
+### Data Object listing
+TX <- Data_ls[["tasmax"]][["projection"]][["tasmax"]]
+TN <- Data_ls[["tasmin"]][["projection"]][["tasmin"]]
+RR <- Data_ls[["pr"]][["projection"]][["pr"]] * 86400 # to get from mm/day to kg m-2 s-1
+RR$set_attribute("units", "NC_CHAR", "mm")
+
+TX_Base <- Data_ls[["tasmax"]][["baseLine"]]
+TN_Base <- Data_ls[["tasmin"]][["baseLine"]]
+RR_Base <- Data_ls[["pr"]][["baseLine"]]
+
+rm(Data_ls) # remove list to free up memory
+
+## ETCCDI calculation -----------
+### All ETCCDI
+Metrics_ETCCDI(
+    projectionList = list(TX = TX, TN = TN, RR = RR),
+    baseLineList = list(TX_Base = TX_Base, TN_Base = TN_Base, RR_Base = RR_Base),
+    fileName = file.path(Dir.Data, "ETCCDI_Metrics.nc")
+)
+
+### Select ETCCDI
+Metrics_ETCCDI(
+    projectionList = list(TX = TX, TN = TN, RR = RR),
+    baseLineList = list(TX_Base = TX_Base, TN_Base = TN_Base, RR_Base = RR_Base),
+    indices = c("FD", "TXx", "R95pTOT")
+)
+
+### Select ETCCDI with custom temporal resolutions
+Metrics_ETCCDI(
+    projectionList = list(RR = RR),
+    # baseLineList = list(RR_Base = RR_Base), # we do not need to supply the baseline quantiles if we do not select any indices that depend on them
+    indices = c("Rnnmm"),
+    RRThreshold = 21, # this is the threshold for the Rnnmm metric, in mm
+    TResolution = "season"
+)
+
+Metrics_ETCCDI(
+    projectionList = list(TX = TX, TN = TN, RR = RR),
+    baseLineList = list(TX_Base = TX_Base, TN_Base = TN_Base, RR_Base = RR_Base),
+    indices = c("FD", "SU", "ID", "TR"),
+    TResolution = "month" # note that this is not the default for these indices, so the returned object will bear the prefix "ALT_" for each index to indicate that this is an alternative calculation with a different temporal resolution
 )
 }
-
 }
 \author{
 Erik Kusch

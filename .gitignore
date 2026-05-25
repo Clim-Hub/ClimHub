@@ -5,3 +5,6 @@
 .DS_Store
 .quarto
 .vscode
+
+# ignore KiN nc files for now as most are too big to ship the package with
+ExampleData/*

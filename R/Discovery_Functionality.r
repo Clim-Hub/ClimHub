@@ -48,18 +48,24 @@ Discovery_DataSet.Check <- function(dataSet) {
 #'
 #' @export
 Discovery_Read <- function(dataSet = "NULL") {
-    owner <- "Clim-Hub"
-    repo <- "ClimHub"
-    branch <- "master"
-    path <- "product-metadata"
+    metadata_dir <- system.file("product-metadata", package = "ClimHub")
+    if (metadata_dir == "") {
+        stop("Could not locate 'product-metadata' directory in package 'ClimHub'.")
+    }
 
     Discovery_DataSet.Check(dataSet)
 
-    # URL of the raw JSON file
-    URL <- paste0("https://raw.githubusercontent.com/", owner, "/", repo, "/", branch, "/", path, "/", paste0(dataSet, ".json"))
+    json_file <- file.path(metadata_dir, paste0(dataSet, ".json"))
 
-    # Read JSON content
-    json_data <- jsonlite::fromJSON(URL)
+    # URL-based fallback kept for reference:
+    # owner <- "Clim-Hub"
+    # repo <- "ClimHub"
+    # branch <- "master"
+    # path <- "product-metadata"
+    # URL <- paste0("https://raw.githubusercontent.com/", owner, "/", repo, "/", branch, "/", path, "/", paste0(dataSet, ".json"))
+
+    # Read JSON content from package files.
+    json_data <- jsonlite::fromJSON(json_file)
 
     # View the data
     json_data
@@ -129,28 +135,21 @@ Discovery_Citation <- function(dataSet = "NULL") {
 #'
 #' @export
 Discovery_Library <- function() {
-    owner <- "Clim-Hub"
-    repo <- "ClimHub"
-    path <- "product-metadata"
+    metadata_dir <- system.file("product-metadata", package = "ClimHub")
+    if (metadata_dir == "") {
+        stop("Could not locate 'product-metadata' directory in package 'ClimHub'.")
+    }
 
-    # Construct the URL
-    URL <- paste0("https://github.com/", owner, "/", repo, "/tree/master/", path)
+    tree_items <- list.files(path = metadata_dir, pattern = "\\.json$", full.names = FALSE)
 
-    # Read the page
-    page <- rvest::read_html(URL)
-
-    # Extract the embedded JSON metadata
-    raw_metadata <- page %>%
-        rvest::html_nodes("script") %>% # Extract all <script> tags
-        rvest::html_text() %>% # Get the text content
-        grep("payload", ., value = TRUE) %>% # Locate the script containing "payload"
-        jsonlite::fromJSON(simplifyVector = FALSE) # Parse JSON metadata
-
-    # Navigate to the relevant "tree" section
-    tree_items <- raw_metadata$payload$codeViewFileTreeLayoutRoute$fileTree$`product-metadata`$items
-
-    # make into vector of names of files
-    tree_items <- unlist(lapply(tree_items, "[[", "name"))
+    # GitHub Contents API approach kept for reference:
+    # owner <- "Clim-Hub"
+    # repo <- "ClimHub"
+    # branch <- "master"
+    # path <- "product-metadata"
+    # URL <- paste0("https://api.github.com/repos/", owner, "/", repo, "/contents/", path, "?ref=", branch)
+    # tree_items <- jsonlite::fromJSON(URL, simplifyVector = TRUE)
+    # tree_items <- tree_items$name
 
     # subset for .json files
     tree_items <- tree_items[grep(pattern = "\\.json$", tree_items)]

@@ -293,6 +293,9 @@ argument_description_overrides <- c(
         "with values minimum and maximum X/longitude and minimum and maximum",
         "Y/latitude, in that order. Valid ranges depend on the dataset being queried.",
         "Defaults to NULL, returning full spatial range of data."
+    ),
+    CFVariable = paste(
+        "A CFVariable object to be processed."
     )
 )
 
@@ -433,7 +436,9 @@ resolve_argument_description <- function(arg_key, existing_argument_map, doc_ind
     if (length(candidates) > 1) {
         stop(
             "Conflicting descriptions found for new argument ", arg_key, ": ",
-            paste(candidates, collapse = " | ")
+            paste(candidates, collapse = " | "),
+            ". Add a canonical entry to argument_description_overrides in ",
+            ".github/scripts/update_argument_usage.R."
         )
     }
 

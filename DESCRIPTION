@@ -1,6 +1,6 @@
 Package: ClimHub
 Title: Climate Data Toolbox developed at CICERO Centre for International Climate Research
-Version: 0.1.17
+Version: 0.1.21
 Authors@R: c(
     person("Erik", "Kusch", , "erik.kusch@cicero.oslo.no", role = c("aut", "cre", "cph"), comment = c(ORCID = "0000-0002-4984-7646")),
     person("Patrick", "Van Laake", , "patrick@vanlaake.net", role = c("aut", "ctb"))

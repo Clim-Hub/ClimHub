@@ -700,3 +700,4 @@ write_text(shared_strings_path, new_shared_xml)
 write_text(sheet_path, new_sheet_xml)
 repack_xlsx(tempdir, xlsx_path)
 message("Updated ", xlsx_path)
+

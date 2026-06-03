@@ -18,6 +18,27 @@ normalize_arg_key <- function(x) {
     x
 }
 
+synthesise_conflict_description <- function(arg_key, candidates) {
+    type_terms <- unique(unlist(regmatches(
+        tolower(candidates),
+        gregexpr("\\b(character|logical|numeric|integer|list|vector|function|data frame|sf|spatraster|cfvariable)\\b", tolower(candidates), perl = TRUE)
+    )))
+    type_terms <- type_terms[nzchar(type_terms)]
+
+    if (length(type_terms)) {
+        return(paste(
+            sprintf("%s.", paste(tools::toTitleCase(type_terms), collapse = "/")),
+            "Shared argument reused across package functions;",
+            "see function-specific help for exact behaviour."
+        ))
+    }
+
+    paste(
+        "Shared argument reused across package functions;",
+        "see function-specific help for exact behaviour."
+    )
+}
+
 xml_escape <- function(x) {
     x <- gsub("&", "&amp;", x, fixed = TRUE)
     x <- gsub("<", "&lt;", x, fixed = TRUE)
@@ -414,7 +435,8 @@ build_doc_index <- function(ordered_functions, rd_docs) {
 
 resolve_argument_description <- function(arg_key, existing_argument_map, doc_index) {
     # Existing workbook text wins to avoid churn. New arguments must either
-    # have a single documented description or an explicit override above.
+    # have a single documented description, an explicit override above, or
+    # fall back to a generic shared-argument description.
     if (!is.null(existing_argument_map[[arg_key]])) {
         existing_usage <- existing_argument_map[[arg_key]]$usage
         if (nzchar(normalize_ws(existing_usage))) {
@@ -434,12 +456,12 @@ resolve_argument_description <- function(arg_key, existing_argument_map, doc_ind
     }
 
     if (length(candidates) > 1) {
-        stop(
+        warning(
             "Conflicting descriptions found for new argument ", arg_key, ": ",
             paste(candidates, collapse = " | "),
-            ". Add a canonical entry to argument_description_overrides in ",
-            ".github/scripts/update_argument_usage.R."
+            ". Falling back to a generic shared-argument description."
         )
+        return(synthesise_conflict_description(arg_key, candidates))
     }
 
     candidates[[1]]

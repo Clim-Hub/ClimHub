@@ -76,8 +76,9 @@ To access ECMWF CDS data products, users require personal CDS API-access tokens 
 ## Use via Docker
 Container images are published to GitHub Container Registry under `ghcr.io/clim-hub/climhub`. Tags follow the package version in `DESCRIPTION`, followed by the architecture (e.g., `arm64` or `amd64`) depending on your Docker runtime.
 
-Aviable versions can be browsed [here](https://github.com/orgs/Clim-Hub/packages).
+Aviable versions can be browsed on [https://github.com/orgs/Clim-Hub/packages](https://github.com/orgs/Clim-Hub/packages).
 
+> We only plan to publish images for stable releases, so if you want to use the latest development version, you will need to build the image locally from the repository.
 
 Pull a specific version:
 

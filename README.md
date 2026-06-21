@@ -52,13 +52,115 @@
 I will explain how to make feature requests or report bugs here as soon as I have prepared issue templates for these purposes.
 
 # Installation
-`ClimHub` is not yet on CRAN, so it needs to be installed as such:
+`ClimHub` is not yet on CRAN. The package can currently be used either as a local R installation from GitHub or through a prebuilt Docker image.
 
-```{r}
-devtools::install_github("https://github.com/Clim-Hub/ClimHub")
+## Install in R
+The simplest installation route is directly from GitHub:
+
+```r
+install.packages("pak")
+pak::pkg_install("Clim-Hub/ClimHub")
 library(ClimHub)
 ```
+
+An alternative using `remotes` is:
+
+```r
+install.packages("remotes")
+remotes::install_github("Clim-Hub/ClimHub")
+library(ClimHub)
+```
+
 To access ECMWF CDS data products, users require personal CDS API-access tokens which can be obtained [here](https://accounts.ecmwf.int/auth/realms/ecmwf/login-actions/registration?client_id=cds&tab_id=VkbipqjwuIQ).
 
+## Use via Docker
+Container images are published to GitHub Container Registry under `ghcr.io/clim-hub/climhub`. Tags follow the package version in `DESCRIPTION`, followed by the architecture (e.g., `arm64` or `amd64`) depending on your Docker runtime.
+
+Aviable versions can be browsed on [https://github.com/orgs/Clim-Hub/packages](https://github.com/orgs/Clim-Hub/packages).
+
+> We only plan to publish images for stable releases, so if you want to use the latest development version, you will need to build the image locally from the repository.
+
+Pull a specific version:
+
+```bash
+docker pull ghcr.io/clim-hub/climhub:<version>-<arch>
+```
+
+Run a quick package-load check:
+
+```bash
+docker run --rm ghcr.io/clim-hub/climhub:<version>-<arch> \
+  Rscript -e "library(ClimHub); packageVersion('ClimHub')"
+```
+
+Run a package function inside the container:
+
+```bash
+docker run --rm ghcr.io/clim-hub/climhub:<version>-<arch> \
+  Rscript -e "library(ClimHub); print(Discovery_Library())"
+```
+
+Open an interactive R session:
+
+```bash
+docker run --rm -it ghcr.io/clim-hub/climhub:<version>-<arch> R
+```
+
+Build the image locally from the repository root:
+
+```bash
+docker buildx build --platform linux/arm64 -t climhub:arm64 --load .
+docker buildx build --platform linux/amd64 -t climhub:amd64 --load .
+```
+
+## Publishing new container versions
+This step is only needed when maintaining the published Docker images.
+
+Read the version directly from `DESCRIPTION`:
+
+```bash
+VERSION=$(sed -n 's/^Version: //p' DESCRIPTION)
+```
+
+Log in to GitHub Container Registry:
+
+```bash
+docker login ghcr.io -u YOUR_GITHUB_USERNAME
+```
+
+Push the architecture-specific images:
+
+```bash
+docker tag climhub:arm64 ghcr.io/clim-hub/climhub:${VERSION}-arm64
+docker push ghcr.io/clim-hub/climhub:${VERSION}-arm64
+
+docker tag climhub:amd64 ghcr.io/clim-hub/climhub:${VERSION}-amd64
+docker push ghcr.io/clim-hub/climhub:${VERSION}-amd64
+```
+
+Create the multi-platform manifest under the plain version tag:
+
+```bash
+docker buildx imagetools create \
+  -t ghcr.io/clim-hub/climhub:${VERSION} \
+  ghcr.io/clim-hub/climhub:${VERSION}-arm64 \
+  ghcr.io/clim-hub/climhub:${VERSION}-amd64
+```
+
+Optionally update `latest`:
+
+```bash
+docker buildx imagetools create \
+  -t ghcr.io/clim-hub/climhub:latest \
+  ghcr.io/clim-hub/climhub:${VERSION}-arm64 \
+  ghcr.io/clim-hub/climhub:${VERSION}-amd64
+```
+
+Verify the published manifest:
+
+```bash
+docker buildx imagetools inspect ghcr.io/clim-hub/climhub:${VERSION}
+```
+
 # Walkthrough
-A walkthrough of the basic functionality of `ClimHub` will be developed and added here when data visualisation and automated code coverage and testing is in place.
+A walkthrough of the basic functionality of `ClimHub` will be developed and added here when data visualisation and automated code coverage and testing is in place. 
